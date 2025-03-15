@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:app-frontend": "node dist/app-frontend/server/server.mjs"
+    "serve:ssr:app-frontend": "node dist/app-frontend/server/server.mjs",
+    "build-bulma": "sass --load-path=node_modules my-bulma-project.scss my-bulma-project.css"
   },
   "private": true,
   "dependencies": {
