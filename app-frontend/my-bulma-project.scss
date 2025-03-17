@@ -9,7 +9,6 @@ $custom-danger: #f52b11;
 
 // Path to Bulma's sass folder
 @use "bulma/sass" with (
-  $family-primary: '"Nunito", sans-serif',
   $primary: $custom-primary,
   $link: $custom-link,
   $info: $custom-info,
