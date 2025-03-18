@@ -20,6 +20,23 @@ pipeline{
             }
         }
 
+        stage('Test Frontend'){
+            steps{
+                dir('app-frontend'){
+                    // Install all dependencies
+                    sh 'npm install'
+                    // Excecute tests
+                    sh 'ng test--watch=false --browsers=ChromeHeadless'
+                }
+            }
+        }
+
+        stage("Deploy"){
+            steps {
+                echo "Deploy app... "
+            }
+        }
+
         stage('Verify Jacoco Exec') {
             steps {
                 dir('app-backend/report/target') {
@@ -48,5 +65,4 @@ pipeline{
             echo 'Backend build failed.'
         }
     }
-
 }
