@@ -17,6 +17,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>ms-magazine</module>
         <!--HERE WE ADD OURS MS ARTIFACT ID -->
         <module>gateway</module>
         <!--REPORT NEEDS TO BE THE LAST ONE-->
