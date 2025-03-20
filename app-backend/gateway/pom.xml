@@ -8,7 +8,6 @@
 		<version>1.0-SNAPSHOT</version>	
 	</parent>
 
-	<groupId>com.codenbugs</groupId>
 	<artifactId>gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gateway</name>
