@@ -20,16 +20,14 @@ pipeline{
             }
         }
 
-        stage('Test Frontend'){
-            steps{
-                dir('app-frontend'){
-                    // Install all dependencies
-                    sh 'npm install'
-                    // Excecute tests
-                    sh 'ng test--watch=false --browsers=ChromeHeadless'
-                }
+        stage('Test Frontend') {
+        steps {
+            dir('app-frontend') {
+                sh 'rm -rf node_modules && npm install'
+                sh 'ng test --watch=false --browsers=ChromeHeadless --no-sandbox'
             }
         }
+    }
 
         stage("Deploy"){
             steps {
