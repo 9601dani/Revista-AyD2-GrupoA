@@ -18,6 +18,7 @@
 
     <modules>
         <!--HERE WE ADD OURS MS ARTIFACT ID -->
+        <module>gateway</module>
     </modules>
 
     <properties>
