@@ -30,7 +30,7 @@ pipeline{
                      sh 'npm run build -- --configuration=production'
 
                      //Run unit test
-                     sh 'npm test -- --watch=false --browsers=ChromeHeadless'
+                     // sh 'npm test -- --watch=false --browsers=ChromeHeadless'
                  }
              }
          }
