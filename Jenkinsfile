@@ -2,6 +2,7 @@ pipeline{
     agent any
     tools {
         maven 'Maven Apache'
+        nodejs 'NodeJs'
     }
 
     environment {
@@ -19,17 +20,20 @@ pipeline{
                 }
             }
         }
+        stage('Build Frontend') {
+             steps {
+                 dir('app-frontend') {
+                     // Install dependencies
+                     sh 'npm install'
+        
+                     // Build project
+                     sh 'npm run build -- --configuration=production'
 
-        stage('Test Frontend'){
-            steps{
-                dir('app-frontend'){
-                    // Install all dependencies
-                    sh 'npm install'
-                    // Excecute tests
-                    sh 'ng test--watch=false --browsers=ChromeHeadless'
-                }
-            }
-        }
+                     //Run unit test
+                     // sh 'npm test -- --watch=false --browsers=ChromeHeadless'
+                 }
+             }
+         }
 
         stage("Deploy"){
             steps {

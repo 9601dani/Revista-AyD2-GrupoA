@@ -8,7 +8,6 @@
 		<version>1.0-SNAPSHOT</version>	
 	</parent>
 
-	<groupId>com.codenbugs</groupId>
 	<artifactId>gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gateway</name>
@@ -37,7 +36,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-gateway-mvc</artifactId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>

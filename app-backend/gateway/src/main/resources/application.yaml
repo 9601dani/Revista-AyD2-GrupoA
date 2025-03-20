@@ -13,6 +13,7 @@ spring:
       idle-timeout: 60000
       max-lifetime: 1800000
       connection-timeout: 30000
+    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: validate
@@ -24,19 +25,18 @@ spring:
   cloud:
     gateway:
       globalcors:
-        corsConfigurations:
+        cors-configurations:
           '[/**]':
-          allowedOrigins: ${WEB_SITE_URL:http://localhost:4200}
-          allowedMethods:
-            - GET
-            - POST
-            - PUT
-            - DELETE
-          allowedHeaders:
-            - "*"
-          maxAge: 3600
+            allowedOrigins: ${WEB_SITE_URL:http://localhost:4200}
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders:
+              - "*"
       routes:
         - id: user-public-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           predicates:
-          - Path=/v1/users            # TEMPORAL
+              - Path=/v1/users            # TEMPORAL

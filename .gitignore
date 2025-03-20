@@ -1,3 +1,5 @@
 /.vscode
 /.angular
 /node_modules
+.idea
+/app-backend/.idea/
