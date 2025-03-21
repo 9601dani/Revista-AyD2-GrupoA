@@ -3,7 +3,6 @@ pipeline{
     tools {
         maven 'Maven Apache'
         nodejs 'NodeJs'
-    
     }
 
     environment {
