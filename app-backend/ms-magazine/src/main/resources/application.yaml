@@ -2,7 +2,7 @@ server:
   port: 8002
 spring:
   application:
-    name: gateway
+    name: ms-magazine
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
