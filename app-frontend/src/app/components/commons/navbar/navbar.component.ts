@@ -5,11 +5,10 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { UserService } from '../../../services/user.service';
 import Swal from 'sweetalert2';
 import { NotLogoDirective } from '../../../directives/not-logo.directive';
-import { NotProfileDirective } from '../../../directives/not-profile.directive';
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule, RouterLink, NotLogoDirective, NotProfileDirective],
+  imports: [CommonModule, RouterLink, NotLogoDirective],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
