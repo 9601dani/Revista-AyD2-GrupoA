@@ -153,8 +153,8 @@ export class LoginComponent {
 
     this._authService.login(data).subscribe({
       next: (response: any) => {
-        this._localStorageService.setUserId(response.id);
-        this._localStorageService.setUsername(response.username);
+        this._localStorageService.setItem(this._localStorageService.USER_ID, response.id);
+        this._localStorageService.setItem(this._localStorageService.USER_NAME, response.username);
         this.setImgProfile();
 
         if (response.is2FA) {
@@ -220,10 +220,10 @@ export class LoginComponent {
 
   setImgProfile() {
     this._userService
-      .getUserInfo(this._localStorageService.getUserId())
+      .getUserInfo(this._localStorageService.getItem(this._localStorageService.USER_ID))
       .subscribe({
         next: (response: any) => {
-          this._localStorageService.setUserPhoto(response.path);
+          this._localStorageService.setItem(this._localStorageService.USER_PHOTO, response.path);
         },
         error: (err) => {
           console.error('Error obteniendo la imagen de perfil:', err);

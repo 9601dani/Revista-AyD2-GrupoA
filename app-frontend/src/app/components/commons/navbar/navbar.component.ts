@@ -37,9 +37,9 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isLogged = this._localStorageService.getUserId() !== null;
+    this.isLogged = this._localStorageService.getItem(this._localStorageService.USER_ID) !== null;
     if (this.isLogged) {
-      this.username = this._localStorageService.getUserName();
+      this.username = this._localStorageService.getItem(this._localStorageService.USER_NAME);
       this.showButtons = true;
       this.getPages();
       this.setUserPhoto();
@@ -49,7 +49,7 @@ export class NavbarComponent implements OnInit {
   }
 
   getPages() {
-    const id = this._localStorageService.getUserId();
+    const id = this._localStorageService.getItem(this._localStorageService.USER_ID);
     // this._userService.getPages(id).subscribe({
     //   next: (response : any ) => {
     //     this.modules = response;
@@ -58,8 +58,8 @@ export class NavbarComponent implements OnInit {
   }
 
   setUserPhoto() {
-    const id = this._localStorageService.getUserId();
-    this.userPhoto = this._localStorageService.getUserPhoto();
+    const id = this._localStorageService.getItem(this._localStorageService.USER_ID);
+    this.userPhoto = this._localStorageService.getItem(this._localStorageService.USER_PHOTO);
 
     if (!this.userPhoto) {
       // this._userService.getUserInfo(id).subscribe({

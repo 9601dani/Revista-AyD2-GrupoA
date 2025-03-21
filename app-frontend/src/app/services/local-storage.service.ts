@@ -44,29 +44,6 @@ export class LocalStorageService {
     }
   }
 
-  getUserId(): number {
-    return this.getItem(this.USER_ID);
-  }
-
-  setUserId(id: number): void {
-    this.setItem(this.USER_ID, id);
-  }
-
-  getUserName(): string {
-    return this.getItem(this.USER_NAME);
-  }
-
-  setUsername(name: string): void {
-    this.setItem(this.USER_NAME, name);
-  }
-
-  setUserPhoto(photo: string): void {
-    this.setItem(this.USER_PHOTO, photo);
-  }
-
-  getUserPhoto(): string {
-    return this.getItem(this.USER_PHOTO);
-  }
 
   logout(): void {
     this.clear();
