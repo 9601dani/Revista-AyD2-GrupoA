@@ -51,4 +51,4 @@ spring:
         - id: email-public-routes
           uri: ${EMAIL_ROUTE_URI:http://localhost:8004}
           predicates:
-              - Path=/v1/email/**
+              - Path=/v1/emails/**
