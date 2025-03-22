@@ -72,10 +72,14 @@ pipeline{
                     minimumLineCoverage: '85'
                 )
 
+                githubNotify(context: 'CI/CD', status: 'SUCCESS')
             }
             echo 'Backend build completed successfully!'
         }
         failure {
+            script {
+                githubNotify(context: 'CI/CD', status: 'FAILURE')
+            }
             echo 'Backend build failed.'
         }
     }
