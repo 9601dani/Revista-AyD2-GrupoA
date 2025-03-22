@@ -21,20 +21,20 @@ pipeline{
             }
         }
 
-        stage('Build Frontend') {
-             steps {
-                 dir('app-frontend') {
-                     // Install dependencies
-                     sh 'npm install'
-        
-                     // Build project
-                     sh 'npm run build -- --configuration=production'
-
-                     //Run unit test
-                     // sh 'npm test -- --watch=false --browsers=ChromeHeadless'
-                 }
-             }
-        }
+//         stage('Build Frontend') {
+//              steps {
+//                  dir('app-frontend') {
+//                      // Install dependencies
+//                      sh 'npm install'
+//
+//                      // Build project
+//                      sh 'npm run build -- --configuration=production'
+//
+//                      //Run unit test
+//                      // sh 'npm test -- --watch=false --browsers=ChromeHeadless'
+//                  }
+//              }
+//         }
 
         stage('Build Backend') {
             steps {
