@@ -6,12 +6,14 @@ import {Module} from '../models/Module.model'
  
 import { Observable } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  readonly apiUser = "http://localhost:8000/user";
+  readonly apiUser = `${environment.API_URL}/user`;
 
   constructor(private http: HttpClient, private _localStorage: LocalStorageService) { }
 
