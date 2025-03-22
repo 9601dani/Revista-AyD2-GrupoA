@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.codenbugs</groupId>
-	<artifactId>ms-magazine</artifactId>
+	<artifactId>ms-email</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ms-magazine</name>
-	<description>Microservice to manage magazines</description>
+	<name>ms-email</name>
+	<description>Microservice to managment email in app</description>
 	<url/>
 	<licenses>
 		<license/>

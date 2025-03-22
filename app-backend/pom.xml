@@ -22,6 +22,10 @@
         <module>gateway</module>
         <!--REPORT NEEDS TO BE THE LAST ONE-->
         <module>report</module>
+        <module>ms-user</module>
+        <module>ms-adds</module>
+        <module>ms-email</module>
+        <module>ms-magazine</module>
     </modules>
 
     <properties>
