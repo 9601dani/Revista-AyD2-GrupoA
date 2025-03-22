@@ -6,13 +6,12 @@
 		<groupId>com.codenbugs</groupId>
 		<artifactId>app-backend</artifactId>
 		<version>1.0-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.codenbugs</groupId>
 	<artifactId>ms-adds</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ms-adds</name>
-	<description>Microservice to managment adds in app</description>
+	<description>Microservice to management adds in app</description>
 	<url/>
 	<licenses>
 		<license/>
