@@ -17,7 +17,6 @@ pipeline{
                 script {
                     echo "Checking out branch: ${env.BRANCH_NAME}"
                     git url: 'https://github.com/9601dani/Revista-AyD2-GrupoA.git', branch: env.BRANCH_NAME, credentialsId: 'github-pat-global'
-
                 }
             }
         }
