@@ -11,7 +11,7 @@ import { Page } from '../models/Page.model';
 describe('UserService', () => {
   let service: UserService;
   let httpMock: HttpTestingController;
-  const apiUrl = 'http://localhost:8000/user';
+  const apiUrl = `http://localhost:8000/user`;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -46,7 +46,7 @@ describe('UserService', () => {
       done();
     });
 
-    const req = httpMock.expectOne(`${apiUrl}/pages/1`);
+    const req = httpMock.expectOne(`/user/pages/1`);
     expect(req.request.method).toBe('GET');
     req.flush(testModules);
   });
@@ -65,7 +65,7 @@ describe('UserService', () => {
       done();
     })
 
-    const req = httpMock.expectOne(`${apiUrl}/info/${userInfo.id}`);
+    const req = httpMock.expectOne(`/user/info/${userInfo.id}`);
     expect(req.request.method).toBe('GET');
     req.flush(userInfo);
   });
