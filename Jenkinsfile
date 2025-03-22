@@ -16,28 +16,31 @@ pipeline{
             steps {
                 script {
                     echo "Checking out branch: ${env.BRANCH_NAME}"
-                    git url: 'git@github.com:9601dani/Revista-AyD2-GrupoA.git', branch: env.BRANCH_NAME, credentialsId: 'github-ssh-key'
+                    git url: 'https://github.com/9601dani/Revista-AyD2-GrupoA.git', branch: env.BRANCH_NAME, credentialsId: 'github-pat-global'
                 }
             }
         }
-        stage('Build Frontend') {
-             steps {
-                 dir('app-frontend') {
-                     // Install dependencies
-                     sh 'npm install'
-        
-                     // Build project
-                     sh 'npm run build -- --configuration=production'
 
-                     //Run unit test
-                     // sh 'npm test -- --watch=false --browsers=ChromeHeadless'
-                 }
-             }
-         }
+//         stage('Build Frontend') {
+//              steps {
+//                  dir('app-frontend') {
+//                      // Install dependencies
+//                      sh 'npm install'
+//
+//                      // Build project
+//                      sh 'npm run build -- --configuration=production'
+//
+//                      //Run unit test
+//                      // sh 'npm test -- --watch=false --browsers=ChromeHeadless'
+//                  }
+//              }
+//         }
 
-        stage("Deploy"){
+        stage('Build Backend') {
             steps {
-                echo "Deploy app... "
+                dir('app-backend') {
+                    sh 'mvn clean compile verify'
+                }
             }
         }
 
@@ -46,6 +49,12 @@ pipeline{
                 dir('app-backend/report/target') {
                     sh 'ls -l'
                 }
+            }
+        }
+
+        stage("Deploy"){
+            steps {
+                echo "Deploy app... "
             }
         }
 

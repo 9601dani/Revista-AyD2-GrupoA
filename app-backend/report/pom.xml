@@ -29,15 +29,16 @@
             <groupId>com.codenbugs</groupId>
             <artifactId>gateway</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.bugtrackers</groupId>
+            <groupId>com.codenbugs</groupId>
             <artifactId>ms-email</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.bugtrackers</groupId>
+            <groupId>com.codenbugs</groupId>
             <artifactId>ms-user</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
@@ -51,6 +52,12 @@
         <dependency>
             <groupId>com.codenbugs</groupId>
             <artifactId>ms-magazine</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.codenbugs</groupId>
+            <artifactId>ms-upload</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
