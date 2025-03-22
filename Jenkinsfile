@@ -71,26 +71,10 @@ pipeline{
                     minimumLineCoverage: '85'
                 )
 
-                githubNotify(
-                    context: 'CI/CD',
-                    status: 'SUCCESS',
-                    credentialsId: 'github-pat-global',
-                    repo: 'Revista-AyD2-GrupoA',
-                    account: '9601dani'
-                )
             }
             echo 'Backend build completed successfully!'
         }
         failure {
-            script {
-                githubNotify(
-                    context: 'CI/CD',
-                    status: 'FAILURE',
-                    credentialsId: 'github-pat-global',
-                    repo: 'Revista-AyD2-GrupoA',
-                    account: '9601dani'
-                )
-            }
             echo 'Backend build failed.'
         }
     }
