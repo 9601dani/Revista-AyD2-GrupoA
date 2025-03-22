@@ -20,6 +20,7 @@ pipeline{
                 }
             }
         }
+
         stage('Build Frontend') {
              steps {
                  dir('app-frontend') {
@@ -33,11 +34,13 @@ pipeline{
                      // sh 'npm test -- --watch=false --browsers=ChromeHeadless'
                  }
              }
-         }
+        }
 
-        stage("Deploy"){
+        stage('Build Backend') {
             steps {
-                echo "Deploy app... "
+                dir('app-backend') {
+                    sh 'mvn clean compile verify'
+                }
             }
         }
 
@@ -46,6 +49,12 @@ pipeline{
                 dir('app-backend/report/target') {
                     sh 'ls -l'
                 }
+            }
+        }
+
+        stage("Deploy"){
+            steps {
+                echo "Deploy app... "
             }
         }
 
