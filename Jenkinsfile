@@ -12,8 +12,20 @@ pipeline{
 
     stages {
 
+        stage('Test GitHub Token') {
+            steps {
+                withCredentials([string(credentialsId: 'github-pat-global', variable: 'GITHUB_TOKEN')]) {
+                    sh '''
+                        echo "Testing GitHub API with token..."
+                        curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user
+                    '''
+                }
+            }
+        }
+
         stage('Checkout') {
             steps {
+
                 script {
                     echo "Checking out branch: ${env.BRANCH_NAME}"
                     git url: 'https://github.com/9601dani/Revista-AyD2-GrupoA.git', branch: env.BRANCH_NAME, credentialsId: 'github-pat-global'
