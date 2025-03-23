@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS adds_has_labels (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    FK_Add INT NOT NULL REFERENCES adds(id),
+    FK_Label INT NOT NULL REFERENCES labels(id)
+);
+
+CREATE TABLE IF NOT EXISTS adds_has_categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    FK_Add INT NOT NULL REFERENCES adds(id),
+    FK_Category INT NOT NULL REFERENCES categories(id)
+);
