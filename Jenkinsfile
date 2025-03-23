@@ -31,12 +31,12 @@ pipeline{
                      // Generate environment files
                      sh 'ng g environments'
 
-                     echo '
+                     echo """
                         export const environment = {
-                          production: true,
-                          API_URL: $API_URL
+                            production: true,
+                            API_URL: $API_URL
                         }; > ./src/environments/environment.ts
-                     '
+                     """
 
                      // Build project
                      sh 'npm run build'
