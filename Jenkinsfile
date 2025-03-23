@@ -33,7 +33,9 @@ pipeline{
                      // Generate environment files
                      sh 'mkdir -p src/environments'
 
-                     echo "export const environment = {\n  production: true,\n  API_URL: '${API_URL}'\n};" > src/environments/environment.ts
+                     sh """
+                       echo \"export const environment = {\n  production: true,\n  API_URL: '\${API_URL}'\n};\" > src/environments/environment.ts
+                     """
 
 
                      // Build project
