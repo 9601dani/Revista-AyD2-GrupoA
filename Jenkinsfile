@@ -59,7 +59,8 @@ pipeline{
             }
             steps {
                 echo "Deploy app... "
-                sh "deploy.sh develop"
+                sh 'ls -l'
+                sh "./deploy.sh develop"
             }
         }
 
