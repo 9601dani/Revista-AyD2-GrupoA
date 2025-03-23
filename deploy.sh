@@ -30,7 +30,7 @@ cd ..
 
 echo "BUILDING FRONTEND"
 cd app-frontend
-npx ng build --configuration=$ENV
+npm run build --configuration=$ENV
 cd ..
 
 mkdir -p deploy/frontend

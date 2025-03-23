@@ -29,7 +29,7 @@ pipeline{
                      sh 'npm install'
 
                      // Build project
-                     sh 'npx ng run build -- --configuration=production'
+                     sh 'npm run build --configuration=production'
 
                      //Run unit test
                      sh 'npm test -- --watch=false --browsers=ChromeHeadless'
