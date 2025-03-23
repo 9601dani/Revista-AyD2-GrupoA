@@ -44,3 +44,5 @@ Thumbs.db
 # Eviroments
 
 /environments
+/src/environments
+/src/environments/*

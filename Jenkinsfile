@@ -28,11 +28,21 @@ pipeline{
                      // Install dependencies
                      sh 'npm install'
 
+                     // Generate environment files
+                     sh 'ng g environments'
+
+                     echo '
+                        export const environment = {
+                          production: true,
+                          API_URL: $API_URL
+                        }; > ./src/environments/environment.ts
+                     '
+
                      // Build project
-                     sh 'npm run build --configuration=production'
+                     sh 'npm run build'
 
                      //Run unit test
-                     sh 'npm test -- --watch=false --browsers=ChromeHeadless'
+                     sh 'npm test'
                  }
              }
         }
