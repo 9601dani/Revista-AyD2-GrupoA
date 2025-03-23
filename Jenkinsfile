@@ -31,13 +31,15 @@ pipeline{
                      sh 'ls -l'
 
                      // Generate environment files
-                     sh 'mkdir -p ./src/environments'
+                     sh 'mkdir -p src/environments'
 
                      sh """
-                        echo export const environment = {
+                        cat <<EOF > src/environments/environment.ts
+                        export const environment = {
                             production: true,
-                            API_URL: $API_URL
-                        }; > ./src/environments/environment.ts
+                            API_URL: '${API_URL}'
+                        };
+                        EOF
                      """
 
                      // Build project
