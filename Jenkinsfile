@@ -42,7 +42,7 @@ pipeline{
                      sh 'npm run build'
 
                      //Run unit test
-                     sh 'npm test'
+                     sh 'npm run test --browsers ChromeHeadless'
                  }
              }
         }
