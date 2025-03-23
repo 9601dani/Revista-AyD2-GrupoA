@@ -29,7 +29,7 @@ pipeline{
                      sh 'npm install'
 
                      // Generate environment files
-                     sh 'ng g environments'
+                     sh 'mkdir -p ./src/environments'
 
                      echo """
                         export const environment = {
