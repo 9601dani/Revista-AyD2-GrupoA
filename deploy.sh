@@ -20,8 +20,6 @@ fi
 
 echo "BUILDING BACKEND"
 cd app-backend
-mvn clean package -DskipTests
-
 mkdir -p ../deploy/backend
 cp gateway/target/*.jar ../deploy/backend/gateway.jar
 
@@ -32,7 +30,7 @@ cd ..
 
 echo "BUILDING FRONTEND"
 cd app-frontend
-npm run build --configuration $ENV
+npx ng build --configuration=$ENV
 cd ..
 
 mkdir -p deploy/frontend
