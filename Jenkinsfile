@@ -12,17 +12,6 @@ pipeline{
 
     stages {
 
-        stage('Test GitHub Token') {
-            steps {
-                withCredentials([string(credentialsId: 'github-pat-global', variable: 'GITHUB_TOKEN')]) {
-                    sh '''
-                        echo "Testing GitHub API with token..."
-                        curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user
-                    '''
-                }
-            }
-        }
-
         stage('Checkout') {
             steps {
 
@@ -64,9 +53,13 @@ pipeline{
             }
         }
 
-        stage("Deploy"){
+        stage("Deploy") {
+            when {
+                branch "feature/upload-files"
+            }
             steps {
                 echo "Deploy app... "
+                sh "deploy.sh develop"
             }
         }
 
