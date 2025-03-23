@@ -28,11 +28,13 @@ pipeline{
                      // Install dependencies
                      sh 'npm install'
 
+                     sh 'ls -l'
+
                      // Generate environment files
                      sh 'mkdir -p ./src/environments'
 
-                     echo """
-                        export const environment = {
+                     sh """
+                        echo export const environment = {
                             production: true,
                             API_URL: $API_URL
                         }; > ./src/environments/environment.ts
