@@ -11,34 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
-@RequiredArgsConstructor
-public class UserService {
 
-    private final UserRepository userRepository;
+public interface UserService {
 
-    private final PasswordEncoder passwordEncoder;
-
-    public UserReponseDto register(UserRequestDto userRequestDto) throws UserNotCreatedException {
-        Optional<User> userExists = userRepository.findByEmail(userRequestDto.getEmail());
-        if (userExists.isPresent()) {
-            throw new UserNotCreatedException("El email esta duplicado");
-        }
-
-        userExists = userRepository.findByUsername(userRequestDto.getUsername());
-        if (userExists.isPresent()) {
-            throw new UserNotCreatedException("El username esta duplicado");
-        }
-
-        User newUser = new User();
-        newUser.setUsername(userRequestDto.getUsername());
-        newUser.setEmail(userRequestDto.getEmail());
-        newUser.setPassword(passwordEncoder.encode(userRequestDto.getPassword()));
-
-        User createdUser = userRepository.save(newUser);
-
-        UserReponseDto userReponseDto = new UserReponseDto(createdUser);
-        return userReponseDto;
-    }
-
+    UserReponseDto register(UserRequestDto userRequestDto) throws UserNotCreatedException;
 }
