@@ -63,9 +63,9 @@ pipeline{
             }
         }
 
-        stage("Deploy") {
+        stage("Deploy develop") {
             when {
-                branch "feature/upload-files"
+                branch "develop"
             }
             steps {
                 echo "Deploy app... "
