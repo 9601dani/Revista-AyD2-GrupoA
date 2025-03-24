@@ -64,9 +64,6 @@ pipeline{
         }
 
         stage("Deploy develop") {
-            when {
-                branch "develop"
-            }
             steps {
                 echo "Deploy app... "
                 // sh 'touch test.txt'
