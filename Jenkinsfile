@@ -74,8 +74,7 @@ pipeline{
 
                 sshagent(credentials: ['jenkins-ssh']) {
                                     sh """
-                                        ssh $VM_USERNAME@$DEV_IP
-                                        scp -r deploy $VM_USERNAME@$DEV_IP:/home/$VM_USERNAME/
+                                        scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r deploy $VM_USERNAME@$DEV_IP:/home/$VM_USERNAME/
                                     """
                 }
             }
