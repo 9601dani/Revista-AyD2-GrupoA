@@ -71,6 +71,13 @@ pipeline{
                 echo "Deploy app... "
                 sh 'ls -l'
                 sh "./deploy.sh develop"
+
+                sshagent(credentials: ['jenkins-ssh']) {
+                                    sh """
+                                        ssh $VM_USERNAME@$DEV_IP
+                                        scp -r deploy $VM_USERNAME@$DEV_IP:/home/$VM_USERNAME/
+                                    """
+                }
             }
         }
 
