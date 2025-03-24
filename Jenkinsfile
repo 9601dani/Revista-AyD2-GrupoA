@@ -12,17 +12,6 @@ pipeline{
 
     stages {
 
-        stage('Test GitHub Token') {
-            steps {
-                withCredentials([string(credentialsId: 'github-pat-global', variable: 'GITHUB_TOKEN')]) {
-                    sh '''
-                        echo "Testing GitHub API with token..."
-                        curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user
-                    '''
-                }
-            }
-        }
-
         stage('Checkout') {
             steps {
 
@@ -33,25 +22,35 @@ pipeline{
             }
         }
 
-//         stage('Build Frontend') {
-//              steps {
-//                  dir('app-frontend') {
-//                      // Install dependencies
-//                      sh 'npm install'
-//
-//                      // Build project
-//                      sh 'npm run build -- --configuration=production'
-//
-//                      //Run unit test
-//                      // sh 'npm test -- --watch=false --browsers=ChromeHeadless'
-//                  }
-//              }
-//         }
+        stage('Build Frontend') {
+             steps {
+                 dir('app-frontend') {
+                     // Install dependencies
+                     sh 'npm install'
+
+                     sh 'ls -l'
+
+                     // Generate environment files
+                     sh 'mkdir -p src/environments'
+
+                     sh """
+                       echo \"export const environment = {\n  production: true,\n  API_URL: '\${API_URL}'\n};\" > src/environments/environment.ts
+                     """
+
+
+                     // Build project
+                     sh 'npm run build'
+
+                     //Run unit test
+                     sh 'npm run test'
+                 }
+             }
+        }
 
         stage('Build Backend') {
             steps {
                 dir('app-backend') {
-                    sh 'mvn clean compile verify'
+                    sh 'mvn clean package verify'
                 }
             }
         }
@@ -64,9 +63,21 @@ pipeline{
             }
         }
 
-        stage("Deploy"){
+        stage("Deploy develop") {
+            when {
+                branch "develop"
+            }
             steps {
                 echo "Deploy app... "
+                // sh 'touch test.txt'
+                sh 'ls -l'
+                sh "./deploy.sh develop"
+                sshagent(credentials : ['jenkins-ssh']) {
+                    sh 'ssh -o StrictHostKeyChecking=no $VM_USERNAME@$DEV_IP uptime'
+                    sh 'ssh -v $VM_USERNAME@$DEV_IP'
+                    sh 'scp -r deploy $VM_USERNAME@$DEV_IP:/home/$VM_USERNAME/'
+                    sh 'ssh -o StrictHostKeyChecking=no $VM_USERNAME@$DEV_IP "bash /home/$VM_USERNAME/deploy/serve.sh"'
+                }
             }
         }
 

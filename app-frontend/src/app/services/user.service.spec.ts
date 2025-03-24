@@ -7,11 +7,12 @@ import { UserService } from './user.service';
 import { provideHttpClient } from '@angular/common/http';
 import { Module } from '../models/Module.model';
 import { Page } from '../models/Page.model';
+import {environment} from '../../environments/environment';
 
 describe('UserService', () => {
   let service: UserService;
   let httpMock: HttpTestingController;
-  const apiUrl = `http://localhost:8000/user`;
+  const apiUrl = environment.API_URL;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -46,11 +47,11 @@ describe('UserService', () => {
       done();
     });
 
-    const req = httpMock.expectOne(`/user/pages/1`);
+    const req = httpMock.expectOne(`${apiUrl}/user/pages/1`);
     expect(req.request.method).toBe('GET');
     req.flush(testModules);
   });
-  
+
   // test getUserInfo
 
   it('getUserInfo debe retornar la info del usuario en formato de Observable ', (done: DoneFn) => {
@@ -65,7 +66,7 @@ describe('UserService', () => {
       done();
     })
 
-    const req = httpMock.expectOne(`/user/info/${userInfo.id}`);
+    const req = httpMock.expectOne(`${apiUrl}/user/info/${userInfo.id}`);
     expect(req.request.method).toBe('GET');
     req.flush(userInfo);
   });
