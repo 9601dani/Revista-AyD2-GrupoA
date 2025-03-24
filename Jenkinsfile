@@ -71,12 +71,6 @@ pipeline{
                 echo "Deploy app... "
                 sh 'ls -l'
                 sh "./deploy.sh develop"
-
-                sshagent(credentials: ['jenkins-ssh']) {
-                                    sh """
-                                        scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r deploy $VM_USERNAME@$DEV_IP:/home/$VM_USERNAME/
-                                    """
-                }
             }
         }
 
