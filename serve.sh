@@ -2,6 +2,15 @@
 
 set -e
 
+if [ "$BRANCH_NAME" == "develop" ]; then
+  echo "DEVELOP"
+elif [ "$BRANCH_NAME" == "main" ]; then
+  echo "MAIN"
+else
+  echo "THIS BRANCH CANNOT BE DEPLOYED"
+  exit 0
+fi
+
 echo "Moving Frontend to NGInx"
 sudo rm -rf /var/www/html/*
 sudo cp -r /home/jenkins/deploy/frontend/app-frontend/browser/* /var/www/html/

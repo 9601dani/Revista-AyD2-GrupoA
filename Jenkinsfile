@@ -64,19 +64,16 @@ pipeline{
         }
 
         stage("Deploy develop") {
-            when {
-                branch "develop"
-            }
             steps {
                 echo "Deploy app... "
                 // sh 'touch test.txt'
                 sh 'ls -l'
-                sh "./deploy.sh develop"
+                sh "./deploy.sh ${env.BRANCH_NAME}"
                 sshagent(credentials : ['jenkins-ssh']) {
                     sh 'ssh -o StrictHostKeyChecking=no $VM_USERNAME@$DEV_IP uptime'
                     sh 'ssh -v $VM_USERNAME@$DEV_IP'
                     sh 'scp -r deploy $VM_USERNAME@$DEV_IP:/home/$VM_USERNAME/'
-                    sh 'ssh -o StrictHostKeyChecking=no $VM_USERNAME@$DEV_IP "bash /home/$VM_USERNAME/deploy/serve.sh"'
+                    sh 'ssh -o StrictHostKeyChecking=no $VM_USERNAME@$DEV_IP "bash /home/$VM_USERNAME/deploy/serve.sh ${env.BRANCH_NAME}"'
                 }
             }
         }
