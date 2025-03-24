@@ -69,13 +69,13 @@ pipeline{
             }
             steps {
                 echo "Deploy app... "
-                sh 'touch test.txt'
+                // sh 'touch test.txt'
                 sh 'ls -l'
-                // sh "./deploy.sh develop"
+                sh "./deploy.sh develop"
                 sshagent(credentials : ['jenkins-ssh']) {
                     sh 'ssh -o StrictHostKeyChecking=no $VM_USERNAME@$DEV_IP uptime'
                     sh 'ssh -v $VM_USERNAME@$DEV_IP'
-                    sh 'scp test.txt $VM_USERNAME@$DEV_IP:/home/$VM_USERNAME/'
+                    sh 'scp -r deploy $VM_USERNAME@$DEV_IP:/home/$VM_USERNAME/'
                 }
             }
         }
