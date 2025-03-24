@@ -36,6 +36,8 @@ cd ..
 mkdir -p deploy/frontend
 cp -r app-frontend/dist/* deploy/frontend/
 
+cp serve.sh deploy
+
 echo "SENDING COMPILED FILES"
 echo "$USER"
 echo "$TARGET_VM"
