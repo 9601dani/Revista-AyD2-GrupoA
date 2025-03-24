@@ -48,7 +48,7 @@ spring:
           uri: ${ADDS_ROUTE_URI:http://localhost:8003}
           predicates:
               - Path=/v1/adds/**
-        - id: email-public-routes
-          uri: ${EMAIL_ROUTE_URI:http://localhost:8004}
+        - id: suscription-public-routes
+          uri: ${SUSCRIPTION_ROUTE_URI:http://localhost:8004}
           predicates:
-              - Path=/v1/emails/**
+            - Path=/v1/suscriptions/**
