@@ -39,5 +39,5 @@ cp -r app-frontend/dist/* deploy/frontend/
 echo "SENDING COMPILED FILES"
 echo "$USER"
 echo "$TARGET_VM"
-scp -r deploy "$USER"@"$TARGET_VM":/home/"$USER"/
+scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r deploy "$USER"@"$TARGET_VM":/home/"$USER"/
 
