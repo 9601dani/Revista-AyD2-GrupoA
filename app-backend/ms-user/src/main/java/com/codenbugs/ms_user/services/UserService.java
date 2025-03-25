@@ -1,5 +1,6 @@
 package com.codenbugs.ms_user.services;
 
+import com.codenbugs.ms_user.dtos.LoginRequestDto;
 import com.codenbugs.ms_user.dtos.UserReponseDto;
 import com.codenbugs.ms_user.dtos.UserRequestDto;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;
@@ -15,4 +16,7 @@ import java.util.Optional;
 public interface UserService {
 
     UserReponseDto register(UserRequestDto userRequestDto) throws UserNotCreatedException;
+
+    UserReponseDto login(LoginRequestDto request) throws UserNotCreatedException;
+
 }

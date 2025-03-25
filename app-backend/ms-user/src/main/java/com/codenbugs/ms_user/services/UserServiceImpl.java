@@ -1,5 +1,6 @@
 package com.codenbugs.ms_user.services;
 
+import com.codenbugs.ms_user.dtos.LoginRequestDto;
 import com.codenbugs.ms_user.dtos.UserReponseDto;
 import com.codenbugs.ms_user.dtos.UserRequestDto;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;
@@ -25,7 +26,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-
     public UserReponseDto register(UserRequestDto userRequestDto) throws UserNotCreatedException {
         Optional<User> userExists = userRepository.findByEmail(userRequestDto.getEmail());
         if (userExists.isPresent()) {
@@ -46,5 +46,10 @@ public class UserServiceImpl implements UserService {
 
         UserReponseDto userReponseDto = new UserReponseDto(createdUser);
         return userReponseDto;
+    }
+
+    @Override
+    public UserReponseDto login(LoginRequestDto request) throws UserNotCreatedException {
+        return null;
     }
 }
