@@ -3,7 +3,10 @@ package com.codenbugs.ms_user.services;
 import com.codenbugs.ms_user.dtos.LoginRequestDto;
 import com.codenbugs.ms_user.dtos.UserReponseDto;
 import com.codenbugs.ms_user.dtos.UserRequestDto;
+import com.codenbugs.ms_user.exceptions.SettingNotFoundException;
+import com.codenbugs.ms_user.exceptions.UserNotAllowedException;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;
+import com.codenbugs.ms_user.exceptions.UserNotFoundException;
 import com.codenbugs.ms_user.models.User;
 import com.codenbugs.ms_user.repositories.UserRepository;
 import lombok.Getter;
@@ -24,6 +27,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
 
     public UserReponseDto register(UserRequestDto userRequestDto) throws UserNotCreatedException {
@@ -49,7 +53,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserReponseDto login(LoginRequestDto request) throws UserNotCreatedException {
-        return null;
+    public UserReponseDto login(LoginRequestDto request) throws SettingNotFoundException, UserNotAllowedException, UserNotFoundException {
+
+        Optional<User> userOptional = this.userRepository.findByUsernameOrEmail(request.getUsernameOrEmail(), request.getUsernameOrEmail());
+        if (userOptional.isEmpty()) {
+            throw new UserNotFoundException("El usuario no existe");
+        }
+
+        User user = userOptional.get();
+        
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new UserNotAllowedException("La constraseña es incorrecta");
+        }
+
+        String token = tokenService.getToken(user);
+        user.setAuthToken(token);
+
+        this.userRepository.save(user);
+        return new UserReponseDto(user);
+
     }
 }

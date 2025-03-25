@@ -43,7 +43,7 @@ public class UserControllerTest {
     void testRegister() throws Exception {
         String json = "{\"id\": 1, \"username\": \"test\", \"email\": \"test@gmail.com\"}";
         when(userService.register(new UserRequestDto("test@gmail.com", "test", ""))).thenReturn(userReponseDto);
-        mockMvc.perform(post("/v1/user/save")
+        mockMvc.perform(post("/v1/user/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isCreated());
     }
