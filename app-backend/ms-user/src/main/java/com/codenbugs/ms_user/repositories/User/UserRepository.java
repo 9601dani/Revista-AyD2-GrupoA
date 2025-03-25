@@ -1,6 +1,6 @@
-package com.codenbugs.ms_user.repositories;
+package com.codenbugs.ms_user.repositories.User;
 
-import com.codenbugs.ms_user.models.User;
+import com.codenbugs.ms_user.models.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

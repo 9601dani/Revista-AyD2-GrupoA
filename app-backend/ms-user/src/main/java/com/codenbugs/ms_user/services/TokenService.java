@@ -1,9 +1,8 @@
 package com.codenbugs.ms_user.services;
 
 import com.codenbugs.ms_user.exceptions.SettingNotFoundException;
-import com.codenbugs.ms_user.models.User;
+import com.codenbugs.ms_user.models.User.User;
 import lombok.AllArgsConstructor;
-import org.bouncycastle.math.ec.rfc8032.Ed25519;
 import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

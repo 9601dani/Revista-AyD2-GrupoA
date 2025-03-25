@@ -1,11 +1,11 @@
-package com.codenbugs.ms_user.controller;
+package com.codenbugs.ms_user.controller.User;
 
-import com.codenbugs.ms_user.controllers.UserController;
-import com.codenbugs.ms_user.dtos.LoginRequestDto;
-import com.codenbugs.ms_user.dtos.UserReponseDto;
-import com.codenbugs.ms_user.dtos.UserRequestDto;
-import com.codenbugs.ms_user.models.User;
-import com.codenbugs.ms_user.services.UserService;
+import com.codenbugs.ms_user.controllers.User.UserController;
+import com.codenbugs.ms_user.dtos.User.LoginRequestDto;
+import com.codenbugs.ms_user.dtos.User.UserReponseDto;
+import com.codenbugs.ms_user.dtos.User.UserRequestDto;
+import com.codenbugs.ms_user.models.User.User;
+import com.codenbugs.ms_user.services.User.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +32,19 @@ public class UserControllerTest {
 
     @BeforeEach
     public void setup() {
-        userReponseDto = new UserReponseDto(new User(1, "test", "", "test@gmail.com", ""));
+        userReponseDto = new UserReponseDto(new User(1, "test", "", "test@gmail.com", "tokenTest"));
     }
 
     @Test
     void testHelloWorld() throws Exception {
-        mockMvc.perform(get("/v1/user")).andExpect(status().isOk());
+        mockMvc.perform(get("/v1/users")).andExpect(status().isOk());
     }
 
     @Test
     void testRegister() throws Exception {
         String json = "{\"id\": 1, \"username\": \"test\", \"email\": \"test@gmail.com\"}";
         when(userService.register(new UserRequestDto("test@gmail.com", "test", ""))).thenReturn(userReponseDto);
-        mockMvc.perform(post("/v1/user/register")
+        mockMvc.perform(post("/v1/users/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isCreated());
     }
@@ -52,9 +52,8 @@ public class UserControllerTest {
     @Test
     void testLogin() throws Exception {
         String json = "{\"id\": 1, \"username\": \"test\", \"email\": \"test@gmail.com\", \"token\": \"tokenTest\"}";
-        userReponseDto.setToken("tokenTest");
         when(userService.login(new LoginRequestDto("test@gmail.com", "password"))).thenReturn(userReponseDto);
-        mockMvc.perform(post("/v1/user/login")
+        mockMvc.perform(post("/v1/users/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isOk());
     }

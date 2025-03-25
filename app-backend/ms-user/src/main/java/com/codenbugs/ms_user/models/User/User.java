@@ -1,4 +1,4 @@
-package com.codenbugs.ms_user.models;
+package com.codenbugs.ms_user.models.User;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
