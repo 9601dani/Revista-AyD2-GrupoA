@@ -1,8 +1,9 @@
 package com.codenbugs.ms_user.services;
 
 import com.codenbugs.ms_user.exceptions.SettingNotFoundException;
-import com.codenbugs.ms_user.models.User.User;
+import com.codenbugs.ms_user.models.user.User;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -13,18 +14,20 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Service
-@AllArgsConstructor
 public class TokenService {
 
+    @Value("${jwt.secret}")
+    private String jwt_secret;
+
+    @Value("${jwt.time}")
+    private String jwt_time;
+
+    @Value("${jwt.zone}")
+    private String zone;
+
+
     public String getToken(User user) throws SettingNotFoundException {
-
-        String jwt_secret = System.getenv("JWT_SECRET");
-        String jwt_time = System.getenv("JWT_TIME");
-        String zone = System.getenv("ZONE");
-
-        if (jwt_secret == null || jwt_time == null || zone == null) {
-            throw new SettingNotFoundException("No se encontro configuración");
-        }
+        
 
         Algorithm algorithm = Algorithm.HMAC256(jwt_secret);
 

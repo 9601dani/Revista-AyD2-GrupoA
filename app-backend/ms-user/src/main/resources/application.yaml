@@ -1,3 +1,4 @@
+
 server:
   port: 8001
 spring:
@@ -21,3 +22,9 @@ spring:
     properties:
       hibernate:
       dialect: org.hibernate.dialect.MariaDBDialect
+password:
+  secret: ${SECRET_KEY}
+jwt:
+  secret: ${JWT_SECRET}
+  time: ${JWT_TIME}
+  zone: ${ZONE}

@@ -1,8 +1,8 @@
-package com.codenbugs.ms_user.controllers.User;
+package com.codenbugs.ms_user.controllers.user;
 
-import com.codenbugs.ms_user.dtos.User.LoginRequestDto;
-import com.codenbugs.ms_user.dtos.User.UserReponseDto;
-import com.codenbugs.ms_user.dtos.User.UserRequestDto;
+import com.codenbugs.ms_user.dtos.user.LoginRequestDto;
+import com.codenbugs.ms_user.dtos.user.UserReponseDto;
+import com.codenbugs.ms_user.dtos.user.UserRequestDto;
 import com.codenbugs.ms_user.exceptions.SettingNotFoundException;
 import com.codenbugs.ms_user.exceptions.UserNotAllowedException;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;

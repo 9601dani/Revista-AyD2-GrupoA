@@ -1,4 +1,4 @@
-package com.codenbugs.ms_user.dtos.User;
+package com.codenbugs.ms_user.dtos.user;
 
 
 public record UserRequestDto(
