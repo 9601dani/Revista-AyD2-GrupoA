@@ -1,10 +1,10 @@
 package com.codenbugs.ms_user.controller.User;
 
-import com.codenbugs.ms_user.controllers.User.UserController;
-import com.codenbugs.ms_user.dtos.User.LoginRequestDto;
-import com.codenbugs.ms_user.dtos.User.UserReponseDto;
-import com.codenbugs.ms_user.dtos.User.UserRequestDto;
-import com.codenbugs.ms_user.models.User.User;
+import com.codenbugs.ms_user.controllers.user.UserController;
+import com.codenbugs.ms_user.dtos.user.LoginRequestDto;
+import com.codenbugs.ms_user.dtos.user.UserReponseDto;
+import com.codenbugs.ms_user.dtos.user.UserRequestDto;
+import com.codenbugs.ms_user.models.user.User;
 import com.codenbugs.ms_user.services.User.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

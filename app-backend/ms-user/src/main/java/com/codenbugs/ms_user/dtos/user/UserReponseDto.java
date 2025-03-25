@@ -1,9 +1,6 @@
-package com.codenbugs.ms_user.dtos.User;
+package com.codenbugs.ms_user.dtos.user;
 
-import com.codenbugs.ms_user.models.User.User;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import com.codenbugs.ms_user.models.user.User;
 
 public record UserReponseDto(
         Integer id,

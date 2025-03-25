@@ -1,14 +1,14 @@
 package com.codenbugs.ms_user.services.User;
 
-import com.codenbugs.ms_user.dtos.User.LoginRequestDto;
-import com.codenbugs.ms_user.dtos.User.UserReponseDto;
-import com.codenbugs.ms_user.dtos.User.UserRequestDto;
+import com.codenbugs.ms_user.dtos.user.LoginRequestDto;
+import com.codenbugs.ms_user.dtos.user.UserReponseDto;
+import com.codenbugs.ms_user.dtos.user.UserRequestDto;
 import com.codenbugs.ms_user.exceptions.SettingNotFoundException;
 import com.codenbugs.ms_user.exceptions.UserNotAllowedException;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
-import com.codenbugs.ms_user.models.User.User;
-import com.codenbugs.ms_user.repositories.User.UserRepository;
+import com.codenbugs.ms_user.models.user.User;
+import com.codenbugs.ms_user.repositories.user.UserRepository;
 import com.codenbugs.ms_user.services.TokenService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userOptional.get();
-        
+
         if(!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new UserNotAllowedException("La constraseña es incorrecta");
         }
