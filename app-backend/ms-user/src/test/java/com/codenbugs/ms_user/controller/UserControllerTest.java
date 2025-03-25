@@ -1,6 +1,7 @@
 package com.codenbugs.ms_user.controller;
 
 import com.codenbugs.ms_user.controllers.UserController;
+import com.codenbugs.ms_user.dtos.LoginRequestDto;
 import com.codenbugs.ms_user.dtos.UserReponseDto;
 import com.codenbugs.ms_user.dtos.UserRequestDto;
 import com.codenbugs.ms_user.models.User;
@@ -46,6 +47,16 @@ public class UserControllerTest {
         mockMvc.perform(post("/v1/user/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)).andExpect(status().isCreated());
+    }
+
+    @Test
+    void testLogin() throws Exception {
+        String json = "{\"id\": 1, \"username\": \"test\", \"email\": \"test@gmail.com\", \"token\": \"tokenTest\"}";
+        userReponseDto.setToken("tokenTest");
+        when(userService.login(new LoginRequestDto("test@gmail.com", "password"))).thenReturn(userReponseDto);
+        mockMvc.perform(post("/v1/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)).andExpect(status().isOk());
     }
 
 }
