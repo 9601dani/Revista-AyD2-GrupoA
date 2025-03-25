@@ -22,8 +22,9 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
+
+
 
     public UserReponseDto register(UserRequestDto userRequestDto) throws UserNotCreatedException {
         Optional<User> userExists = userRepository.findByEmail(userRequestDto.getEmail());
