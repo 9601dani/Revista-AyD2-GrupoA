@@ -40,15 +40,9 @@ spring:
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           predicates:
               - Path=/v1/users/**
-        - id: magazines-public-routes
-          uri: ${MAGAZINE_ROUTE_URI:http://localhost:8002}
-          predicates:
-            - Path=/v1/magazines/**
+              - Path=/v1/magazines/**
+              - Path=/v1/subscriptions/**
         - id: adds-public-routes
-          uri: ${ADDS_ROUTE_URI:http://localhost:8003}
+          uri: ${ADDS_ROUTE_URI:http://localhost:8002}
           predicates:
               - Path=/v1/adds/**
-        - id: suscription-public-routes
-          uri: ${SUSCRIPTION_ROUTE_URI:http://localhost:8004}
-          predicates:
-            - Path=/v1/suscriptions/**

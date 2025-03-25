@@ -51,20 +51,9 @@
         </dependency>
         <dependency>
             <groupId>com.codenbugs</groupId>
-            <artifactId>ms-magazine</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.codenbugs</groupId>
             <artifactId>ms-upload</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.codenbugs</groupId>
-            <artifactId>ms-suscription</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
