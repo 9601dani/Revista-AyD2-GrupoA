@@ -58,6 +58,8 @@ public class UserServiceTest {
 
         loginRequestDto = new LoginRequestDto("test@codenbugs.com", "password");
 
+        when(passwordEncoder.encode("password")).thenReturn("password");
+
         user = new User();
         user.setId(1);
         user.setEmail("test@codenbugs.com");
