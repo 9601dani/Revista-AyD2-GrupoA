@@ -5,7 +5,7 @@ import com.codenbugs.ms_user.dtos.user.LoginRequestDto;
 import com.codenbugs.ms_user.dtos.user.UserReponseDto;
 import com.codenbugs.ms_user.dtos.user.UserRequestDto;
 import com.codenbugs.ms_user.models.user.User;
-import com.codenbugs.ms_user.services.User.UserService;
+import com.codenbugs.ms_user.services.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

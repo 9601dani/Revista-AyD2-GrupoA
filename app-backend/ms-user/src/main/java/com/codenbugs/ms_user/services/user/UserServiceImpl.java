@@ -1,4 +1,4 @@
-package com.codenbugs.ms_user.services.User;
+package com.codenbugs.ms_user.services.user;
 
 import com.codenbugs.ms_user.dtos.user.LoginRequestDto;
 import com.codenbugs.ms_user.dtos.user.UserReponseDto;

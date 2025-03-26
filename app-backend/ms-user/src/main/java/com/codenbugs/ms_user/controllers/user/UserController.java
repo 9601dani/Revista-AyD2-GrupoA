@@ -7,7 +7,7 @@ import com.codenbugs.ms_user.exceptions.SettingNotFoundException;
 import com.codenbugs.ms_user.exceptions.UserNotAllowedException;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
-import com.codenbugs.ms_user.services.User.UserService;
+import com.codenbugs.ms_user.services.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
