@@ -31,29 +31,35 @@ class UploadControllerTest {
     @MockitoBean
     private UploadService uploadService;
 
-    @MockitoBean
-    private UploadController uploadController;
-
     @Test
-    void uploadFile() {
+    void uploadFile() throws Exception {
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "test-image.pdf", "application/pdf", "some-image-content".getBytes());
+        when(uploadService.uploadFile(multipartFile, PATH)).thenReturn(FILENAME);
+
+        mockMvc.perform(multipart("/v1/uploads/documents")
+                        .file(multipartFile)
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isCreated());
     }
 
     @Test
     void uploadImage() throws Exception {
-//        MockMultipartFile multipartFile = new MockMultipartFile("file", "test-image.png", "image/png", "some-image-content".getBytes());
-//        when(uploadService.uploadFile(multipartFile, PATH)).thenReturn(FILENAME);
-//
-//        Map<String, Object> model = new HashMap<>();
-//        model.put("objectName", FILENAME);
-//        mockMvc.perform(multipart("/v1/uploads/images")
-//                        .file(multipartFile)
-//                        .contentType(MediaType.MULTIPART_FORM_DATA))
-//                .andExpect(status().isCreated())
-//                .andExpect(content().string(model.toString()));
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "test-image.png", "image/png", "some-image-content".getBytes());
+        when(uploadService.uploadFile(multipartFile, PATH)).thenReturn(FILENAME);
+
+        mockMvc.perform(multipart("/v1/uploads/images")
+                        .file(multipartFile)
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isCreated());
     }
 
     @Test
-    void testUploadFile() {
+    void testUploadFile() throws NotCreatedException {
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "test-image.png", "image/png", "some-image-content".getBytes());
+        when(uploadService.uploadFile(multipartFile, PATH)).thenReturn(FILENAME);
+
+        String actual = this.uploadService.uploadFile(multipartFile, PATH);
+        assertEquals(FILENAME, actual);
 
     }
 }
