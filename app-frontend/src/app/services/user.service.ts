@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
 })
 export class UserService {
 
-  readonly apiUser = `${environment.API_URL}/user`;
+  readonly apiUser = `${environment.API_URL}/v1/users`;
 
   constructor(private http: HttpClient, private _localStorage: LocalStorageService) { }
 
@@ -21,7 +21,7 @@ export class UserService {
     return this.http.get<Module[]>(`${this.apiUser}/pages/${id}`);
   }
 
-  getUserInfo(userId: number): Observable<any> {
+   getUserInfo(userId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUser}/info/${userId}`);
   }
 

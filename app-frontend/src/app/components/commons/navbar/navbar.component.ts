@@ -49,11 +49,11 @@ export class NavbarComponent implements OnInit {
 
   getPages() {
     const id = this._localStorageService.getItem(this._localStorageService.USER_ID);
-    // this._userService.getPages(id).subscribe({
-    //   next: (response : any ) => {
-    //     this.modules = response;
-    //   }
-    // });
+    this._userService.getPages(id).subscribe({
+      next: (response : any ) => {
+        this.modules = response;
+      }
+    });
   }
 
   setUserPhoto() {

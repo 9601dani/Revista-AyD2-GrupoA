@@ -15,6 +15,8 @@ import com.codenbugs.ms_user.exceptions.UserNotAllowedException;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
 import com.codenbugs.ms_user.models.user.User;
+import com.codenbugs.ms_user.repositories.modules.ModuleRepository;
+import com.codenbugs.ms_user.repositories.role_has_page.RoleHasPageRepository;
 import com.codenbugs.ms_user.repositories.user.UserRepository;
 import com.codenbugs.ms_user.repositories.user_has_role.UserHasRoleRepository;
 import com.codenbugs.ms_user.repositories.user_information.UserHasInformationRepository;
@@ -46,6 +48,12 @@ public class UserServiceTest {
     private UserHasRoleRepository userHasRoleRepository;
 
     @Mock
+    private ModuleRepository moduleRepository;
+
+    @Mock
+    private RoleHasPageRepository roleHasPageRepository;
+
+    @Mock
     private PasswordEncoder passwordEncoder;
 
     @Mock
@@ -60,7 +68,7 @@ public class UserServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        userService = new UserServiceImpl(userRepository,userHasInformationRepository,userHasRoleRepository, passwordEncoder, tokenService);
+        userService = new UserServiceImpl(userRepository,userHasInformationRepository,userHasRoleRepository, moduleRepository, roleHasPageRepository, passwordEncoder, tokenService);
 
         userRequestDto = new UserRequestDto("test@codenbugs.com", "test", "password");
 

@@ -1,5 +1,6 @@
 package com.codenbugs.ms_user.controllers.user;
 
+import com.codenbugs.ms_user.dtos.module.ModuleResponseDto;
 import com.codenbugs.ms_user.dtos.user.LoginRequestDto;
 import com.codenbugs.ms_user.dtos.user.UserReponseDto;
 import com.codenbugs.ms_user.dtos.user.UserRequestDto;
@@ -13,6 +14,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -37,5 +40,11 @@ public class UserController {
     public ResponseEntity<UserReponseDto> login(@RequestBody LoginRequestDto request) throws UserNotFoundException, SettingNotFoundException, UserNotAllowedException, UserNotCreatedException {
         UserReponseDto response = this.userService.login(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/pages/{id}")
+    public ResponseEntity<List<ModuleResponseDto>> getPages(@PathVariable Integer id) {
+        List<ModuleResponseDto> moduleResponse = this.userService.getPages(id);
+        return ResponseEntity.ok(moduleResponse);
     }
 }
