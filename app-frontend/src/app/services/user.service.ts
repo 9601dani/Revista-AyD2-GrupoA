@@ -7,6 +7,7 @@ import {Module} from '../models/Module.model'
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
+import { UserInformation } from '../models/UserInformation.Model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class UserService {
   }
 
    getUserInfo(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUser}/info/${userId}`);
+    return this.http.get<UserInformation>(`${this.apiUser}/info/${userId}`);
   }
 
 }

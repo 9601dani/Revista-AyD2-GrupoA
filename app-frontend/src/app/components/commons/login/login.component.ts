@@ -18,6 +18,7 @@ import { UserService } from '../../../services/user.service';
 import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { NotLogoDirective } from '../../../directives/not-logo.directive';
+import { UserInformation } from '../../../models/UserInformation.Model';
 
 @Component({
   selector: 'app-login',
@@ -240,10 +241,10 @@ export class LoginComponent {
         this._localStorageService.getItem(this._localStorageService.USER_ID)
       )
       .subscribe({
-        next: (response: any) => {
+        next: (response: UserInformation) => {
           this._localStorageService.setItem(
             this._localStorageService.USER_PHOTO,
-            response.path
+            response.photo_path
           );
         },
         error: (err) => {
