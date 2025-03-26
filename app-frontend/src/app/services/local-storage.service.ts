@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class LocalStorageService {
   readonly COMPANY_NAME = 'company_name';
   readonly CURRENCY = 'currency';
 
-  constructor() {}
+  constructor(private _cookieService: CookieService) {}
 
   private isLocalStorageAvailable(): boolean {
     return typeof window !== 'undefined' && !!window.localStorage;
@@ -47,6 +48,6 @@ export class LocalStorageService {
 
   logout(): void {
     this.clear();
-    // this._cookieService.delete('token');
+    this._cookieService.delete('token');
   }
 }

@@ -9,7 +9,8 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
 
-  readonly apiAuth = `${environment.API_URL}/auth`;
+  readonly apiAuth = `${environment.API_URL}/v1/users`;
+  readonly apiUser = `${environment.API_URL_USER}`;
 
   constructor(private http: HttpClient) { }
 
@@ -21,7 +22,7 @@ export class AuthService {
     return this.http.post(`${this.apiAuth}/login`, user);
   }
 
-  sendEmailVerification(data: any): Observable<any> {
-    return this.http.put(`${this.apiAuth}/send-email/${data}`, null);
-  }
+  // sendEmailVerification(data: any): Observable<any> {
+  //   return this.http.put(`${this.apiAuth}/send-email/${data}`, null);
+  // }
 }

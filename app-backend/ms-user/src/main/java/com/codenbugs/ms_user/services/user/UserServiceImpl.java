@@ -7,8 +7,13 @@ import com.codenbugs.ms_user.exceptions.SettingNotFoundException;
 import com.codenbugs.ms_user.exceptions.UserNotAllowedException;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
+import com.codenbugs.ms_user.models.role.Role;
 import com.codenbugs.ms_user.models.user.User;
+import com.codenbugs.ms_user.models.user_has_role.UserHasRole;
+import com.codenbugs.ms_user.models.user_information.UserHasInformation;
 import com.codenbugs.ms_user.repositories.user.UserRepository;
+import com.codenbugs.ms_user.repositories.user_has_role.UserHasRoleRepository;
+import com.codenbugs.ms_user.repositories.user_information.UserHasInformationRepository;
 import com.codenbugs.ms_user.services.TokenService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -27,6 +33,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserHasInformationRepository userHasInformationRepository;
+    private final UserHasRoleRepository userHasRoleRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
@@ -48,6 +56,25 @@ public class UserServiceImpl implements UserService {
         newUser.setPassword(passwordEncoder.encode(userRequestDto.password()));
 
         User createdUser = userRepository.save(newUser);
+
+        UserHasInformation userHasInformation = new UserHasInformation();
+        userHasInformation.setUser(createdUser);
+        userHasInformation.setPhoto_path("");
+        userHasInformation.setName("");
+        userHasInformation.setDescription("");
+        userHasInformation.setAge(0);
+        userHasInformation.setCurrent_balance(BigDecimal.valueOf(0));
+
+        this.userHasInformationRepository.save(userHasInformation);
+
+        Role role = new Role();
+        role.setId(2);
+
+        UserHasRole userHasRole = new UserHasRole();
+        userHasRole.setRole(role);
+        userHasRole.setUser(createdUser);
+
+        this.userHasRoleRepository.save(userHasRole);
 
         return new UserReponseDto(createdUser);
     }
