@@ -1,4 +1,4 @@
-package com.codenbugs.ms_user.service.User;
+package com.codenbugs.ms_user.service.user;
 
 import static org.mockito.ArgumentMatchers.any;
 

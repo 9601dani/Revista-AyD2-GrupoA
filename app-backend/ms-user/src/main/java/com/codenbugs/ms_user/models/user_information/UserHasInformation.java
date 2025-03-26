@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "user_has_information")
 @Getter
@@ -27,7 +29,7 @@ public class UserHasInformation {
 
     private String description;
 
-    private Double current_balance;
+    private BigDecimal current_balance;
 
     @OneToOne
     @JoinColumn(name = "FK_User")

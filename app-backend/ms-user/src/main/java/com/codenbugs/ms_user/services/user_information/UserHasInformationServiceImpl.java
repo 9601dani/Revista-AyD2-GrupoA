@@ -1,5 +1,6 @@
 package com.codenbugs.ms_user.services.user_information;
 
+import com.codenbugs.ms_user.dtos.user_information.UserInformationCurrentRequest;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationRequestDto;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationResponseDto;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
@@ -12,6 +13,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -30,7 +32,6 @@ public class UserHasInformationServiceImpl implements UserHasInformationService 
         userHasInformation.setName(userRequestDto.name());
         userHasInformation.setAge(userRequestDto.age());
         userHasInformation.setDescription(userRequestDto.description());
-        userHasInformation.setCurrent_balance(0.0);
 
         UserHasInformation uhi = userHasInformationRepository.save(userHasInformation);
 
@@ -40,7 +41,7 @@ public class UserHasInformationServiceImpl implements UserHasInformationService 
     @Override
     public UserInformationResponseDto updateInformation(UserInformationRequestDto userRequestDto) throws UserNotFoundException {
 
-        Optional<UserHasInformation> optionalUserHasInformation = userHasInformationRepository.findByFkUser(userRequestDto.fkUser());
+        Optional<UserHasInformation> optionalUserHasInformation = userHasInformationRepository.findByUser_Id(userRequestDto.fkUser());
         if (optionalUserHasInformation.isEmpty()) {
             throw new UserNotFoundException("No hay información del usuario");
         }
@@ -56,12 +57,32 @@ public class UserHasInformationServiceImpl implements UserHasInformationService 
 
     @Override
     public UserInformationResponseDto getInformation(Integer userId) {
-        Optional<UserHasInformation> optionalUserHasInformation = userHasInformationRepository.findByFkUser(userId);
+        Optional<UserHasInformation> optionalUserHasInformation = userHasInformationRepository.findByUser_Id(userId);
         if (optionalUserHasInformation.isEmpty()) {
             return null;
         }
-        
+
         UserHasInformation userHasInformation = optionalUserHasInformation.get();
         return new UserInformationResponseDto(userHasInformation);
+    }
+
+    @Override
+    public UserInformationResponseDto updateCurrentBalance(UserInformationCurrentRequest request) throws UserNotFoundException {
+        Optional<UserHasInformation> optionalUserHasInformation = userHasInformationRepository.findByUser_Id( request.fkUser());
+        if (optionalUserHasInformation.isEmpty()) {
+            throw new UserNotFoundException("No hay información del usuario");
+        }
+
+        UserHasInformation userHasInformation = optionalUserHasInformation.get();
+        BigDecimal current_balance = userHasInformation.getCurrent_balance();
+        if(request.sum()){
+            current_balance = current_balance.add(request.current_balance());
+            userHasInformation.setCurrent_balance(current_balance);
+        } else {
+            current_balance = current_balance.subtract(request.current_balance());
+            userHasInformation.setCurrent_balance(current_balance);
+        }
+        UserHasInformation uhi = userHasInformationRepository.save(userHasInformation);
+        return new UserInformationResponseDto(uhi);
     }
 }

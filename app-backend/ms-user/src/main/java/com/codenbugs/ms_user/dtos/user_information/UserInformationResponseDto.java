@@ -2,13 +2,15 @@ package com.codenbugs.ms_user.dtos.user_information;
 
 import com.codenbugs.ms_user.models.user_information.UserHasInformation;
 
+import java.math.BigDecimal;
+
 public record UserInformationResponseDto(
         Integer id,
         String photo_path,
         String name,
         Integer age,
         String description,
-        Double current_balance,
+        BigDecimal current_balance,
         Integer fkUser
 ) {
 

@@ -1,4 +1,4 @@
-package com.codenbugs.ms_user.controller.User;
+package com.codenbugs.ms_user.controller.user;
 
 import com.codenbugs.ms_user.controllers.user.UserController;
 import com.codenbugs.ms_user.dtos.user.LoginRequestDto;
