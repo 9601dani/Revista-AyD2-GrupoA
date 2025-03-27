@@ -28,30 +28,30 @@ pipeline{
             }
         }
 
-        // stage('Build Frontend') {
-        //      steps {
-        //          dir('app-frontend') {
-        //              // Install dependencies
-        //              sh 'npm install'
+        stage('Build Frontend') {
+             steps {
+                 dir('app-frontend') {
+                     // Install dependencies
+                     sh 'npm install'
 
-        //              sh 'ls -l'
+                     sh 'ls -l'
 
-        //              // Generate environment files
-        //              sh 'mkdir -p src/environments'
+                     // Generate environment files
+                     sh 'mkdir -p src/environments'
 
-        //              sh """
-        //                echo \"export const environment = {\n  production: true,\n  API_URL: '\${API_URL}'\n};\" > src/environments/environment.ts
-        //              """
+                     sh """
+                       echo \"export const environment = {\n  production: true,\n  API_URL: '\${API_URL}'\n};\" > src/environments/environment.ts
+                     """
 
 
-        //              // Build project
-        //              sh 'npm run build'
+                     // Build project
+                     sh 'npm run build'
 
-        //              //Run unit test
-        //              sh 'npm run test'
-        //          }
-        //      }
-        // }
+                     //Run unit test
+                     sh 'npm run test'
+                 }
+             }
+        }
 
         stage('Build Backend') {
             steps {
