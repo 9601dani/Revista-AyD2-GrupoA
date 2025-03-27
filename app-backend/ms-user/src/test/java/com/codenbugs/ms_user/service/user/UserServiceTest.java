@@ -1,4 +1,4 @@
-package com.codenbugs.ms_user.service.User;
+package com.codenbugs.ms_user.service.user;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -15,10 +15,14 @@ import com.codenbugs.ms_user.exceptions.UserNotAllowedException;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
 import com.codenbugs.ms_user.models.user.User;
+import com.codenbugs.ms_user.repositories.modules.ModuleRepository;
+import com.codenbugs.ms_user.repositories.role_has_page.RoleHasPageRepository;
 import com.codenbugs.ms_user.repositories.user.UserRepository;
+import com.codenbugs.ms_user.repositories.user_has_role.UserHasRoleRepository;
+import com.codenbugs.ms_user.repositories.user_information.UserHasInformationRepository;
 import com.codenbugs.ms_user.services.TokenService;
-import com.codenbugs.ms_user.services.User.UserService;
-import com.codenbugs.ms_user.services.User.UserServiceImpl;
+import com.codenbugs.ms_user.services.user.UserService;
+import com.codenbugs.ms_user.services.user.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -38,6 +42,18 @@ public class UserServiceTest {
     private UserRepository userRepository;
 
     @Mock
+    private UserHasInformationRepository userHasInformationRepository;
+
+    @Mock
+    private UserHasRoleRepository userHasRoleRepository;
+
+    @Mock
+    private ModuleRepository moduleRepository;
+
+    @Mock
+    private RoleHasPageRepository roleHasPageRepository;
+
+    @Mock
     private PasswordEncoder passwordEncoder;
 
     @Mock
@@ -52,7 +68,7 @@ public class UserServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        userService = new UserServiceImpl(userRepository, passwordEncoder, tokenService);
+        userService = new UserServiceImpl(userRepository,userHasInformationRepository,userHasRoleRepository, moduleRepository, roleHasPageRepository, passwordEncoder, tokenService);
 
         userRequestDto = new UserRequestDto("test@codenbugs.com", "test", "password");
 

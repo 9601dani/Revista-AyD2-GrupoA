@@ -21,13 +21,13 @@ spring:
     properties:
       hibernate:
       dialect: org.hibernate.dialect.MariaDBDialect
-    
+
   cloud:
     gateway:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: ${WEB_SITE_URL:http://localhost:4200}
+            allowedOrigins: "http://localhost:4200"
             allowedMethods:
               - GET
               - POST
@@ -39,10 +39,8 @@ spring:
         - id: user-public-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           predicates:
-              - Path=/v1/users/**
-              - Path=/v1/magazines/**
-              - Path=/v1/subscriptions/**
+            - Path=/v1/users/**, /v1/magazines/**, /v1/subscriptions/**
         - id: adds-public-routes
           uri: ${ADDS_ROUTE_URI:http://localhost:8002}
           predicates:
-              - Path=/v1/adds/**
+            - Path=/v1/adds/**

@@ -1,6 +1,8 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
+
+import { CookieService } from 'ngx-cookie-service';
 import { RegisterModalComponent } from '../register-modal/register-modal.component';
 import {
   FormBuilder,
@@ -16,6 +18,7 @@ import { UserService } from '../../../services/user.service';
 import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { NotLogoDirective } from '../../../directives/not-logo.directive';
+import { UserInformation } from '../../../models/UserInformation.Model';
 
 @Component({
   selector: 'app-login',
@@ -25,8 +28,9 @@ import { NotLogoDirective } from '../../../directives/not-logo.directive';
     MatIconModule,
     MatProgressSpinnerModule,
     NavbarComponent,
-    NotLogoDirective
+    NotLogoDirective,
   ],
+  providers: [CookieService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -47,7 +51,8 @@ export class LoginComponent {
     private _authService: AuthService,
     private _localStorageService: LocalStorageService,
     private _router: Router,
-    private _userService: UserService
+    private _userService: UserService,
+    private _cookieService: CookieService
   ) {
     this.loginForm = this.fb.group({
       usernameOrEmail: ['', Validators.required],
@@ -93,24 +98,29 @@ export class LoginComponent {
       this.isLoading = true;
 
       setTimeout(() => {
-        // this._authService.registerUser(registerData).subscribe(
-        //   (response : any) => {
-        //     this.isLoading = false;
-        //     Swal.fire("¡Registro exitoso!", "Por favor, inicia sesión", "success");
-        //     this.registerForm.reset();
-        //     this.isModalVisible = false;
-        //     document.body.classList.remove("is-modal-active");
-        //   }, (error: any) => {
-        //     Swal.fire({
-        //       title: 'Error!',
-        //       text: 'No se pudo registrar al usuario.'+ error.error.message,
-        //       icon: 'error'
-        //     })
-        //     this.registerForm.reset();
-        //     this.isLoading = false;
-        //     this.registerForm.markAllAsTouched();
-        //   }
-        // );
+        this._authService.registerUser(registerData).subscribe({
+          next: (reponse: any) => {
+            this.isLoading = false;
+            Swal.fire(
+              '¡Registro exitoso!',
+              'Por favor, inicia sesión',
+              'success'
+            );
+            this.registerForm.reset();
+            this.isModalVisible = false;
+            document.body.classList.remove('is-modal-active');
+          },
+          error: (err: any) => {
+            Swal.fire({
+              title: 'Error!',
+              text: 'No se pudo registrar al usuario.' + err.error.message,
+              icon: 'error',
+            });
+            this.registerForm.reset();
+            this.isLoading = false;
+            this.registerForm.markAllAsTouched();
+          },
+        });
       }, 1000);
       this.registerForm.reset();
     } else {
@@ -153,65 +163,72 @@ export class LoginComponent {
 
     this._authService.login(data).subscribe({
       next: (response: any) => {
-        this._localStorageService.setItem(this._localStorageService.USER_ID, response.id);
-        this._localStorageService.setItem(this._localStorageService.USER_NAME, response.username);
+        this._localStorageService.setItem(
+          this._localStorageService.USER_ID,
+          response.id
+        );
+        this._localStorageService.setItem(
+          this._localStorageService.USER_NAME,
+          response.username
+        );
+        this._cookieService.set('token', response.token)
         this.setImgProfile();
 
-        if (response.is2FA) {
-          this._router.navigate(['/verify-2fa']);
-          return;
-        }
+        // if (response.is2FA) {
+        //   this._router.navigate(['/verify-2fa']);
+        //   return;
+        // }
         this._router.navigate(['/home']);
       },
-      error: (error: any) => {
-        if (error.error.status === 401) {
-          Swal.fire({
-            title: 'Error',
-            text: 'Usuario no verificado',
-            icon: 'error',
-            confirmButtonText: 'Reenviar verificación',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this._authService
-                .sendEmailVerification(usernameOrEmail)
-                .subscribe({
-                  next: (res: any) => {
-                    Swal.fire({
-                      title: 'Correo de verificación reenviado',
-                      text: 'Por favor, verifica tu correo para poder acceder',
-                      icon: 'success',
-                      confirmButtonText: 'Ok',
-                    });
-                  },
-                  error: (err: any) => {
-                    Swal.fire({
-                      title: 'Error',
-                      text:
-                        'No se pudo reenviar el correo de verificación' +
-                        err.error.message,
-                      icon: 'error',
-                      confirmButtonText: 'Ok',
-                    });
-                  },
-                });
-            }
-          });
-        } else {
-          Swal.fire({
-            title: 'Error!',
-            text: error.error.message,
-            icon: 'error',
-          });
-        }
-        this.isLoading = false;
+      // error: (error: any) => {
+      //   if (error.error.status === 401) {
+      //     Swal.fire({
+      //       title: 'Error',
+      //       text: 'Usuario no verificado',
+      //       icon: 'error',
+      //       confirmButtonText: 'Reenviar verificación',
+      //     }).then((result) => {
+      //       if (result.isConfirmed) {
+      //         this._authService
+      //           .sendEmailVerification(usernameOrEmail)
+      //           .subscribe({
+      //             next: (res: any) => {
+      //               Swal.fire({
+      //                 title: 'Correo de verificación reenviado',
+      //                 text: 'Por favor, verifica tu correo para poder acceder',
+      //                 icon: 'success',
+      //                 confirmButtonText: 'Ok',
+      //               });
+      //             },
+      //             error: (err: any) => {
+      //               Swal.fire({
+      //                 title: 'Error',
+      //                 text:
+      //                   'No se pudo reenviar el correo de verificación' +
+      //                   err.error.message,
+      //                 icon: 'error',
+      //                 confirmButtonText: 'Ok',
+      //               });
+      //             },
+      //           });
+      //       }
+      //     });
+      //   } else {
+      //     Swal.fire({
+      //       title: 'Error!',
+      //       text: error.error.message,
+      //       icon: 'error',
+      //     });
+      //   }
+      //   this.isLoading = false;
 
-        this.loginForm.reset({
-          usernameOrEmail: '',
-          password: '',
-        });
+      //   this.loginForm.reset({
+      //     usernameOrEmail: '',
+      //     password: '',
+      //   });
 
-        this.loginForm.markAllAsTouched();
-      },
+      //   this.loginForm.markAllAsTouched();
+      // },
       complete: () => {
         this.isLoading = false;
       },
@@ -220,10 +237,15 @@ export class LoginComponent {
 
   setImgProfile() {
     this._userService
-      .getUserInfo(this._localStorageService.getItem(this._localStorageService.USER_ID))
+      .getUserInfo(
+        this._localStorageService.getItem(this._localStorageService.USER_ID)
+      )
       .subscribe({
-        next: (response: any) => {
-          this._localStorageService.setItem(this._localStorageService.USER_PHOTO, response.path);
+        next: (response: UserInformation) => {
+          this._localStorageService.setItem(
+            this._localStorageService.USER_PHOTO,
+            response.photo_path
+          );
         },
         error: (err) => {
           console.error('Error obteniendo la imagen de perfil:', err);
