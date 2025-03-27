@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AddMagazineComponent } from './add-magazine.component';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { UserService } from '../../../services/user.service';
+import { UploadService } from '../../../services/upload.service';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('AddMagazineComponent', () => {
   let component: AddMagazineComponent;
@@ -8,9 +13,20 @@ describe('AddMagazineComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddMagazineComponent]
-    })
-    .compileComponents();
+      imports: [AddMagazineComponent],
+      providers: [
+        UserService,
+        UploadService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({ id: '1' }),
+          }
+        }
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AddMagazineComponent);
     component = fixture.componentInstance;
