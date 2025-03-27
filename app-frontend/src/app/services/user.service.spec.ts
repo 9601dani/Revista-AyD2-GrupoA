@@ -2,9 +2,11 @@
 import { TestBed } from '@angular/core/testing';
 import { UserService } from './user.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { environment } from '../../environments/environment';
 import { Page } from '../models/Page.model';
+import {environment} from '../../environments/environment';
+import { UserInformation } from '../models/UserInformation.Model';
 import { Module } from '../models/Module.model';
+
 
 describe('UserService', () => {
   let service: UserService;
@@ -30,8 +32,8 @@ describe('UserService', () => {
 
   it('getPages debe retornar un array de modulos en forma de Observable', (done: DoneFn) => {
     const testPages: Page[] = [
-      { id: 1, name: 'testPage', path: '/pageTest', isAvailable: true },
-      { id: 2, name: 'testPage2', path: '/pageTest2', isAvailable: true },
+      { id: 1, name: 'testPage', path: '/pageTest', isEnabled: true },
+      { id: 2, name: 'testPage2', path: '/pageTest2', isEnabled: true },
     ];
 
     const testModules: Module[] = [{ name: 'test1', pages: testPages }];
@@ -46,12 +48,19 @@ describe('UserService', () => {
     req.flush(testModules);
   });
 
-  it('getUserInfo debe retornar la info del usuario en formato de Observable', (done: DoneFn) => {
-    const userInfo = {
+  // test getUserInfo
+
+  it('getUserInfo debe retornar la info del usuario en formato de Observable ', (done: DoneFn) => {
+    const userInfo: UserInformation = {
       id: 1,
       name: "test name",
-      email: "test@gmail.com"
-    };
+      age: 18,
+      description: "description test",
+      fkUser: 1,
+      photo_path: "path",
+      current_balance: 0
+    }
+
 
     service.getUserInfo(userInfo.id).subscribe((value) => {
       expect(value).toEqual(userInfo);
