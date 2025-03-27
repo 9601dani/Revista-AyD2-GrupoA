@@ -30,8 +30,21 @@ export class UserService {
 
 
   /* MAGAZINES */
-  saveMagazine(magazine:Magazine):Observable<any>{
-    return this.http.post<any>(`${this.apiMagazine}/save`,magazine)
+  saveMagazine(magazine:Magazine, file:File):Observable<any>{
+    const formData = new FormData();
+    formData.append('magazine', new Blob([JSON.stringify(magazine)], { type: 'application/json' }));
+
+    formData.append('file', file);
+
+    return this.http.post<any>(`${this.apiMagazine}/save`, formData);
+  }
+
+  getMagazineByIdUser(id:number):Observable<any>{
+    return this.http.get<any>(`${this.apiMagazine}/getByIdUser/${id}`)
+  }
+
+  getMagazineById(id:number):Observable<any>{
+    return this.http.get<any>(`${this.apiMagazine}/get/${id}`)
   }
 
 

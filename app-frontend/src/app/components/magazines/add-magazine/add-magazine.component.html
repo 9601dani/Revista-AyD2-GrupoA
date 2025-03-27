@@ -100,18 +100,22 @@
             </div>
           </div>
         </div>
+
+        <div *ngIf="pdfPreviewUrl" style="margin-top: 1rem;">
+          <label class="label">Previsualización del PDF:</label>
+          <iframe [src]="pdfPreviewUrl" width="100%" height="500px"></iframe>
+        </div>        
     
         <div class="field is-grouped is-justify-content-center mt-5">
           <div class="control">
             <button class="button is-primary" type="submit">Enviar</button>
           </div>
           <div class="control">
-            <button class="button is-light" type="reset" (click)="magazineForm.reset()">Limpiar</button>
+            <button class="button is-light" type="reset" (click)="clearData()">Limpiar</button>
           </div>
         </div>
       </div>
     </form>
-
   </div>
 </section>
 

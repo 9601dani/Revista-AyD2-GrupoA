@@ -10,7 +10,6 @@ import { environment } from '../../environments/environment';
 export class AuthService {
 
   readonly apiAuth = `${environment.API_URL}/v1/users`;
-  readonly apiUser = `${environment.API_URL_USER}`;
 
   constructor(private http: HttpClient) { }
 

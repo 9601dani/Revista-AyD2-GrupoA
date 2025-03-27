@@ -6,6 +6,10 @@ import { UserService } from '../../../services/user.service';
 import { Magazine } from '../../../models/Magazine.model';
 import { UploadService } from '../../../services/upload.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
+import Swal from 'sweetalert2';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { response } from 'express';
 
 @Component({
   selector: 'app-add-magazine',
@@ -17,6 +21,8 @@ export class AddMagazineComponent {
 
   magazineForm!: FormGroup
   magazineToSave!: Magazine
+  pdfPreviewUrl: SafeResourceUrl | null = null;
+
 
   types = [
     { label: 'Gratis', value: 'FREE' },
@@ -25,7 +31,8 @@ export class AddMagazineComponent {
   
 
   constructor( private fb: FormBuilder, private userService: UserService,
-    private uploadService:UploadService, private localStorage:LocalStorageService
+    private uploadService:UploadService, private localStorage:LocalStorageService, private sanitizer: DomSanitizer,
+    private route: ActivatedRoute,
   ){}
 
   ngOnInit(): void {
@@ -37,7 +44,8 @@ export class AddMagazineComponent {
       canSubscribe: [false],
       type: ['', Validators.required],
       price: [null, [Validators.required, Validators.min(0)]],
-      archivo: [null, Validators.required],
+      archivo: [null, Validators.required]
+
     });
 
     this.magazineForm.get('type')?.valueChanges.subscribe((value) => {
@@ -49,7 +57,42 @@ export class AddMagazineComponent {
         precioControl?.enable();
       }
     });
+
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      if (id) {
+        this.loadMagazineData(id);
+      }
+    });
+
+    this.userService.getMagazineByIdUser(1).subscribe({
+      next: (response) => {
+        console.log(response)
+      }
+
+    })
   }
+
+  loadMagazineData(id: number) {
+    this.userService.getMagazineById(id).subscribe((magazine: Magazine) => {
+      this.magazineToSave = magazine;
+      this.magazineForm.patchValue({
+        name: magazine.name,
+        description: magazine.description,
+        canComment: magazine.canComment,
+        canLike: magazine.canLike,
+        canSubscribe: magazine.canSubscribe,
+        type: magazine.type,
+        price: magazine.price
+      });
+  
+      if (magazine.path) {
+        const existingPdfUrl = 'URL_BASE/' + magazine.path;
+        this.pdfPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(existingPdfUrl);
+      }
+    });
+  }
+  
   
 
   onFileSelected(event: any): void {
@@ -57,11 +100,17 @@ export class AddMagazineComponent {
     if (file && file.type === 'application/pdf') {
       this.magazineForm.patchValue({ archivo: file });
       this.magazineForm.get('archivo')?.updateValueAndValidity();
+  
+      const url = URL.createObjectURL(file);
+      this.pdfPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     } else {
       this.magazineForm.patchValue({ archivo: null });
       this.magazineForm.get('archivo')?.setErrors({ invalidType: true });
+      this.pdfPreviewUrl = null;
     }
   }
+  
+  
 
   onSubmit(): void {
     if (this.magazineForm.valid) {
@@ -72,25 +121,10 @@ export class AddMagazineComponent {
       const file: File | null = this.magazineForm.get('archivo')?.value;
 
       if (file) {
-        /* this.uploadService.saveDocument(file).subscribe({
-          next: (response) => {
-            console.log('Documento subido correctamente', response);
-            
-          },
-          error: (err) => {
-            console.error('Error al subir el documento', err);
-          }
-        }); */
-
-        /* TODO: aqui mando a guardar el doc */
-
-        path_saved='documents/acaffdb6-75dc-4bb1-9463-01fe0d218258'
-
-
         const magazine: Magazine = {
           id: 0, 
           name: this.magazineForm.get('name')?.value,
-          FK_User: 1 , 
+          FK_User: this.localStorage.getItem("user_id") , 
           description: this.magazineForm.get('description')?.value,
           canComment: this.magazineForm.get('canComment')?.value,
           canLike: this.magazineForm.get('canLike')?.value,
@@ -100,26 +134,50 @@ export class AddMagazineComponent {
           isEnabled: true,
           path: path_saved
         };
-        console.log('GUARDANDOOOOO')
 
-        this.userService.saveMagazine(magazine).subscribe({
+        this.userService.saveMagazine(magazine, file).subscribe({
           next: (response) => {
-            console.log('Se Guardo la Revista', response);
+            Swal.fire({
+              icon: 'success',
+              title: '¡Revista guardada!',
+              text: 'La revista se ha guardado correctamente.',
+              confirmButtonText: 'Aceptar'
+              
+            }).then(this.magazineForm.reset);
           },
           error: (err) => {
-            console.error('No se guardo la revista', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'No se pudo guardar la revista. Intenta nuevamente.',
+              confirmButtonText: 'Cerrar'
+            });
+            console.error(err);
           }
         })
 
 
       } else {
-        console.warn('No se ha seleccionado ningún archivo válido.');
+        Swal.fire({
+          icon: 'warning',
+          title: 'Falta de Archivo',
+          text: 'Recuerda seleccionar un archivo',
+        })
       }
 
     } else {
       this.magazineForm.markAllAsTouched();
-      console.log('cambios no validos')
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos Vacios',
+        text: 'Recuerda que debes llenar los campos obligatorios',
+      })
     }
+  }
+
+  clearData(){
+    this.magazineForm.reset;
+    this.pdfPreviewUrl = null;
   }
 
 }

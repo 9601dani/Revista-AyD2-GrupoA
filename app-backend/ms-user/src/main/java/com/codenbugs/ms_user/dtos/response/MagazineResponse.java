@@ -23,11 +23,13 @@ public record MagazineResponse(
         LocalDateTime dateCreated
 ) {
 
-    public MagazineResponse(Magazine magazine){
+    public MagazineResponse(Magazine magazine) {
         this(magazine.getId(), magazine.getName(), magazine.getUser().getId(),
                 magazine.getDescription(), magazine.getCanComment(),
                 magazine.isCanLike(), magazine.isCanSubscribe(),
                 magazine.getType(), magazine.getPrice(), magazine.isEnabled(),
                 magazine.getDateCreated());
     }
+
+
 }
