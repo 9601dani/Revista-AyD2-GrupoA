@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userOptional.get();
-
+        
         if(!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new UserNotAllowedException("La constraseña es incorrecta");
         }

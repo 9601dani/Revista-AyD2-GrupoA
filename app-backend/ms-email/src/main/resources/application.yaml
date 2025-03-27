@@ -1,5 +1,20 @@
+email:
+  address: ${EMAIL_ADDRESS}
+  password: ${EMAIL_PASSWORD}
+
 server:
   port: 8011
 spring:
   application:
     name: ms_adds
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
