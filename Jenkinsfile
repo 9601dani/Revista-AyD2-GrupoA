@@ -22,6 +22,12 @@ pipeline{
             }
         }
 
+        stage('Clean') {
+            steps {
+                cleanWs()
+            }
+        }
+
         stage('Build Frontend') {
              steps {
                  dir('app-frontend') {
