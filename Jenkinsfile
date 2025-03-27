@@ -12,19 +12,19 @@ pipeline{
 
     stages {
 
-        stage('Checkout') {
-            steps {
-
-                script {
-                    echo "Checking out branch: ${env.BRANCH_NAME}"
-                    git url: 'https://github.com/9601dani/Revista-AyD2-GrupoA.git', branch: env.BRANCH_NAME, credentialsId: 'e214b507-5b13-4651-96ac-433d7032b3f6'
+        stage('Clean') {
+                steps {
+                    cleanWs()
                 }
             }
-        }
 
-        stage('Clean') {
+        stage('Checkout') {
             steps {
-                cleanWs()
+                checkout scm
+//                 script {
+//                     echo "Checking out branch: ${env.BRANCH_NAME}"
+//                     git url: 'https://github.com/9601dani/Revista-AyD2-GrupoA.git', branch: env.BRANCH_NAME, credentialsId: 'e214b507-5b13-4651-96ac-433d7032b3f6'
+//                 }
             }
         }
 
@@ -88,6 +88,7 @@ pipeline{
         }
 
     }
+
     post {
         success {
             script {
