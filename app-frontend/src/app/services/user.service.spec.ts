@@ -48,8 +48,6 @@ describe('UserService', () => {
     req.flush(testModules);
   });
 
-  // test getUserInfo
-
   it('getUserInfo debe retornar la info del usuario en formato de Observable ', (done: DoneFn) => {
     const userInfo: UserInformation = {
       id: 1,
