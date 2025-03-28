@@ -25,7 +25,7 @@ public class TokenService {
     private String zone;
 
 
-    public String getToken(User user) throws SettingNotFoundException {
+    public String getToken(User user) {
         
 
         Algorithm algorithm = Algorithm.HMAC256(jwt_secret);

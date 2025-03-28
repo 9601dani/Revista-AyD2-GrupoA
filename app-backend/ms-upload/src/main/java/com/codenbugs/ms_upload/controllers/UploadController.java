@@ -27,7 +27,7 @@ public class UploadController {
     }
 
     @PostMapping("/images")
-    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) throws NotCreatedException {
+    public ResponseEntity<Map<String, String>> uploadImage(@RequestPart("file") MultipartFile file) throws NotCreatedException {
         String objectName = this.uploadFile(file, "images");
         Map<String, String> response = new HashMap<>();
         response.put("objectName", objectName);
