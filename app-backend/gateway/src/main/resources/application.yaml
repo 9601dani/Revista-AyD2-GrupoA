@@ -1,3 +1,7 @@
+jwt:
+  secret: ${JWT_SECRET}
+  time: ${JWT_TIME}
+  zone: ${ZONE}
 server:
   port: 8000
 spring:
@@ -39,8 +43,17 @@ spring:
         - id: user-public-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           predicates:
-              - Path=/v1/users/**, /v1/magazines/**, /v1/subscriptions/**
-        - id: adds-public-routes
+              - Path=/v1/users/login,/v1/users/register
+        - id: user-private-routes
+          uri: ${USER_ROUTE_URI:http://localhost:8001}
+          filters:
+            - VerifyJWTFilterFactory
+          predicates:
+            - Path=/v1/users/**,/v1/magazines/**,/v1/subscriptions/**
+          # TODO: ADD PUBLIC ADD ROUTES TO SHOW ROUTES IN ANY COMPONENT IN THE FRONTEND
+        - id: adds-private-routes
           uri: ${ADDS_ROUTE_URI:http://localhost:8002}
+          filters:
+            - VerifyJWTFilterFactory
           predicates:
               - Path=/v1/adds/**
