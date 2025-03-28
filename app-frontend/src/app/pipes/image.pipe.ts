@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ImagePipe implements PipeTransform {
 
-  bucket: string = 'https://storage.googleapis.com/bucket-magazines/images/';
+  bucket: string = 'https://storage.googleapis.com/bucket-magazines/';
 
 
   transform(value: string): string {

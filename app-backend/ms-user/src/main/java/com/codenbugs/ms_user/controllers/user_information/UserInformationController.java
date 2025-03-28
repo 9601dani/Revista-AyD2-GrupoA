@@ -1,6 +1,7 @@
 package com.codenbugs.ms_user.controllers.user_information;
 
 import com.codenbugs.ms_user.dtos.module.ModuleResponseDto;
+import com.codenbugs.ms_user.dtos.user_information.UserInformationCurrentRequest;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationPhotoRequest;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationRequestDto;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationResponseDto;
@@ -37,6 +38,12 @@ public class UserInformationController {
     @PutMapping("/info/update/photo_path/{id}")
     public ResponseEntity<HashMap<String, String>> updatePhotoPath(@PathVariable Integer id, @RequestPart("file") MultipartFile file) throws UserNotFoundException {
         HashMap <String, String> response = this.uhiService.updatePhotoPathUser(id, file);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/info/update/current_balance")
+    public ResponseEntity<UserInformationResponseDto> updateCurrentBalance(@RequestBody UserInformationCurrentRequest request) throws UserNotFoundException {
+        UserInformationResponseDto response = uhiService.updateCurrentBalance(request);
         return ResponseEntity.ok(response);
     }
 }

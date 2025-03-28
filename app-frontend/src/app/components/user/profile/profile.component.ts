@@ -1,21 +1,51 @@
-import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../commons/navbar/navbar.component';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  computed,
+  inject,
+  model,
+  signal,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../../services/user.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import Swal from 'sweetalert2';
 import { UserInformation } from '../../../models/UserInformation.Model';
 import { ImagePipe } from '../../../pipes/image.pipe';
 import { CommonModule } from '@angular/common';
+import { Label } from '../../../models/Label.model';
 
 @Component({
   selector: 'app-profile',
-  imports: [NavbarComponent, ReactiveFormsModule, ImagePipe, CommonModule],
+  imports: [
+    NavbarComponent,
+    ReactiveFormsModule,
+    ImagePipe,
+    CommonModule,
+    FormsModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatFormFieldModule,
+    MatIconModule
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -39,6 +69,41 @@ export class ProfileComponent implements OnInit {
   selectedFile: File | null = null;
   selectedPreviewImage: string | null = null;
   errorMessage: string = '';
+
+  amountToAdd: number = 0;
+  showAddMoneyModal: boolean = false;
+
+  // Labels
+
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+readonly currentLabel = model('');
+readonly labels = signal<Label[]>([{ id: 1, name: 'Lemon' }]); // etiquetas seleccionadas
+
+// Lista de todas las etiquetas existentes
+readonly allLabels: Label[] = [
+  { id: 1, name: 'Lemon' },
+  { id: 2, name: 'Apple' },
+  { id: 3, name: 'Strawberry' },
+  { id: 4, name: 'Orange' }
+];
+
+// Filtrado dinámico para autocomplete
+readonly filteredLabels = computed(() => {
+  const query = this.currentLabel().toLowerCase();
+  const selectedNames = this.labels().map(l => l.name.toLowerCase());
+
+  return query
+    ? this.allLabels.filter(
+        label =>
+          label.name.toLowerCase().includes(query) &&
+          !selectedNames.includes(label.name.toLowerCase())
+      )
+    : this.allLabels.filter(label =>
+        !selectedNames.includes(label.name.toLowerCase())
+      );
+});
+
+readonly announcer = inject(LiveAnnouncer);
 
   constructor(
     private fb: FormBuilder,
@@ -125,8 +190,8 @@ export class ProfileComponent implements OnInit {
             icon: 'success',
             title: '¡Foto de Perfil guardada!',
             text: 'La foto de perfil se ha guardado correctamente.',
-            confirmButtonText: 'Aceptar'
-          })
+            confirmButtonText: 'Aceptar',
+          });
 
           console.log(res);
           const imagePath = res.message;
@@ -203,4 +268,70 @@ export class ProfileComponent implements OnInit {
       });
     }
   }
+
+  addMoney() {
+    if (this.amountToAdd > 0) {
+      const body = {
+        fkUser: this.user_id,
+        sum: true,
+        current_balance: this.amountToAdd,
+      };
+
+      this._userService.updateCurrentBalance(body).subscribe({
+        next: (value: UserInformation) => {
+          this.userProfileAll = value;
+          Swal.fire({
+            title: 'Cambios guardados',
+            text: 'Se ha agregado el dinero a tu cartera',
+            icon: 'success',
+          });
+        },
+        error: (err) => {
+          Swal.fire({
+            title: 'Error',
+            text: 'No se ha podido guardar los cambios',
+            icon: 'error',
+          });
+        },
+      });
+      this.showAddMoneyModal = false;
+    }
+  }
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (!value) return;
+  
+    const alreadySelected = this.labels().some(l => l.name.toLowerCase() === value.toLowerCase());
+    if (alreadySelected) return;
+  
+    // Buscar si ya existe en allLabels
+    const existing = this.allLabels.find(
+      l => l.name.toLowerCase() === value.toLowerCase()
+    );
+  
+    const newLabel: Label = existing ?? { id: 0, name: value };
+    this.labels.update(labels => [...labels, newLabel]);
+  
+    this.currentLabel.set('');
+  }
+  
+  remove(label: Label): void {
+    this.labels.update((labels) => {
+      const filtered = labels.filter(l => l.name !== label.name);
+      this.announcer.announce(`Removed ${label.name}`);
+      return filtered;
+    });
+  }
+  
+  selected(event: MatAutocompleteSelectedEvent): void {
+    const name = event.option.viewValue;
+    const label = this.allLabels.find(l => l.name === name);
+    if (!label) return;
+  
+    this.labels.update((labels) => [...labels, label]);
+    this.currentLabel.set('');
+    event.option.deselect();
+  }
+
 }

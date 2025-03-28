@@ -39,6 +39,12 @@ export class UserService {
 
     return this.http.put<any>(`${this.apiUser}/info/update/photo_path/${id}`, formData);
   }
+  
+  updateCurrentBalance(body: any): Observable<any> {
+    console.log("Path");
+    
+    return this.http.put<UserInformation>(`${this.apiUser}/info/update/current_balance`, body);
+  }
 
   /* MAGAZINES */
   saveMagazine(magazine: Magazine, file: File): Observable<any> {
