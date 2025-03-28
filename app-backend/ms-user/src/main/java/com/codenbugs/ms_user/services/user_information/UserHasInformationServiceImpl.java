@@ -1,6 +1,8 @@
 package com.codenbugs.ms_user.services.user_information;
 
+import com.codenbugs.ms_user.clients.UploadRestClient;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationCurrentRequest;
+import com.codenbugs.ms_user.dtos.user_information.UserInformationPhotoRequest;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationRequestDto;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationResponseDto;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
@@ -12,8 +14,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service
@@ -24,11 +28,11 @@ import java.util.Optional;
 public class UserHasInformationServiceImpl implements UserHasInformationService {
 
     private final UserHasInformationRepository userHasInformationRepository;
+    private final UploadRestClient uploadRestClient;
 
     public UserInformationResponseDto saveInformation(UserInformationRequestDto userRequestDto) {
 
         UserHasInformation userHasInformation = new UserHasInformation();
-        userHasInformation.setPhoto_path(userRequestDto.photo_path());
         userHasInformation.setName(userRequestDto.name());
         userHasInformation.setAge(userRequestDto.age());
         userHasInformation.setDescription(userRequestDto.description());
@@ -47,7 +51,6 @@ public class UserHasInformationServiceImpl implements UserHasInformationService 
         }
 
         UserHasInformation userHasInformation = optionalUserHasInformation.get();
-        userHasInformation.setPhoto_path(userRequestDto.photo_path());
         userHasInformation.setName(userRequestDto.name());
         userHasInformation.setAge(userRequestDto.age());
         userHasInformation.setDescription(userRequestDto.description());
@@ -84,5 +87,25 @@ public class UserHasInformationServiceImpl implements UserHasInformationService 
         }
         UserHasInformation uhi = userHasInformationRepository.save(userHasInformation);
         return new UserInformationResponseDto(uhi);
+    }
+
+    // Save user photo
+    @Override
+    public HashMap<String, String> updatePhotoPathUser(Integer fkUser, MultipartFile file) throws UserNotFoundException {
+        Optional<UserHasInformation> optionalUserHasInformation = userHasInformationRepository.findByUser_Id(fkUser);
+        if (optionalUserHasInformation.isEmpty()) {
+            throw new UserNotFoundException("No hay información del usuario");
+        }
+
+        HashMap<String,String> path_saved = this.uploadRestClient.uploadImage(file);
+
+        
+        HashMap<String, String> path_saved_hash = new HashMap<>();
+        UserHasInformation userHasInformation = optionalUserHasInformation.get();
+        userHasInformation.setPhoto_path(path_saved.get(path_saved.getOrDefault(path_saved.keySet().iterator().next(), null)));
+        UserHasInformation saved = this.userHasInformationRepository.save(userHasInformation);
+        path_saved_hash.put("photo_path", saved.getPhoto_path());
+        return path_saved_hash;
+
     }
 }

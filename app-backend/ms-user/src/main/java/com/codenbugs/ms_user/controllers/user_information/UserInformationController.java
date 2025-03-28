@@ -1,16 +1,18 @@
 package com.codenbugs.ms_user.controllers.user_information;
 
 import com.codenbugs.ms_user.dtos.module.ModuleResponseDto;
+import com.codenbugs.ms_user.dtos.user_information.UserInformationPhotoRequest;
+import com.codenbugs.ms_user.dtos.user_information.UserInformationRequestDto;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationResponseDto;
+import com.codenbugs.ms_user.exceptions.UserNotFoundException;
 import com.codenbugs.ms_user.services.user.UserService;
 import com.codenbugs.ms_user.services.user_information.UserHasInformationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -19,9 +21,22 @@ import java.util.List;
 public class UserInformationController {
 
     private final UserHasInformationService uhiService;
+
     @GetMapping("/info/{id}")
     public ResponseEntity<UserInformationResponseDto> getInformation(@PathVariable Integer id) {
         UserInformationResponseDto response = this.uhiService.getInformation(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/info/update")
+    public ResponseEntity<UserInformationResponseDto> updateInformation(@RequestBody UserInformationRequestDto request) throws UserNotFoundException {
+        UserInformationResponseDto response = this.uhiService.updateInformation(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/info/update/photo_path")
+    public ResponseEntity<HashMap<String, String>> updatePhotoPath(@RequestParam Integer fkUser, @RequestParam("file") MultipartFile file) throws UserNotFoundException {
+        HashMap <String, String> response = this.uhiService.updatePhotoPathUser(fkUser, file);
         return ResponseEntity.ok(response);
     }
 }

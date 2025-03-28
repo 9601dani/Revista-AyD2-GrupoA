@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.codenbugs.ms_user.dtos.module.ModuleResponseDto;
-import com.codenbugs.ms_user.dtos.page.PagesResponseDto;
 import com.codenbugs.ms_user.dtos.user.LoginRequestDto;
 import com.codenbugs.ms_user.dtos.user.UserReponseDto;
 import com.codenbugs.ms_user.dtos.user.UserRequestDto;
@@ -26,7 +25,7 @@ import com.codenbugs.ms_user.repositories.role_has_page.RoleHasPageRepository;
 import com.codenbugs.ms_user.repositories.user.UserRepository;
 import com.codenbugs.ms_user.repositories.user_has_role.UserHasRoleRepository;
 import com.codenbugs.ms_user.repositories.user_information.UserHasInformationRepository;
-import com.codenbugs.ms_user.services.TokenService;
+import com.codenbugs.ms_user.services.token.TokenService;
 import com.codenbugs.ms_user.services.user.UserService;
 import com.codenbugs.ms_user.services.user.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

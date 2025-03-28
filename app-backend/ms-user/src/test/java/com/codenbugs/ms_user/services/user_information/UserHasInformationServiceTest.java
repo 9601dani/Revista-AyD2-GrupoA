@@ -1,5 +1,6 @@
 package com.codenbugs.ms_user.services.user_information;
 
+import com.codenbugs.ms_user.clients.UploadRestClient;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationCurrentRequest;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationRequestDto;
 import com.codenbugs.ms_user.dtos.user_information.UserInformationResponseDto;
@@ -26,6 +27,9 @@ class UserHasInformationServiceTest {
     @Mock
     private UserHasInformationRepository userHasInformationRepository;
 
+    @Mock
+    private UploadRestClient uploadRestClient;
+
     private UserInformationRequestDto userInformationRequestDto;
     private UserInformationCurrentRequest addUserInformationCurrentRequest;
     private UserInformationCurrentRequest subtractUserInformationCurrentRequest;
@@ -34,9 +38,9 @@ class UserHasInformationServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        userHasInformationService = new UserHasInformationServiceImpl(userHasInformationRepository);
+        userHasInformationService = new UserHasInformationServiceImpl(userHasInformationRepository, uploadRestClient);
 
-        userInformationRequestDto = new UserInformationRequestDto("path", "test", 18, "description", 1);
+        userInformationRequestDto = new UserInformationRequestDto( "test", 18, "description", 1);
         addUserInformationCurrentRequest = new UserInformationCurrentRequest(1, true, BigDecimal.valueOf(10));
         subtractUserInformationCurrentRequest = new UserInformationCurrentRequest(1, false, BigDecimal.valueOf(10));
 

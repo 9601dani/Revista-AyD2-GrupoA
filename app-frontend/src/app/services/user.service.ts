@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { LocalStorageService } from './local-storage.service';
-import {Module} from '../models/Module.model'
+import { Module } from '../models/Module.model';
 
 import { Observable } from 'rxjs';
 
@@ -11,41 +11,53 @@ import { UserInformation } from '../models/UserInformation.Model';
 import { Magazine } from '../models/Magazine.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
   readonly apiMagazine = `${environment.API_URL}/v1/magazines`;
   readonly apiUser = `${environment.API_URL}/v1/users`;
 
-  constructor(private http: HttpClient, private _localStorage: LocalStorageService) { }
+  constructor(
+    private http: HttpClient,
+    private _localStorage: LocalStorageService
+  ) {}
 
   getPages(id: number): Observable<Module[]> {
     return this.http.get<Module[]>(`${this.apiUser}/pages/${id}`);
   }
 
-   getUserInfo(userId: number): Observable<any> {
+  getUserInfo(userId: number): Observable<any> {
     return this.http.get<UserInformation>(`${this.apiUser}/info/${userId}`);
   }
 
+  updateUserInfo(body: UserInformation): Observable<any> {
+    return this.http.put<UserInformation>(`${this.apiUser}/info/update`, body);
+  }
+  
+  updatePhotoPath(formData: FormData): Observable<any> {
+    console.log("Path");
+    
+    return this.http.put<any>(`${this.apiUser}/info/update/photo_path`, formData);
+  }
 
   /* MAGAZINES */
-  saveMagazine(magazine:Magazine, file:File):Observable<any>{
+  saveMagazine(magazine: Magazine, file: File): Observable<any> {
     const formData = new FormData();
-    formData.append('magazine', new Blob([JSON.stringify(magazine)], { type: 'application/json' }));
+    formData.append(
+      'magazine',
+      new Blob([JSON.stringify(magazine)], { type: 'application/json' })
+    );
 
     formData.append('file', file);
 
     return this.http.post<any>(`${this.apiMagazine}/save`, formData);
   }
 
-  getMagazineByIdUser(id:number):Observable<any>{
-    return this.http.get<any>(`${this.apiMagazine}/getByIdUser/${id}`)
+  getMagazineByIdUser(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiMagazine}/getByIdUser/${id}`);
   }
 
-  getMagazineById(id:number):Observable<any>{
-    return this.http.get<any>(`${this.apiMagazine}/get/${id}`)
+  getMagazineById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiMagazine}/get/${id}`);
   }
-
-
 }
