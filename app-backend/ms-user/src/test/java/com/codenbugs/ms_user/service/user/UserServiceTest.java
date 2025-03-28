@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.codenbugs.ms_user.dtos.module.ModuleResponseDto;
+import com.codenbugs.ms_user.dtos.page.PagesResponseDto;
 import com.codenbugs.ms_user.dtos.user.LoginRequestDto;
 import com.codenbugs.ms_user.dtos.user.UserReponseDto;
 import com.codenbugs.ms_user.dtos.user.UserRequestDto;
@@ -14,6 +16,10 @@ import com.codenbugs.ms_user.exceptions.SettingNotFoundException;
 import com.codenbugs.ms_user.exceptions.UserNotAllowedException;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
+import com.codenbugs.ms_user.models.module.Module;
+import com.codenbugs.ms_user.models.page.Page;
+import com.codenbugs.ms_user.models.role.Role;
+import com.codenbugs.ms_user.models.role_has_page.RoleHasPage;
 import com.codenbugs.ms_user.models.user.User;
 import com.codenbugs.ms_user.repositories.modules.ModuleRepository;
 import com.codenbugs.ms_user.repositories.role_has_page.RoleHasPageRepository;
@@ -29,6 +35,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
@@ -141,6 +149,53 @@ public class UserServiceTest {
 
         when(passwordEncoder.matches("password", "password")).thenReturn(false);
         assertThrows(UserNotAllowedException.class, () -> this.userService.login(this.loginRequestDto));
+    }
+
+    @Test
+    public void getPagesSuccesfully(){
+
+        List<Page> pages = new ArrayList<>();
+        Page page = new Page();
+        page.setId(1);
+        page.setName("name");
+        page.setPath("path");
+        page.setIsEnabled(true);
+        pages.add(page);
+
+        List<Module> modules = new ArrayList<>();
+        Module module = new Module();
+        module.setId(1);
+        module.setName("name");
+        module.setPath("path");
+        module.setIsEnabled(true);
+        modules.add(module);
+        module.setPages(pages);
+        page.setModule(module);
+
+
+        when(this.moduleRepository.findModulesByUserId(1)).thenReturn(modules);
+
+        List<RoleHasPage> roleHasPages = new ArrayList<>();
+        RoleHasPage roleHasPage = new RoleHasPage();
+        roleHasPage.setId(1);
+        roleHasPage.setPage(page);
+        roleHasPage.setRole(new Role(1, "testRole"));
+        roleHasPage.setCanCreate(true);
+        roleHasPage.setCanEdit(true);
+        roleHasPage.setCanDelete(true);
+        roleHasPages.add(roleHasPage);
+
+        when(this.roleHasPageRepository.findRolePageByUserId(1)).thenReturn(roleHasPages);
+
+
+        List<ModuleResponseDto> moduleResponseDtos = new ArrayList<>();
+        moduleResponseDtos.add(new ModuleResponseDto(module));
+
+        List<ModuleResponseDto> actual = this.userService.getPages(1);
+
+        assertEquals(moduleResponseDtos.size(), actual.size());
+        assertEquals(moduleResponseDtos.get(0), actual.get(0));
+
     }
 
 }
