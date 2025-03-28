@@ -47,7 +47,7 @@ spring:
         - id: user-private-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           filters:
-            - VerifyJWTFilterFactory
+            # - VerifyJWTFilterFactory
           predicates:
             - Path=/v1/users/**,/v1/magazines/**,/v1/subscriptions/**
           # TODO: ADD PUBLIC ADD ROUTES TO SHOW ROUTES IN ANY COMPONENT IN THE FRONTEND

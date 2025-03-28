@@ -34,9 +34,9 @@ public class UserInformationController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/info/update/photo_path")
-    public ResponseEntity<HashMap<String, String>> updatePhotoPath(@RequestParam Integer fkUser, @RequestParam("file") MultipartFile file) throws UserNotFoundException {
-        HashMap <String, String> response = this.uhiService.updatePhotoPathUser(fkUser, file);
+    @PutMapping("/info/update/photo_path/{id}")
+    public ResponseEntity<HashMap<String, String>> updatePhotoPath(@PathVariable Integer id, @RequestPart("file") MultipartFile file) throws UserNotFoundException {
+        HashMap <String, String> response = this.uhiService.updatePhotoPathUser(id, file);
         return ResponseEntity.ok(response);
     }
 }

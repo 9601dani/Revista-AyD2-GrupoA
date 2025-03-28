@@ -97,15 +97,15 @@ public class UserHasInformationServiceImpl implements UserHasInformationService 
             throw new UserNotFoundException("No hay información del usuario");
         }
 
-        HashMap<String,String> path_saved = this.uploadRestClient.uploadImage(file);
-
+        HashMap<String,String> result = this.uploadRestClient.uploadImage(file);
+        String fileName = result.get("objectName");
         
-        HashMap<String, String> path_saved_hash = new HashMap<>();
+        HashMap<String, String> response = new HashMap<>();
         UserHasInformation userHasInformation = optionalUserHasInformation.get();
-        userHasInformation.setPhoto_path(path_saved.get(path_saved.getOrDefault(path_saved.keySet().iterator().next(), null)));
+        userHasInformation.setPhoto_path(fileName);
         UserHasInformation saved = this.userHasInformationRepository.save(userHasInformation);
-        path_saved_hash.put("photo_path", saved.getPhoto_path());
-        return path_saved_hash;
+        response.put("photo_path", saved.getPhoto_path());
+        return response;
 
     }
 }

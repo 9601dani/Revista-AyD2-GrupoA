@@ -33,11 +33,11 @@ export class UserService {
   updateUserInfo(body: UserInformation): Observable<any> {
     return this.http.put<UserInformation>(`${this.apiUser}/info/update`, body);
   }
-  
-  updatePhotoPath(formData: FormData): Observable<any> {
+
+  updatePhotoPath(formData: FormData, id: number): Observable<any> {
     console.log("Path");
-    
-    return this.http.put<any>(`${this.apiUser}/info/update/photo_path`, formData);
+
+    return this.http.put<any>(`${this.apiUser}/info/update/photo_path/${id}`, formData);
   }
 
   /* MAGAZINES */

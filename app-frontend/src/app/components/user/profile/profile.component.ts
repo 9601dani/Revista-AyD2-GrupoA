@@ -115,12 +115,20 @@ export class ProfileComponent implements OnInit {
 
   onUpload(): void {
     if (this.selectedFile) {
+      console.log(this.selectedFile);
       const formData = new FormData();
-      formData.append('file', this.selectedFile, this.selectedFile.name);
-      formData.append('fkUser', this.user_id.toString());
+      formData.append('file', this.selectedFile);
 
-      this._userService.updatePhotoPath(formData).subscribe({
+      this._userService.updatePhotoPath(formData, this.user_id).subscribe({
         next: (res: any) => {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Foto de Perfil guardada!',
+            text: 'La foto de perfil se ha guardado correctamente.',
+            confirmButtonText: 'Aceptar'
+          })
+
+          console.log(res);
           const imagePath = res.message;
           this.userProfileAll.photo_path = imagePath;
           this.selectedFile = null;
