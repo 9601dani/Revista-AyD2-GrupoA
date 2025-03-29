@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -99,6 +100,16 @@ public class UserHasLabelTest {
         Map<String, String> actual = this.userHasLabelService.saveLabelsForUser(labelRequestUserDto);
 
         assertEquals(expect, actual);
+    }
+
+    @Test
+    void savedLabelsNotFound() throws UserNotFoundException {
+
+        Map<String, String> expect = new HashMap<>();
+        when(this.userRepository.findById(labelRequestUserDto.fkUser())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> this.userHasLabelService.saveLabelsForUser(labelRequestUserDto));
+
     }
 
     @Test

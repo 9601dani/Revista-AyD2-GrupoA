@@ -166,7 +166,7 @@ class UserHasInformationServiceTest {
 
         when(this.userHasInformationRepository.findByUser_Id(fkUser)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class, () -> this.userHasInformationService.updateCurrentBalance(subtractUserInformationCurrentRequest));
+        assertThrows(UserNotFoundException.class, () -> this.userHasInformationService.updatePhotoPathUser(fkUser, file));
 
     }
 
