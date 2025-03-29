@@ -51,9 +51,9 @@ spring:
           predicates:
             - Path=/v1/users/**,/v1/magazines/**,/v1/subscriptions/**
           # TODO: ADD PUBLIC ADD ROUTES TO SHOW ROUTES IN ANY COMPONENT IN THE FRONTEND
-        - id: adds-private-routes
+        - id: ads-private-routes
           uri: ${ADDS_ROUTE_URI:http://localhost:8002}
           filters:
             - VerifyJWTFilterFactory
           predicates:
-              - Path=/v1/adds/**
+              - Path=/v1/ads/**

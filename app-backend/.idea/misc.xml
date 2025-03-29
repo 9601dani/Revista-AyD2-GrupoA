@@ -4,11 +4,12 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/ms_user/pom.xml" />
         <option value="$PROJECT_DIR$/ms-adds/pom.xml" />
         <option value="$PROJECT_DIR$/ms-email/pom.xml" />
         <option value="$PROJECT_DIR$/ms-suscription/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-ads/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

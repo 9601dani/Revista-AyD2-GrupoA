@@ -1,10 +1,10 @@
-package com.codenbugs.ms_adds;
+package com.codenbugs.ms_ads;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = MsAddsApplication.class)
-class MsAddsApplicationTests {
+@SpringBootTest
+class MsAdsApplicationTests {
 
 	@Test
 	void contextLoads() {
