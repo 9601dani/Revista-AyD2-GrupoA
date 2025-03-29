@@ -47,7 +47,6 @@
       <p *ngIf="errorMessage" class="help is-danger">{{ errorMessage }}</p>
     </div>
     <div class="columns mt-6">
-      <!-- Columna: Información de usuario -->
       <div class="column is-half">
         <div class="box">
           <h3 class="title is-5">MI INFORMACIÓN</h3>
@@ -124,9 +123,7 @@
         </div>
       </div>
 
-      <!-- Columna: Monedero y Etiquetas -->
       <div class="column is-half">
-        <!-- Monedero -->
         <div class="box">
           <div class="level">
             <div class="level-left">
@@ -149,7 +146,6 @@
           </p>
         </div>
 
-        <!-- Etiquetas -->
         <div class="box">
           <h3 class="title is-5">Etiquetas de Interes</h3>
           <form>
@@ -159,7 +155,6 @@
             >
               <mat-label>Etiquetas</mat-label>
 
-              <!-- CHIP GRID: Ocupa todo el ancho -->
               <mat-chip-grid
                 #chipGrid
                 aria-label="Selección de etiquetas"
@@ -184,7 +179,6 @@
                 }
               </mat-chip-grid>
 
-              <!-- INPUT: Ancho completo -->
               <input
                 name="currentLabel"
                 placeholder="Nueva etiqueta..."
@@ -198,7 +192,6 @@
                 style="width: 100%"
               />
 
-              <!-- AUTOCOMPLETE -->
               <mat-autocomplete
                 #auto="matAutocomplete"
                 (optionSelected)="selected($event); labelInput.value = ''"
@@ -211,10 +204,7 @@
           </form>
 
           <div class="has-text-centered">
-            <button
-              class="button is-primary"
-              (click)="saveLabels()"
-            >
+            <button class="button is-primary" (click)="saveLabels()">
               Guardar Etiquetas
             </button>
           </div>
