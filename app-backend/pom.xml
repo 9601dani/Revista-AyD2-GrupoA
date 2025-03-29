@@ -22,7 +22,6 @@
         <module>gateway</module>
         <module>ms-adds</module>
         <module>ms-email</module>
-        <module>ms-magazine</module>
         <module>ms-upload</module>
         <module>ms-user</module>
         <!--REPORT NEEDS TO BE THE LAST ONE-->

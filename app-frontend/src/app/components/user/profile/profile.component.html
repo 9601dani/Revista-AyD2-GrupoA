@@ -1,0 +1,252 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="box">
+    <h2 class="title is-3 has-text-centered">Perfil de: {{ username }}</h2>
+
+    <div class="has-text-centered">
+      <figure
+        class="image is-128x128 is-inline-block"
+        *ngIf="userProfileAll.photo_path.length > 0"
+      >
+        <img
+          class="is-rounded"
+          [src]="userProfileAll.photo_path | image"
+          appNotProfile
+          alt="profile image"
+        />
+      </figure>
+
+      <input
+        type="file"
+        accept=".jpg, .jpeg, .png"
+        (change)="onFileSelected($event)"
+        style="display: none"
+        #fileInput
+      />
+
+      <div>
+        <br /><br />
+        <button class="button is-primary mt-3" (click)="fileInput.click()">
+          Seleccionar Imagen
+        </button>
+      </div>
+
+      <div *ngIf="selectedPreviewImage" class="preview-container">
+        <figure class="image is-64x64">
+          <img [src]="selectedPreviewImage" alt="Imagen seleccionada" />
+        </figure>
+        <p>Vista previa de la imagen seleccionada</p>
+      </div>
+
+      <div *ngIf="selectedFile">
+        <button (click)="onUpload()" class="button is-success mt-3">
+          Actualizar Foto
+        </button>
+      </div>
+
+      <p *ngIf="errorMessage" class="help is-danger">{{ errorMessage }}</p>
+    </div>
+    <div class="columns mt-6">
+      <div class="column is-half">
+        <div class="box">
+          <h3 class="title is-5">MI INFORMACIÓN</h3>
+          <form [formGroup]="profileForm">
+            <div class="field">
+              <label class="label">Nombre</label>
+              <div class="control">
+                <input class="input" type="text" formControlName="name" />
+              </div>
+              <p
+                class="help is-danger"
+                *ngIf="
+                  profileForm.get('name')?.touched &&
+                  profileForm.get('name')?.hasError('required')
+                "
+              >
+                El campo Nombre no puede estar vacío.
+              </p>
+            </div>
+
+            <div class="field">
+              <label class="label">Edad</label>
+              <div class="control">
+                <input class="input" type="number" formControlName="age" />
+              </div>
+              <p
+                class="help is-danger"
+                *ngIf="
+                  profileForm.get('age')?.touched &&
+                  profileForm.get('age')?.hasError('required')
+                "
+              >
+                El campo Edad no puede estar vacío.
+              </p>
+              <p
+                class="help is-danger"
+                *ngIf="
+                  profileForm.get('age')?.touched &&
+                  profileForm.get('age')?.hasError('min')
+                "
+              >
+                La edad debe ser mayor o igual a 0.
+              </p>
+            </div>
+
+            <div class="field">
+              <label class="label">Descripción</label>
+              <div class="control">
+                <textarea
+                  class="textarea"
+                  formControlName="description"
+                ></textarea>
+              </div>
+              <p
+                class="help is-danger"
+                *ngIf="
+                  profileForm.get('description')?.touched &&
+                  profileForm.get('description')?.hasError('required')
+                "
+              >
+                El campo Descripción no puede estar vacío.
+              </p>
+            </div>
+          </form>
+        </div>
+        <div class="has-text-centered mt-5">
+          <button
+            class="button is-primary"
+            [disabled]="!profileForm.touched || profileForm.invalid"
+            (click)="saveChanges()"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="box">
+          <div class="level">
+            <div class="level-left">
+              <h3 class="title is-5">Monedero</h3>
+            </div>
+            <div class="level-right">
+              <button
+                class="button is-success is-light"
+                (click)="showAddMoneyModal = true"
+              >
+                Agregar
+              </button>
+            </div>
+          </div>
+          <p class="is-size-4 has-text-weight-semibold has-text-success">
+            {{
+              userProfileAll.current_balance
+                | currency : "GTQ" : "symbol" : "1.2-2"
+            }}
+          </p>
+        </div>
+
+        <div class="box">
+          <h3 class="title is-5">Etiquetas de Interes</h3>
+          <form>
+            <mat-form-field
+              class="example-chip-list is-fullwidth"
+              style="width: 100%"
+            >
+              <mat-label>Etiquetas</mat-label>
+
+              <mat-chip-grid
+                #chipGrid
+                aria-label="Selección de etiquetas"
+                class="is-flex is-flex-wrap-wrap gap-2 mb-2"
+                style="width: 100%"
+              >
+                @for (label of labels(); track label.id) {
+                <mat-chip-row
+                  (removed)="remove(label)"
+                  class="has-background-light has-text-weight-medium has-text-dark px-3 py-2 m-1"
+                  style="max-width: 100%"
+                >
+                  {{ label.name }}
+                  <button
+                    matChipRemove
+                    [attr.aria-label]="'Quitar ' + label.name"
+                    class="ml-2"
+                  >
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+                }
+              </mat-chip-grid>
+
+              <input
+                name="currentLabel"
+                placeholder="Nueva etiqueta..."
+                #labelInput
+                class="input"
+                [(ngModel)]="currentLabel"
+                [matChipInputFor]="chipGrid"
+                [matAutocomplete]="auto"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event)"
+                style="width: 100%"
+              />
+
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="selected($event); labelInput.value = ''"
+              >
+                @for (label of filteredLabels(); track label.id) {
+                <mat-option [value]="label.name">{{ label.name }}</mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+
+          <div class="has-text-centered">
+            <button class="button is-primary" (click)="saveLabels()">
+              Guardar Etiquetas
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" [ngClass]="{ 'is-active': showAddMoneyModal }">
+  <div class="modal-background" (click)="showAddMoneyModal = false"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Agregar Dinero</p>
+      <button
+        class="delete"
+        aria-label="close"
+        (click)="showAddMoneyModal = false"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="field">
+        <label class="label">Cantidad a agregar</label>
+        <div class="control">
+          <input
+            class="input"
+            type="number"
+            [(ngModel)]="amountToAdd"
+            min="0"
+            step="0.01"
+            placeholder="Ej. 50.00"
+          />
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success m-2" (click)="addMoney()">
+        Guardar
+      </button>
+      <button class="button m-2" (click)="showAddMoneyModal = false">
+        Cancelar
+      </button>
+    </footer>
+  </div>
+</div>
