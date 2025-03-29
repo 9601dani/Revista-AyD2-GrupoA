@@ -25,11 +25,11 @@ import java.util.*;
 @Setter
 public class UserHasLabelServiceImpl implements UserHasLabelService {
 
-    private UserHasLabelRepository userHasLabelRepository;
+    private final UserHasLabelRepository userHasLabelRepository;
 
-    private LabelRepository labelRepository;
+    private final LabelRepository labelRepository;
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Map<String, String> saveLabelsForUser(LabelRequestUserDto request) throws UserNotFoundException {
@@ -73,5 +73,16 @@ public class UserHasLabelServiceImpl implements UserHasLabelService {
 
 
         return List.of();
+    }
+
+    @Override
+    public List<LabelResponseDto> getAllLabels() {
+
+        List<Label> response = labelRepository.findAll();
+        List<LabelResponseDto> responseDtos = new ArrayList<>();
+        for (Label label : response) {
+            responseDtos.add(new LabelResponseDto(label));
+        }
+        return responseDtos;
     }
 }

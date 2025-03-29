@@ -15,5 +15,5 @@ public interface UserHasLabelService {
 
     List<LabelResponseDto> getLabelsForUser(Integer fkUser);
 
-
+    List<LabelResponseDto> getAllLabels();
 }

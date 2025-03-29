@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { UserInformation } from '../models/UserInformation.Model';
 import { Magazine } from '../models/Magazine.model';
+import { Label } from '../models/Label.model';
 
 @Injectable({
   providedIn: 'root',
@@ -35,16 +36,21 @@ export class UserService {
   }
 
   updatePhotoPath(formData: FormData, id: number): Observable<any> {
-    console.log("Path");
 
     return this.http.put<any>(`${this.apiUser}/info/update/photo_path/${id}`, formData);
   }
   
   updateCurrentBalance(body: any): Observable<any> {
-    console.log("Path");
     
     return this.http.put<UserInformation>(`${this.apiUser}/info/update/current_balance`, body);
   }
+
+  /* Labels */
+
+  getAllLabels(): Observable<any>{
+    return this.http.get<Label[]>(`${this.apiUser}/labels/all`)
+  }
+
 
   /* MAGAZINES */
   saveMagazine(magazine: Magazine, file: File): Observable<any> {

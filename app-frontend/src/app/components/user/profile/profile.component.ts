@@ -32,6 +32,7 @@ import { UserInformation } from '../../../models/UserInformation.Model';
 import { ImagePipe } from '../../../pipes/image.pipe';
 import { CommonModule } from '@angular/common';
 import { Label } from '../../../models/Label.model';
+import { capitalizeLabels, lowercaseLabels } from '../../../helpers/helpers';
 
 @Component({
   selector: 'app-profile',
@@ -44,7 +45,7 @@ import { Label } from '../../../models/Label.model';
     MatAutocompleteModule,
     MatChipsModule,
     MatFormFieldModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -76,42 +77,51 @@ export class ProfileComponent implements OnInit {
   // Labels
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-readonly currentLabel = model('');
-readonly labels = signal<Label[]>([{ id: 1, name: 'Lemon' }]); // etiquetas seleccionadas
+  readonly currentLabel = model('');
+  labels = signal<Label[]>([]); // etiquetas seleccionadas
 
-// Lista de todas las etiquetas existentes
-readonly allLabels: Label[] = [
-  { id: 1, name: 'Lemon' },
-  { id: 2, name: 'Apple' },
-  { id: 3, name: 'Strawberry' },
-  { id: 4, name: 'Orange' }
-];
+  // Lista de todas las etiquetas existentes
+  allLabels: Label[] = [];
 
-// Filtrado dinámico para autocomplete
-readonly filteredLabels = computed(() => {
-  const query = this.currentLabel().toLowerCase();
-  const selectedNames = this.labels().map(l => l.name.toLowerCase());
+  // Filtrado dinámico para autocomplete
+  readonly filteredLabels = computed(() => {
+    const query = this.currentLabel().toLowerCase();
+    const selectedNames = this.labels().map((l) => l.name.toLowerCase());
 
-  return query
-    ? this.allLabels.filter(
-        label =>
-          label.name.toLowerCase().includes(query) &&
-          !selectedNames.includes(label.name.toLowerCase())
-      )
-    : this.allLabels.filter(label =>
-        !selectedNames.includes(label.name.toLowerCase())
-      );
-});
+    return query
+      ? this.allLabels.filter(
+          (label) =>
+            label.name.toLowerCase().includes(query) &&
+            !selectedNames.includes(label.name.toLowerCase())
+        )
+      : this.allLabels.filter(
+          (label) => !selectedNames.includes(label.name.toLowerCase())
+        );
+  });
 
-readonly announcer = inject(LiveAnnouncer);
+  readonly announcer = inject(LiveAnnouncer);
 
   constructor(
     private fb: FormBuilder,
     private _userService: UserService,
     private _localStorageService: LocalStorageService
-  ) {}
+  ) {
+
+    this._userService.getAllLabels().subscribe({
+      next: (value: Label[]) => {
+        this.allLabels = capitalizeLabels(value);
+        console.log(value);
+        
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
 
   ngOnInit(): void {
+    
+
     this.user_id = this._localStorageService.getItem(
       this._localStorageService.USER_ID
     );
@@ -301,37 +311,45 @@ readonly announcer = inject(LiveAnnouncer);
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
     if (!value) return;
-  
-    const alreadySelected = this.labels().some(l => l.name.toLowerCase() === value.toLowerCase());
-    if (alreadySelected) return;
-  
-    // Buscar si ya existe en allLabels
-    const existing = this.allLabels.find(
-      l => l.name.toLowerCase() === value.toLowerCase()
+
+    const alreadySelected = this.labels().some(
+      (l) => l.name.toLowerCase() === value.toLowerCase()
     );
-  
-    const newLabel: Label = existing ?? { id: 0, name: value };
-    this.labels.update(labels => [...labels, newLabel]);
-  
+    if (alreadySelected) return;
+    const existing = this.allLabels.find(
+      (l) => l.name.toLowerCase() === value.toLowerCase()
+    );
+
+    const newLabel: Label = existing ?? { id: "", name: value };
+    this.labels.update((labels) => [...labels, newLabel]);
+
     this.currentLabel.set('');
   }
-  
+
   remove(label: Label): void {
     this.labels.update((labels) => {
-      const filtered = labels.filter(l => l.name !== label.name);
+      const filtered = labels.filter((l) => l.name !== label.name);
       this.announcer.announce(`Removed ${label.name}`);
       return filtered;
     });
   }
-  
+
   selected(event: MatAutocompleteSelectedEvent): void {
     const name = event.option.viewValue;
-    const label = this.allLabels.find(l => l.name === name);
+    const label = this.allLabels.find((l) => l.name === name);
     if (!label) return;
-  
+
     this.labels.update((labels) => [...labels, label]);
     this.currentLabel.set('');
     event.option.deselect();
   }
 
+  saveLabels(){
+
+    const savedLabel: Label[] = this.labels();
+
+    console.log(lowercaseLabels(savedLabel));
+    
+    
+  }
 }

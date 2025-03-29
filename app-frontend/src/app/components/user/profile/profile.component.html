@@ -113,6 +113,15 @@
             </div>
           </form>
         </div>
+        <div class="has-text-centered mt-5">
+          <button
+            class="button is-primary"
+            [disabled]="!profileForm.touched || profileForm.invalid"
+            (click)="saveChanges()"
+          >
+            Guardar Cambios
+          </button>
+        </div>
       </div>
 
       <!-- Columna: Monedero y Etiquetas -->
@@ -140,101 +149,78 @@
           </p>
         </div>
 
-<!-- Etiquetas -->
-<div class="box">
-  <form>
-    <mat-form-field class="example-chip-list is-fullwidth" style="width: 100%">
-      <mat-label>Etiquetas</mat-label>
-
-      <!-- CHIP GRID: Ocupa todo el ancho -->
-      <mat-chip-grid
-        #chipGrid
-        aria-label="Selección de etiquetas"
-        class="is-flex is-flex-wrap-wrap gap-2 mb-2"
-        style="width: 100%"
-      >
-        @for (label of labels(); track label.id) {
-          <mat-chip-row
-            (removed)="remove(label)"
-            class="has-background-light has-text-weight-medium has-text-dark px-3 py-2 m-1"
-            style="max-width: 100%"
-          >
-            {{ label.name }}
-            <button
-              matChipRemove
-              [attr.aria-label]="'Quitar ' + label.name"
-              class="ml-2"
+        <!-- Etiquetas -->
+        <div class="box">
+          <h3 class="title is-5">Etiquetas de Interes</h3>
+          <form>
+            <mat-form-field
+              class="example-chip-list is-fullwidth"
+              style="width: 100%"
             >
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </mat-chip-row>
-        }
-      </mat-chip-grid>
+              <mat-label>Etiquetas</mat-label>
 
-      <!-- INPUT: Ancho completo -->
-      <input
-        name="currentLabel"
-        placeholder="Nueva etiqueta..."
-        #labelInput
-        class="input"
-        [(ngModel)]="currentLabel"
-        [matChipInputFor]="chipGrid"
-        [matAutocomplete]="auto"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="add($event)"
-        style="width: 100%"
-      />
+              <!-- CHIP GRID: Ocupa todo el ancho -->
+              <mat-chip-grid
+                #chipGrid
+                aria-label="Selección de etiquetas"
+                class="is-flex is-flex-wrap-wrap gap-2 mb-2"
+                style="width: 100%"
+              >
+                @for (label of labels(); track label.id) {
+                <mat-chip-row
+                  (removed)="remove(label)"
+                  class="has-background-light has-text-weight-medium has-text-dark px-3 py-2 m-1"
+                  style="max-width: 100%"
+                >
+                  {{ label.name }}
+                  <button
+                    matChipRemove
+                    [attr.aria-label]="'Quitar ' + label.name"
+                    class="ml-2"
+                  >
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+                }
+              </mat-chip-grid>
 
-      <!-- AUTOCOMPLETE -->
-      <mat-autocomplete
-        #auto="matAutocomplete"
-        (optionSelected)="selected($event); labelInput.value = ''"
-      >
-        @for (label of filteredLabels(); track label.id) {
-          <mat-option [value]="label.name">{{ label.name }}</mat-option>
-        }
-      </mat-autocomplete>
-    </mat-form-field>
-  </form>
-</div>
+              <!-- INPUT: Ancho completo -->
+              <input
+                name="currentLabel"
+                placeholder="Nueva etiqueta..."
+                #labelInput
+                class="input"
+                [(ngModel)]="currentLabel"
+                [matChipInputFor]="chipGrid"
+                [matAutocomplete]="auto"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="add($event)"
+                style="width: 100%"
+              />
 
+              <!-- AUTOCOMPLETE -->
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="selected($event); labelInput.value = ''"
+              >
+                @for (label of filteredLabels(); track label.id) {
+                <mat-option [value]="label.name">{{ label.name }}</mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
 
-      </div>
-    </div>
-
-    <div class="column is-half">
-      <div class="box">
-        <div class="level">
-          <div class="level-left">
-            <h3 class="title is-5">Monedero</h3>
-          </div>
-          <div class="level-right">
+          <div class="has-text-centered">
             <button
-              class="button is-success is-light"
-              (click)="showAddMoneyModal = true"
+              class="button is-primary"
+              (click)="saveLabels()"
             >
-              Agregar
+              Guardar Etiquetas
             </button>
           </div>
         </div>
-        <p class="is-size-4 has-text-weight-semibold has-text-success">
-          {{
-            userProfileAll.current_balance
-              | currency : "GTQ" : "symbol" : "1.2-2"
-          }}
-        </p>
       </div>
     </div>
-  </div>
-
-  <div class="has-text-centered mt-5">
-    <button
-      class="button is-primary"
-      [disabled]="!profileForm.touched || profileForm.invalid"
-      (click)="saveChanges()"
-    >
-      Guardar Cambios
-    </button>
   </div>
 </div>
 
