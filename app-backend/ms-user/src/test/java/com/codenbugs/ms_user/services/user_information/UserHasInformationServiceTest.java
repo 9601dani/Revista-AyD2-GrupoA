@@ -12,13 +12,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.*;
 
 class UserHasInformationServiceTest {
 
@@ -131,6 +133,38 @@ class UserHasInformationServiceTest {
     @Test
     void updateCurrentBalanceNotFound() throws UserNotFoundException {
         when(this.userHasInformationRepository.findByUser_Id(subtractUserInformationCurrentRequest.fkUser())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> this.userHasInformationService.updateCurrentBalance(subtractUserInformationCurrentRequest));
+
+    }
+
+    @Test
+    void updatePhotoPathSuccesfully() throws UserNotFoundException {
+        Integer fkUser = 5;
+        MultipartFile file = new MockMultipartFile("file", "photo.jpg", "image/jpeg", "".getBytes());
+        HashMap<String, String> response_path = new HashMap<>();
+        response_path.put("objectName", "path");
+        when(this.userHasInformationRepository.findByUser_Id(fkUser)).thenReturn(Optional.of(uhi));
+        when(this.uploadRestClient.uploadImage(any(MultipartFile.class))).thenReturn(
+                response_path
+        );
+
+        when(this.userHasInformationRepository.save(any(UserHasInformation.class))).thenReturn(uhi);
+
+        HashMap<String, String> expect = new HashMap<>();
+        expect.put("photo_path", uhi.getPhoto_path());
+
+        HashMap<String, String> actual = this.userHasInformationService.updatePhotoPathUser(fkUser, file);
+
+        assertEquals(expect, actual);
+    }
+
+    @Test
+    void updatePhotoPathNotFound() throws UserNotFoundException {
+        Integer fkUser = 5;
+        MultipartFile file = new MockMultipartFile("file", "photo.jpg", "image/jpeg", "".getBytes());
+
+        when(this.userHasInformationRepository.findByUser_Id(fkUser)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> this.userHasInformationService.updateCurrentBalance(subtractUserInformationCurrentRequest));
 
