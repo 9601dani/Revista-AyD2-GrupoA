@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS comments(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    FK_Suscription INT NOT NULL REFERENCES suscription(id),
+    FK_Magazine INT NOT NULL REFERENCES magazines(id),
+    content VARCHAR(255) NOT NULL,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

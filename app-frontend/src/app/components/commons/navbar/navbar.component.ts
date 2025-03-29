@@ -5,6 +5,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { UserService } from '../../../services/user.service';
 import Swal from 'sweetalert2';
 import { NotLogoDirective } from '../../../directives/not-logo.directive';
+import { UserInformation } from '../../../models/UserInformation.Model';
 
 @Component({
   selector: 'app-navbar',
@@ -36,9 +37,13 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isLogged = this._localStorageService.getItem(this._localStorageService.USER_ID) !== null;
+    this.isLogged =
+      this._localStorageService.getItem(this._localStorageService.USER_ID) !==
+      null;
     if (this.isLogged) {
-      this.username = this._localStorageService.getItem(this._localStorageService.USER_NAME);
+      this.username = this._localStorageService.getItem(
+        this._localStorageService.USER_NAME
+      );
       this.showButtons = true;
       this.getPages();
       this.setUserPhoto();
@@ -48,32 +53,41 @@ export class NavbarComponent implements OnInit {
   }
 
   getPages() {
-    const id = this._localStorageService.getItem(this._localStorageService.USER_ID);
-    // this._userService.getPages(id).subscribe({
-    //   next: (response : any ) => {
-    //     this.modules = response;
-    //   }
-    // });
+    const id = this._localStorageService.getItem(
+      this._localStorageService.USER_ID
+    );
+    this._userService.getPages(id).subscribe({
+      next: (response: any) => {
+        this.modules = response;
+      },
+    });
   }
 
   setUserPhoto() {
-    const id = this._localStorageService.getItem(this._localStorageService.USER_ID);
-    this.userPhoto = this._localStorageService.getItem(this._localStorageService.USER_PHOTO);
+    const id = this._localStorageService.getItem(
+      this._localStorageService.USER_ID
+    );
+    this.userPhoto = this._localStorageService.getItem(
+      this._localStorageService.USER_PHOTO
+    );
 
     if (!this.userPhoto) {
-      // this._userService.getUserInfo(id).subscribe({
-      //   next: (response: any) => {
-      //     this.userPhoto = response.path;
-      //     this._localStorageService.setUserPhoto(this.userPhoto);
-      //   },
-      //   error: error => {
-      //     Swal.fire({
-      //       title: "Error!",
-      //       text: error.error.message,
-      //       icon: 'error'
-      //     })
-      //   }
-      // })
+      this._userService.getUserInfo(id).subscribe({
+        next: (response: UserInformation) => {
+          this.userPhoto = response.photo_path;
+          this._localStorageService.setItem(
+            this._localStorageService.USER_PHOTO,
+            response.photo_path
+          );
+        },
+        error: (error) => {
+          Swal.fire({
+            title: 'Error!',
+            text: error.error.message,
+            icon: 'error',
+          });
+        },
+      });
     }
   }
 

@@ -10,4 +10,9 @@ class MsUploadApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void testMain() {
+		MsUploadApplication.main(new String[] {});
+	}
+
 }

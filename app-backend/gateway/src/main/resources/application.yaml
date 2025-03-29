@@ -1,3 +1,7 @@
+jwt:
+  secret: ${JWT_SECRET}
+  time: ${JWT_TIME}
+  zone: ${ZONE}
 server:
   port: 8000
 spring:
@@ -27,7 +31,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: ${WEB_SITE_URL:http://localhost:4200}
+            allowedOrigins: "http://localhost:4200"
             allowedMethods:
               - GET
               - POST
@@ -39,16 +43,17 @@ spring:
         - id: user-public-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           predicates:
-              - Path=/v1/users/**
-        - id: magazines-public-routes
-          uri: ${MAGAZINE_ROUTE_URI:http://localhost:8002}
+              - Path=/v1/users/login,/v1/users/register
+        - id: user-private-routes
+          uri: ${USER_ROUTE_URI:http://localhost:8001}
+          filters:
+            - VerifyJWTFilterFactory
           predicates:
-            - Path=/v1/magazines/**
-        - id: adds-public-routes
-          uri: ${ADDS_ROUTE_URI:http://localhost:8003}
+            - Path=/v1/users/**,/v1/magazines/**,/v1/subscriptions/**
+          # TODO: ADD PUBLIC ADD ROUTES TO SHOW ROUTES IN ANY COMPONENT IN THE FRONTEND
+        - id: adds-private-routes
+          uri: ${ADDS_ROUTE_URI:http://localhost:8002}
+          filters:
+            - VerifyJWTFilterFactory
           predicates:
               - Path=/v1/adds/**
-        - id: email-public-routes
-          uri: ${EMAIL_ROUTE_URI:http://localhost:8004}
-          predicates:
-              - Path=/v1/emails/**

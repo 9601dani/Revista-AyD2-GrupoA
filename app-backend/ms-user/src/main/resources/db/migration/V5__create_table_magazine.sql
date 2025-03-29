@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS magazines (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    FK_User INT NOT NULL REFERENCES users(id),
+    description VARCHAR(255) NOT NULL,
+    can_comment TINYINT(1) DEFAULT 1,
+    can_like TINYINT(1) DEFAULT 1,
+    can_subscribe TINYINT(1) DEFAULT 1,
+    type ENUM('PAID', 'FREE') DEFAULT 'FREE',
+    price DECIMAL(10, 2) DEFAULT 0.00,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
