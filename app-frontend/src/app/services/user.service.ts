@@ -50,6 +50,14 @@ export class UserService {
   getAllLabels(): Observable<any>{
     return this.http.get<Label[]>(`${this.apiUser}/labels/all`)
   }
+  
+  getlabelsForUser(fkUser: number): Observable<any>{
+    return this.http.get<Label[]>(`${this.apiUser}/labels/${fkUser}`)
+  }
+  
+  saveLabeslToUser(body: any): Observable<any>{
+    return this.http.post<any>(`${this.apiUser}/labels/save`, body)
+  }
 
 
   /* MAGAZINES */

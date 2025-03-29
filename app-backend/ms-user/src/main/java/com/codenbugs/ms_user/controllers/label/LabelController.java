@@ -27,9 +27,10 @@ public class LabelController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<List<LabelResponseDto>> getAllLabelsForUser(Integer fkUser) {
-        return ResponseEntity.ok(List.of());
+    @GetMapping("/{fkUser}")
+    public ResponseEntity<List<LabelResponseDto>> getAllLabelsForUser(@PathVariable Integer fkUser) {
+        List<LabelResponseDto> response = this.userHasLabelService.getLabelsForUser(fkUser);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/all")

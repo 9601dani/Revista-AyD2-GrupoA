@@ -10,6 +10,7 @@ import com.codenbugs.ms_user.models.user.User;
 import com.codenbugs.ms_user.repositories.label.LabelRepository;
 import com.codenbugs.ms_user.repositories.label.UserHasLabelRepository;
 import com.codenbugs.ms_user.repositories.user.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Getter
 @Setter
+@Transactional
 public class UserHasLabelServiceImpl implements UserHasLabelService {
 
     private final UserHasLabelRepository userHasLabelRepository;
@@ -70,9 +72,9 @@ public class UserHasLabelServiceImpl implements UserHasLabelService {
     @Override
     public List<LabelResponseDto> getLabelsForUser(Integer fkUser) {
 
+        List<LabelResponseDto> labels = this.userHasLabelRepository.findLabelsByUserId(fkUser);
 
-
-        return List.of();
+        return labels;
     }
 
     @Override

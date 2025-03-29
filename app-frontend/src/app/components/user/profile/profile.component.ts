@@ -106,17 +106,9 @@ export class ProfileComponent implements OnInit {
     private _userService: UserService,
     private _localStorageService: LocalStorageService
   ) {
+    
 
-    this._userService.getAllLabels().subscribe({
-      next: (value: Label[]) => {
-        this.allLabels = capitalizeLabels(value);
-        console.log(value);
-        
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+
   }
 
   ngOnInit(): void {
@@ -128,6 +120,28 @@ export class ProfileComponent implements OnInit {
     this.username = this._localStorageService.getItem(
       this._localStorageService.USER_NAME
     );
+
+
+    this._userService.getAllLabels().subscribe({
+      next: (value: Label[]) => {
+        this.allLabels = capitalizeLabels(value);
+        console.log(value);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+
+    this._userService.getlabelsForUser(this.user_id).subscribe({
+      next: (value: Label[]) => {
+        this.labels.set(capitalizeLabels(value));
+        console.log(value);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+
 
     this.getUserProfile();
     this.profileForm = this.fb.group({
@@ -190,7 +204,6 @@ export class ProfileComponent implements OnInit {
 
   onUpload(): void {
     if (this.selectedFile) {
-      console.log(this.selectedFile);
       const formData = new FormData();
       formData.append('file', this.selectedFile);
 
@@ -205,7 +218,7 @@ export class ProfileComponent implements OnInit {
 
           console.log(res);
           const imagePath = res.message;
-          this.userProfileAll.photo_path = imagePath;
+          this.userProfileAll.photo_path = res.photo_path;
           this.selectedFile = null;
           this.selectedPreviewImage = null;
         },
@@ -320,7 +333,7 @@ export class ProfileComponent implements OnInit {
       (l) => l.name.toLowerCase() === value.toLowerCase()
     );
 
-    const newLabel: Label = existing ?? { id: "", name: value };
+    const newLabel: Label = existing ?? { id: '', name: value };
     this.labels.update((labels) => [...labels, newLabel]);
 
     this.currentLabel.set('');
@@ -344,12 +357,30 @@ export class ProfileComponent implements OnInit {
     event.option.deselect();
   }
 
-  saveLabels(){
-
+  saveLabels() {
     const savedLabel: Label[] = this.labels();
 
-    console.log(lowercaseLabels(savedLabel));
-    
-    
+
+    const body = {
+      fkUser: this.user_id,
+      labels: lowercaseLabels(savedLabel),
+    };
+
+    this._userService.saveLabeslToUser(body).subscribe({
+      next: (value) => {
+        Swal.fire({
+          title: 'Cambios guardados',
+          text: 'Se han guardado tus etiquetas',
+          icon: 'success',
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          title: 'Error',
+          text: 'No se ha podido guardar los cambios',
+          icon: 'error',
+        });
+      },
+    });
   }
 }
