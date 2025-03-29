@@ -20,7 +20,7 @@ import com.codenbugs.ms_user.repositories.role_has_page.RoleHasPageRepository;
 import com.codenbugs.ms_user.repositories.user.UserRepository;
 import com.codenbugs.ms_user.repositories.user_has_role.UserHasRoleRepository;
 import com.codenbugs.ms_user.repositories.user_information.UserHasInformationRepository;
-import com.codenbugs.ms_user.services.TokenService;
+import com.codenbugs.ms_user.services.token.TokenService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

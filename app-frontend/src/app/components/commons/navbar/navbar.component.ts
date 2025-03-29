@@ -105,7 +105,7 @@ export class NavbarComponent implements OnInit {
   }
 
   myAccount() {
-    this.router.navigate(['/edit/profile']);
+    this.router.navigate(['/user/profile']);
   }
 
   logout() {
