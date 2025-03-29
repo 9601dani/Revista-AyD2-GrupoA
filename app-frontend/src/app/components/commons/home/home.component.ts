@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { LocalStorageService } from '../../../services/local-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -9,4 +10,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 })
 export class HomeComponent {
 
+  constructor(private localStorageService: LocalStorageService){
+
+  }
 }

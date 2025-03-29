@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NavbarComponent } from '../../commons/navbar/navbar.component';
 import { UserService } from '../../../services/user.service';
 import { Magazine } from '../../../models/Magazine.model';
-import { UploadService } from '../../../services/upload.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import Swal from 'sweetalert2';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -30,8 +29,7 @@ export class AddMagazineComponent {
   ];
   
 
-  constructor( private fb: FormBuilder, private userService: UserService,
-    private uploadService:UploadService, private localStorage:LocalStorageService, private sanitizer: DomSanitizer,
+  constructor( private fb: FormBuilder, private userService: UserService, private localStorage:LocalStorageService, private sanitizer: DomSanitizer,
     private route: ActivatedRoute,
   ){}
 

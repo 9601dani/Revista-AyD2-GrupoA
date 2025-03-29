@@ -11,4 +11,7 @@ import java.util.HashMap;
 public interface UploadRestClient {
     @PostMapping(value = "/documents", consumes = "multipart/form-data")
     HashMap<String, String> uploadFile(@RequestPart("file") MultipartFile file);
+
+    @PostMapping(value = "/images" , consumes = "multipart/form-data")
+    HashMap<String, String> uploadImage(@RequestPart("file") MultipartFile file);
 }
