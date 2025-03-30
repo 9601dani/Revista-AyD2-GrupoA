@@ -1,12 +1,16 @@
 // 👇 Asegúrate de importar correctamente todo
 import { TestBed } from '@angular/core/testing';
 import { UserService } from './user.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+  provideHttpClientTesting,
+} from '@angular/common/http/testing';
 import { Page } from '../models/Page.model';
-import {environment} from '../../environments/environment';
+import { environment } from '../../environments/environment';
 import { UserInformation } from '../models/UserInformation.Model';
 import { Module } from '../models/Module.model';
-
+import { provideHttpClient } from '@angular/common/http';
 
 describe('UserService', () => {
   let service: UserService;
@@ -15,8 +19,8 @@ describe('UserService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [UserService]
+      imports: [],
+      providers: [UserService, provideHttpClient(), provideHttpClientTesting()],
     });
     service = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -51,14 +55,13 @@ describe('UserService', () => {
   it('getUserInfo debe retornar la info del usuario en formato de Observable ', (done: DoneFn) => {
     const userInfo: UserInformation = {
       id: 1,
-      name: "test name",
+      name: 'test name',
       age: 18,
-      description: "description test",
+      description: 'description test',
       fkUser: 1,
-      photo_path: "path",
-      current_balance: 0
-    }
-
+      photo_path: 'path',
+      current_balance: 0,
+    };
 
     service.getUserInfo(userInfo.id).subscribe((value) => {
       expect(value).toEqual(userInfo);
@@ -67,6 +70,78 @@ describe('UserService', () => {
 
     const req = httpMock.expectOne(`${apiUrl}/v1/users/info/${userInfo.id}`);
     expect(req.request.method).toBe('GET');
+    req.flush(userInfo);
+  });
+
+  it('updateUserInfo debe devolver un observable de tipo UserInformation ', (done: DoneFn) => {
+    const userInfo: UserInformation = {
+      id: 1,
+      name: 'test name',
+      age: 18,
+      description: 'description test',
+      fkUser: 1,
+      photo_path: 'path',
+      current_balance: 0,
+    };
+
+    service.updateUserInfo(userInfo).subscribe((value) => {
+      expect(value).toEqual(userInfo);
+      done();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/v1/users/info/update`);
+    expect(req.request.method).toBe('PUT');
+    req.flush(userInfo);
+  });
+
+  it('updatePhotoPath debe devolver el path de la imagen del usuario ', (done: DoneFn) => {
+    const path = {
+      photo_path: 'path',
+    };
+
+    const id = 1;
+
+    const content = 'Contenido';
+    const blob = new Blob([content], { type: 'img' });
+    const file = new File([blob], 'imagen.png', { type: 'img' });
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    service.updatePhotoPath(formData, id).subscribe((value) => {
+      expect(value).toEqual(path);
+      done();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/v1/users/info/update/photo_path/${id}`);
+    expect(req.request.method).toBe('PUT');
+    req.flush(path);
+  });
+
+  it('updateCurrentBalance debe devolver un observable de tipo UserInformation ', (done: DoneFn) => {
+    const userInfo: UserInformation = {
+      id: 1,
+      name: 'test name',
+      age: 18,
+      description: 'description test',
+      fkUser: 1,
+      photo_path: 'path',
+      current_balance: 0,
+    };
+
+    const body = {
+      fkUser: 1,
+      sum: true,
+      current_balance: 10
+    }
+
+    service.updateCurrentBalance(body).subscribe((value) => {
+      expect(value).toEqual(userInfo);
+      done();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/v1/users/info/update/current_balance`);
+    expect(req.request.method).toBe('PUT');
     req.flush(userInfo);
   });
 });
