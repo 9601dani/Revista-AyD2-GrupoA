@@ -1,0 +1,1 @@
+ALTER TABLE periods CHANGE period_add name enum ('DAILY', 'THREEDAYS', 'ONEWEEK', 'TWOWEEKS') DEFAULT 'DAILY';

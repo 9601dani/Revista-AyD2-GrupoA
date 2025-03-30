@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,7 +34,7 @@ public class UserControllerTest {
 
     @BeforeEach
     public void setup() {
-        userReponseDto = new UserReponseDto(new User(1, "test", "", "test@gmail.com", "tokenTest"));
+        userReponseDto = new UserReponseDto(new User(1, "test", "", "test@gmail.com", "tokenTest", new ArrayList<>()));
     }
 
     @Test
