@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface MagazineService {
 
-    MagazineResponse saveMagazine(MagazineRequest magazine, MultipartFile path) throws UserNotFoundException;
+    MagazineResponse saveMagazine(MagazineRequest magazine) throws UserNotFoundException;
     List<MagazineWithDocumentsResponse> getByUserId(Integer userId) throws UserNotFoundException;
     List<MagazineResponse> getAllMagazines() throws UserNotFoundException;
 }

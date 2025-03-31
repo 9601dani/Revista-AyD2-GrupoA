@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 import { UserInformation } from '../models/UserInformation.Model';
 import { Magazine } from '../models/Magazine.model';
 import { Label } from '../models/Label.model';
+import { Category } from '../models/Category.mode';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ import { Label } from '../models/Label.model';
 export class UserService {
   readonly apiMagazine = `${environment.API_URL}/v1/magazines`;
   readonly apiUser = `${environment.API_URL}/v1/users`;
+  readonly apiCategories = `${environment.API_URL}/v1/categories`;
 
   constructor(
     private http: HttpClient,
@@ -59,22 +61,20 @@ export class UserService {
     return this.http.post<any>(`${this.apiUser}/labels/save`, body)
   }
 
+  /* Categories */
 
-  /* MAGAZINES */
-  saveMagazine(magazine: Magazine, file: File): Observable<any> {
-    const formData = new FormData();
-    formData.append(
-      'magazine',
-      new Blob([JSON.stringify(magazine)], { type: 'application/json' })
-    );
+  getAllGategories():Observable<any>{
+    return this.http.get<Category[]>(`${this.apiCategories}/all`)
+  }
 
-    formData.append('file', file);
 
+  /* Magazines */
+  saveMagazine(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiMagazine}/save`, formData);
   }
 
   getMagazineByIdUser(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiMagazine}/getByIdUser/${id}`);
+    return this.http.get<any>(`${this.apiMagazine}/getByUserId/${id}`);
   }
 
   getMagazineById(id: number): Observable<any> {

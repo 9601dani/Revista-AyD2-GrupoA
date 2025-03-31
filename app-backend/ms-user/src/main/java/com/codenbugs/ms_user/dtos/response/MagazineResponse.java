@@ -1,6 +1,7 @@
 package com.codenbugs.ms_user.dtos.response;
 
 import com.codenbugs.ms_user.enums.MagazineType;
+import com.codenbugs.ms_user.models.labels.Label;
 import com.codenbugs.ms_user.models.magazine.Magazine;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 public record MagazineResponse(
         Integer id,

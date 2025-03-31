@@ -7,6 +7,7 @@ import com.codenbugs.ms_user.models.magazine.Magazine;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public record MagazineWithDocumentsResponse(
         Integer id,
@@ -22,7 +23,7 @@ public record MagazineWithDocumentsResponse(
         LocalDateTime dateCreated,
         List<DocumentResponse> documents
 ) {
-    public MagazineWithDocumentsResponse(Magazine magazine, List<DocumentResponse> documents) {
+    public MagazineWithDocumentsResponse(Magazine magazine) {
         this(
                 magazine.getId(),
                 magazine.getName(),
@@ -35,7 +36,9 @@ public record MagazineWithDocumentsResponse(
                 magazine.getPrice(),
                 magazine.isEnabled(),
                 magazine.getDateCreated(),
-                documents
+                magazine.getDocuments().stream()
+                        .map(DocumentResponse::new)
+                        .collect(Collectors.toList())
         );
     }
 

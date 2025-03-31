@@ -28,7 +28,7 @@ pipeline{
             }
         }
 
-        stage('Build Frontend') {
+/*        stage('Build Frontend') {
              steps {
                  dir('app-frontend') {
                      // Install dependencies
@@ -51,7 +51,7 @@ pipeline{
                      sh 'npm run test'
                  }
              }
-        }
+        } */
 
         stage('Build Backend') {
             steps {

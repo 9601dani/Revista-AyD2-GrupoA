@@ -4,6 +4,7 @@ package com.codenbugs.ms_user.services.labels;
 import com.codenbugs.ms_user.dtos.label.LabelRequestUserDto;
 import com.codenbugs.ms_user.dtos.label.LabelResponseDto;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
+import com.codenbugs.ms_user.models.labels.Label;
 import com.codenbugs.ms_user.models.user.User;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface UserHasLabelService {
     List<LabelResponseDto> getLabelsForUser(Integer fkUser);
 
     List<LabelResponseDto> getAllLabels();
+
 }
