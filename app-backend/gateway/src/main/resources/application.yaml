@@ -39,21 +39,22 @@ spring:
               - DELETE
             allowedHeaders:
               - "*"
+            maxAge: 3600
       routes:
         - id: user-public-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           predicates:
-              - Path=/v1/users/login,/v1/users/register
+            - Path=/v1/users/login,/v1/users/register
         - id: user-private-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
-          filters:
-             - VerifyJWTFilterFactory
           predicates:
             - Path=/v1/users/**,/v1/magazines/**,/v1/subscriptions/**
-          # TODO: ADD PUBLIC ADD ROUTES TO SHOW ROUTES IN ANY COMPONENT IN THE FRONTEND
-        - id: ads-private-routes
-          uri: ${ADDS_ROUTE_URI:http://localhost:8002}
           filters:
             - VerifyJWTFilterFactory
+          # TODO: ADD PUBLIC ADD ROUTES TO SHOW ROUTES IN ANY COMPONENT IN THE FRONTEND
+        - id: ads-private-routes
+          uri: ${ADDS_ROUTE_URI:http://localhost:8003}
           predicates:
-              - Path=/v1/ads/**
+            - Path=/v1/ads/**,/v1/categories/**,/v1/periods/**
+          filters:
+            - VerifyJWTFilterFactory

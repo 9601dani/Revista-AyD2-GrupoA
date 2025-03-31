@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
-<div class="container">
+<div class="container mt-6">
   <div class="box">
-    <h2 class="title is-3 has-text-centered">Perfil de: {{ username }}</h2>
+    <h2 class="title is-3 has-text-centered">{{ username }}</h2>
 
     <div class="has-text-centered">
       <figure
@@ -150,11 +150,10 @@
           <h3 class="title is-5">Etiquetas de Interes</h3>
           <form>
             <mat-form-field
+              appearance="outline"
               class="example-chip-list is-fullwidth"
               style="width: 100%"
             >
-              <mat-label>Etiquetas</mat-label>
-
               <mat-chip-grid
                 #chipGrid
                 aria-label="Selección de etiquetas"

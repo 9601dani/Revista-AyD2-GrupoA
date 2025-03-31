@@ -17,11 +17,6 @@ export class Interceptor implements HttpInterceptor{
     ){}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-        const token = this._cookieService.get("token");
-        console.log(token);
-        
-
         req = req.clone({
             setHeaders: {
                 Authorization: `Bearer ${this._cookieService.get("token")}`
@@ -44,7 +39,7 @@ export class Interceptor implements HttpInterceptor{
                         })
 
                         this._router.navigate(["/login"])
-                    } 
+                    }
                 }
                 return throwError(() => error);
             })
