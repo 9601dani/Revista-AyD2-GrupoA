@@ -87,4 +87,17 @@ public class UserHasLabelServiceImpl implements UserHasLabelService {
         }
         return responseDtos;
     }
+
+    public Label findByName(String labelName) {
+        Label l = this.labelRepository.findByName(labelName);
+
+        if (l == null) {
+            l = new Label();
+            l.setName(labelName.toLowerCase());
+            l = this.labelRepository.save(l);
+        }
+
+        return l;
+    }
+
 }

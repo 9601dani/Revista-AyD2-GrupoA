@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface LabelRepository extends JpaRepository<Label, Integer> {
 
     public Optional<Label> findLabelByName(@Param("name") String name);
+
+    Label findByName(String name);
 }
