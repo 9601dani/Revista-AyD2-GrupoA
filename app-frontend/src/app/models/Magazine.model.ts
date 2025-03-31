@@ -12,7 +12,7 @@ export interface Magazine{
     path:string;
 }
 
-enum MagazineType{
+export enum MagazineType{
     FREE = 'FREE',
     PAID = 'PAID'
 }

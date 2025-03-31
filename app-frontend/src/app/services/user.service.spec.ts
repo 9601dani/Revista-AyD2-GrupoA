@@ -11,6 +11,8 @@ import { environment } from '../../environments/environment';
 import { UserInformation } from '../models/UserInformation.Model';
 import { Module } from '../models/Module.model';
 import { provideHttpClient } from '@angular/common/http';
+import { Label } from '../models/Label.model';
+import { Magazine, MagazineType } from '../models/Magazine.model';
 
 describe('UserService', () => {
   let service: UserService;
@@ -113,7 +115,9 @@ describe('UserService', () => {
       done();
     });
 
-    const req = httpMock.expectOne(`${apiUrl}/v1/users/info/update/photo_path/${id}`);
+    const req = httpMock.expectOne(
+      `${apiUrl}/v1/users/info/update/photo_path/${id}`
+    );
     expect(req.request.method).toBe('PUT');
     req.flush(path);
   });
@@ -132,16 +136,189 @@ describe('UserService', () => {
     const body = {
       fkUser: 1,
       sum: true,
-      current_balance: 10
-    }
+      current_balance: 10,
+    };
 
     service.updateCurrentBalance(body).subscribe((value) => {
       expect(value).toEqual(userInfo);
       done();
     });
 
-    const req = httpMock.expectOne(`${apiUrl}/v1/users/info/update/current_balance`);
+    const req = httpMock.expectOne(
+      `${apiUrl}/v1/users/info/update/current_balance`
+    );
     expect(req.request.method).toBe('PUT');
     req.flush(userInfo);
   });
+
+  // Labels
+
+  it('getAllLabels debe devolver un observable de tipo Label[] ', (done: DoneFn) => {
+    const labels: Label[] = [
+      {
+        id: 1,
+        name: 'label1',
+      },
+      {
+        id: 2,
+        name: 'label2',
+      },
+    ];
+
+    service.getAllLabels().subscribe((value) => {
+      expect(value).toEqual(labels);
+      done();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/v1/users/labels/all`);
+    expect(req.request.method).toBe('GET');
+    req.flush(labels);
+  });
+  
+  it('getlabelsForUser debe devolver un observable de tipo Label[] ', (done: DoneFn) => {
+    const labels: Label[] = [
+      {
+        id: 1,
+        name: 'label1',
+      },
+      {
+        id: 2,
+        name: 'label2',
+      },
+    ];
+
+    const fkUser: number = 1;
+
+    service.getlabelsForUser(fkUser).subscribe((value) => {
+      expect(value).toEqual(labels);
+      done();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/v1/users/labels/${fkUser}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(labels);
+  });
+  
+  it('savelLabelsToUser debe devolver un observable de tipo any ', (done: DoneFn) => {
+    const labels: Label[] = [
+      {
+        id: 1,
+        name: 'label1',
+      },
+      {
+        id: 2,
+        name: 'label2',
+      },
+    ];
+
+    const body = {
+      fkUser: 1,
+      labels
+    }
+
+
+    service.saveLabeslToUser(body).subscribe((value) => {
+      expect(value).toEqual(labels);
+      done();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/v1/users/labels/save`);
+    expect(req.request.method).toBe('POST');
+    req.flush(labels);
+  });
+  
+  // Magazines
+  
+  it('savelLabelsToUser debe devolver un observable de tipo any ', (done: DoneFn) => {
+    const content = 'Contenido';
+    const blob = new Blob([content], { type: 'pdf' });
+    const file = new File([blob], 'archivo.pdf', { type: 'pdf' });
+
+    const magazine: Magazine = {
+      id: 1,
+      canComment: true,
+      canLike: true,
+      canSubscribe: true,
+      description: "description",
+      FK_User: 1,
+      isEnabled: true,
+      name: "magazine",
+      path: "path",
+      price: 50,
+      type: MagazineType.FREE
+    }
+
+
+    service.saveMagazine(magazine, file).subscribe((value) => {
+      expect(value).toEqual(magazine);
+      done();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/v1/magazines/save`);
+    expect(req.request.method).toBe('POST');
+    req.flush(magazine);
+  });
+  
+  it('getMagazineByIdUser debe devolver un observable de tipo any ', (done: DoneFn) => {
+    
+    const id = 1;
+
+    const magazine: Magazine = {
+      id: 1,
+      canComment: true,
+      canLike: true,
+      canSubscribe: true,
+      description: "description",
+      FK_User: 1,
+      isEnabled: true,
+      name: "magazine",
+      path: "path",
+      price: 50,
+      type: MagazineType.FREE
+    }
+
+    const magazines: Magazine[]= [
+      magazine
+    ]
+
+
+    service.getMagazineByIdUser(id).subscribe((value) => {
+      expect(value).toEqual(magazines);
+      done();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/v1/magazines/getByIdUser/${id}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(magazines);
+  });
+  
+  it('getMagazineById debe devolver un observable de tipo any ', (done: DoneFn) => {
+    
+    const id = 1;
+
+    const magazine: Magazine = {
+      id: 1,
+      canComment: true,
+      canLike: true,
+      canSubscribe: true,
+      description: "description",
+      FK_User: 1,
+      isEnabled: true,
+      name: "magazine",
+      path: "path",
+      price: 50,
+      type: MagazineType.FREE
+    }
+
+    service.getMagazineById(id).subscribe((value) => {
+      expect(value).toEqual(magazine);
+      done();
+    });
+
+    const req = httpMock.expectOne(`${apiUrl}/v1/magazines/get/${id}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(magazine);
+  });
+
+
 });
