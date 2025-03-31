@@ -1,21 +1,21 @@
-package com.codenbugs.ms_user.models.labels;
+package com.codenbugs.ms_user.models.magazine;
 
-import com.codenbugs.ms_user.models.magazine.Magazine;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "labels")
+@Table(name="categories")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Label {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +25,9 @@ public class Label {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "magazine_has_labels",
-            joinColumns = @JoinColumn(name = "FK_Label"),
+            name = "magazine_has_categories",
+            joinColumns = @JoinColumn(name = "FK_Category"),
             inverseJoinColumns = @JoinColumn(name = "FK_Magazine")
     )
-    private List<Magazine> magazines;
+    private List<Magazine> magazines = new ArrayList<>();
 }
