@@ -89,7 +89,7 @@ describe('NavbarComponent', () => {
   it('showButtons debe mostrar el navbar de alguien loggeado', () => {
     mockRouter.url = '/dashboard';
     component.showOptions();
-    expect(component.showButtons).toBeTrue(); 
+    expect(component.showButtons).toBeTrue();
   });
 
 });
