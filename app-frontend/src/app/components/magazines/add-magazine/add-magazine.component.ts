@@ -144,14 +144,6 @@ export class AddMagazineComponent {
       },
 });
 
-/*     this.userService.getMagazineByIdUser(this.localStorage.getItem("user_id")).subscribe({
-      next: (response) => {
-        console.log(response)
-      }, error: (err) => {
-        console.log(err)
-      }
-
-    }) */
   }
 
   loadMagazineData(id: number) {
