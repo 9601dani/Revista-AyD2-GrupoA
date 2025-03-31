@@ -1,6 +1,7 @@
 package com.codenbugs.ms_user.controllers.magazine;
 
 import com.codenbugs.ms_user.dtos.request.MagazineRequest;
+import com.codenbugs.ms_user.dtos.response.AllMagazineResponse;
 import com.codenbugs.ms_user.dtos.response.MagazineResponse;
 import com.codenbugs.ms_user.dtos.response.MagazineWithDocumentsResponse;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
@@ -38,6 +39,11 @@ public class MagazineController {
     @GetMapping("/getByUserId/{id}")
     public ResponseEntity<List<MagazineWithDocumentsResponse>> getMagazine(@PathVariable("id") Integer id) throws UserNotFoundException {
         return ResponseEntity.ok(this.magazineService.getByUserId(id));
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<AllMagazineResponse>> getAllMagazines() {
+        return ResponseEntity.ok(this.magazineService.getAllMagazines());
     }
 
 }

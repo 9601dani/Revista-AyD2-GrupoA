@@ -1,3 +1,49 @@
 <app-navbar></app-navbar>
 
-hello
+<section class="section">
+  <div class="container">
+    <h1 class="title has-text-centered is-size-3 mb-6">Mis Revistas</h1>
+
+    <div class="columns is-multiline">
+      <div class="column is-12-mobile is-6-tablet is-4-desktop" *ngFor="let magazine of magazines">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              {{ magazine.name }}
+            </p>
+          </header>
+
+          <div class="card-content">
+            <div class="content">
+              <p>{{ magazine.description }}</p>
+
+              <p><strong>Tipo:</strong> {{ magazine.type === 'FREE' ? 'Gratis' : 'De Pago' }}</p>
+              <p *ngIf="magazine.type === 'PAID'"><strong>Precio:</strong> Q{{ magazine.price }}</p>
+
+              <p class="mt-2"><strong>Acciones:</strong></p>
+              <div class="is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 0.5rem;">
+                <a
+                  *ngIf="magazine.documents?.length"
+                  class="button is-small is-info"
+                  [href]="'http://localhost:8010/' + magazine.documents[0].path"
+                  target="_blank"
+                >
+                  Ver PDF
+                </a>
+              
+                <button
+                  class="button is-small is-warning"
+                  (click)="onEditMagazine(magazine.id)"
+                >
+                  Editar
+                </button>
+              </div>
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

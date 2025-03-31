@@ -80,4 +80,8 @@ export class UserService {
   getMagazineById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiMagazine}/get/${id}`);
   }
+
+  getAllMagazines():Observable<any>{
+    return this.http.get<any>(`${this.apiMagazine}/getAll`)
+  }
 }

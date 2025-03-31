@@ -22,6 +22,7 @@ public record MagazineWithDocumentsResponse(
         Boolean isEnabled,
         LocalDateTime dateCreated,
         List<DocumentResponse> documents
+
 ) {
     public MagazineWithDocumentsResponse(Magazine magazine) {
         this(

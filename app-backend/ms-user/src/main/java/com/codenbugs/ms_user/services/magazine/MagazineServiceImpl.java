@@ -2,6 +2,7 @@ package com.codenbugs.ms_user.services.magazine;
 
 import com.codenbugs.ms_user.clients.UploadRestClient;
 import com.codenbugs.ms_user.dtos.request.MagazineRequest;
+import com.codenbugs.ms_user.dtos.response.AllMagazineResponse;
 import com.codenbugs.ms_user.dtos.response.DocumentResponse;
 import com.codenbugs.ms_user.dtos.response.MagazineResponse;
 import com.codenbugs.ms_user.dtos.response.MagazineWithDocumentsResponse;
@@ -127,9 +128,9 @@ public class MagazineServiceImpl implements MagazineService {
     }
 
     @Override
-    public List<MagazineResponse> getAllMagazines() throws UserNotFoundException {
+    public List<AllMagazineResponse> getAllMagazines(){
        List<Magazine> magazines = this.magazineRepository.findAll();
-       return magazines.stream().map(MagazineResponse::new).collect(Collectors.toList());
+       return magazines.stream().map(AllMagazineResponse::new).collect(Collectors.toList());
     }
 
 
