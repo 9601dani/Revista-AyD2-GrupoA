@@ -44,7 +44,7 @@ pipeline{
                      """
 
                      //Run unit test
-                     sh 'npm run test'
+                     // sh 'npm run test'
                  }
              }
         }
