@@ -84,9 +84,10 @@
               
                 <button
                   class="button is-small is-success"
-                  (click)="onSubscribeMagazine(magazine.id)"
+                  [disabled]="disableButton(magazine)"
+                  (click)="onSubscribeMagazine(magazine)"
                 >
-                  Subscribirse
+                  {{changeButtonName(magazine)}}
                 </button>
               </div> 
             </div>
