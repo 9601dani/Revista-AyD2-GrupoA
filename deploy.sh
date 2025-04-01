@@ -40,7 +40,6 @@ cp -r app-frontend/dist/* deploy/frontend/
 echo "SENDING COMPILED FILES"
 cp serve.sh deploy
 
-rm -rf deploy
 rm -rf app-frontend/node_modules
 rm -rf app-frontend/dist
 
