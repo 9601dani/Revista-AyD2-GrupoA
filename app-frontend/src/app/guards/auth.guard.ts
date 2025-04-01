@@ -17,7 +17,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       icon: 'error',
       confirmButtonText: 'Ok'
     })
-    _router.navigate(['/home'])
+    _router.navigate(['/login'])
     _localStorageService.logout();
     return false;
   }

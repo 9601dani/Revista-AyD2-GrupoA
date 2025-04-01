@@ -167,7 +167,7 @@ class VerifyJWTFilterFactoryTest {
             this.factory.apply(new VerifyJWTFilterFactory.Config()).filter(exchange, chain);
         });
 
-        String expectedMessage = "La sesión ha expirado.";
+        String expectedMessage = "No se pudo obtener el token.";
         String actualMessage = exception.getMessage();
 
         assertEquals(expectedMessage, actualMessage);

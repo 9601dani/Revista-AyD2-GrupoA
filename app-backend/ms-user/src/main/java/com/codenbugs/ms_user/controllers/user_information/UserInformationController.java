@@ -17,31 +17,31 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/users")
+@RequestMapping("/v1/users/info")
 @AllArgsConstructor
 public class UserInformationController {
 
     private final UserHasInformationService uhiService;
 
-    @GetMapping("/info/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserInformationResponseDto> getInformation(@PathVariable Integer id) {
         UserInformationResponseDto response = this.uhiService.getInformation(id);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/info/update")
+    @PutMapping("/update")
     public ResponseEntity<UserInformationResponseDto> updateInformation(@RequestBody UserInformationRequestDto request) throws UserNotFoundException {
         UserInformationResponseDto response = this.uhiService.updateInformation(request);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/info/update/photo_path/{id}")
+    @PutMapping("/update/photo_path/{id}")
     public ResponseEntity<HashMap<String, String>> updatePhotoPath(@PathVariable Integer id, @RequestPart("file") MultipartFile file) throws UserNotFoundException {
         HashMap <String, String> response = this.uhiService.updatePhotoPathUser(id, file);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/info/update/current_balance")
+    @PutMapping("/update/current_balance")
     public ResponseEntity<UserInformationResponseDto> updateCurrentBalance(@RequestBody UserInformationCurrentRequest request) throws UserNotFoundException {
         UserInformationResponseDto response = uhiService.updateCurrentBalance(request);
         return ResponseEntity.ok(response);
