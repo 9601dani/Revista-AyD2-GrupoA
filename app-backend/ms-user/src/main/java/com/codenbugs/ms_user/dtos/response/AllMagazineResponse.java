@@ -19,6 +19,7 @@ public record AllMagazineResponse(
         BigDecimal price,
         Boolean isEnabled,
         LocalDateTime dateCreated,
+        List<DocumentResponse> documents,
         List<LabelDTO> labels,
         List<CategoryResponse> categories
 ) {
@@ -28,6 +29,9 @@ public record AllMagazineResponse(
                 magazine.isCanLike(), magazine.isCanSubscribe(),
                 magazine.getType(), magazine.getPrice(), magazine.isEnabled(),
                 magazine.getDateCreated(),
+                magazine.getDocuments() != null
+                        ? magazine.getDocuments().stream().map(DocumentResponse::new).toList()
+                        : List.of(),
                 magazine.getLabels() != null
                         ? magazine.getLabels().stream().map(LabelDTO::new).toList()
                         : List.of(),
