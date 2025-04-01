@@ -27,8 +27,9 @@ public class AdController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> create(@ModelAttribute AdRequestDTO adRequestDTO, @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<String> create(@ModelAttribute AdRequestDTO adRequestDTO, @RequestPart(value = "file", required = false) MultipartFile file) {
         System.out.println(adRequestDTO);
+        System.out.println(file);
         return ResponseEntity.ok("OK");
     }
 }

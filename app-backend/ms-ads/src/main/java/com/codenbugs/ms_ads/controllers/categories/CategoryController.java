@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/categories")
+@RequestMapping("/v1/temp-categories")
 @AllArgsConstructor
 public class CategoryController {
 

@@ -28,7 +28,7 @@ pipeline{
             }
         }
 
-/*        stage('Build Frontend') {
+        stage('Build Frontend') {
              steps {
                  dir('app-frontend') {
                      // Install dependencies
@@ -43,15 +43,11 @@ pipeline{
                        echo \"export const environment = {\n  production: true,\n  API_URL: '\${API_URL}'\n};\" > src/environments/environment.ts
                      """
 
-
-                     // Build project
-                     sh 'npm run build'
-
                      //Run unit test
                      sh 'npm run test'
                  }
              }
-        } */
+        }
 
         stage('Build Backend') {
             steps {

@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 export class AdsService {
 
   readonly apiAds = `${environment.API_URL}/v1/ads`;
-  readonly apiCategories = `${environment.API_URL}/v1/categories`;
+  readonly apiCategories = `${environment.API_URL}/v1/temp-categories`;
   readonly apiPeriods = `${environment.API_URL}/v1/periods`;
 
   constructor(

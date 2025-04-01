@@ -226,7 +226,9 @@ export class BuyAdComponent implements OnInit, AfterViewInit {
     const { content, adType, category, period, start, end } = this.adForm.value;
 
     const data = new FormData();
+
     data.append('file', this.selectedFile!);
+
     data.append('content', content);
     data.append('adType', adType);
     data.append('category', category);
