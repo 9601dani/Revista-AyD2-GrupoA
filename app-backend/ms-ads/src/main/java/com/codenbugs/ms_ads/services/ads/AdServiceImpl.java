@@ -7,6 +7,7 @@ import com.codenbugs.ms_ads.exceptions.NotSavedException;
 import com.codenbugs.ms_ads.models.ads.AdType;
 import com.codenbugs.ms_ads.repositories.ads.AdRepository;
 import com.codenbugs.ms_ads.repositories.ads.AdTypeRepository;
+import com.codenbugs.ms_ads.repositories.ads.LabelRepository;
 import com.codenbugs.ms_ads.repositories.categories.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
