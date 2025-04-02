@@ -133,5 +133,15 @@ public class MagazineServiceImpl implements MagazineService {
        return magazines.stream().map(AllMagazineResponse::new).collect(Collectors.toList());
     }
 
+    @Override
+    public AllMagazineResponse getMagazineById(Integer magazineId) {
+        return new AllMagazineResponse(this.magazineRepository.findById(magazineId));
+    }
+
+    @Override
+    public AllMagazineResponse updateMagazine(MagazineRequest magazine) {
+        return null;
+    }
+
 
 }

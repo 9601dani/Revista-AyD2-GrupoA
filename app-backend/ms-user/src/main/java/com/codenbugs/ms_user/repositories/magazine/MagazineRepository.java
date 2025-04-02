@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface MagazineRepository extends JpaRepository<Magazine, Long> {
     List<Magazine> findByUserId(Integer userId);
+    Magazine findById(Integer id);
 }

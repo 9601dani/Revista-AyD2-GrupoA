@@ -46,4 +46,15 @@ public class MagazineController {
         return ResponseEntity.ok(this.magazineService.getAllMagazines());
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<AllMagazineResponse> getMagazineById(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(this.magazineService.getMagazineById(id));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<AllMagazineResponse> updateMagazine(@ModelAttribute MagazineRequest magazineRequest) {
+        return ResponseEntity.ok(this.magazineService.updateMagazine(magazineRequest));
+    }
+
+
 }
