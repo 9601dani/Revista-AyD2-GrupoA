@@ -97,6 +97,14 @@ export class UserService {
     return this.http.get<any>(`${this.apiSuscriptions}/user/${fkUser}`)
   }
   
+  getSuscriptionsWithMagazineForUser(fkUser: number):Observable<any>{
+    return this.http.get<any>(`${this.apiSuscriptions}/all/${fkUser}`)
+  }
+ 
+  getSuscriptionById(id: number):Observable<any>{
+    return this.http.get<any>(`${this.apiSuscriptions}/${id}`)
+  }
+
   updateMagazine(formData: FormData): Observable<any>{
     return this.http.put<any>(`${this.apiMagazine}/update`,formData)
   }

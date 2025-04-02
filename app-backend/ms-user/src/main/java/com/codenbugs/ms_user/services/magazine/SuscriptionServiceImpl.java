@@ -1,5 +1,6 @@
 package com.codenbugs.ms_user.services.magazine;
 
+import com.codenbugs.ms_user.dtos.suscription.AllSuscriptionResponseDto;
 import com.codenbugs.ms_user.dtos.suscription.SuscriptionRequestDto;
 import com.codenbugs.ms_user.dtos.suscription.SuscriptionResponseDto;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
@@ -65,5 +66,23 @@ public class SuscriptionServiceImpl implements SuscriptionService {
 
         List<Suscription> suscriptions = this.suscriptionRepository.findByUserId(userId);
         return suscriptions.stream().map(SuscriptionResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AllSuscriptionResponseDto> getSuscriptionsWithMagazineByUserId(Integer userId) {
+
+        List<Suscription> suscriptions = this.suscriptionRepository.findByUserId(userId);
+        return suscriptions.stream().map(AllSuscriptionResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public AllSuscriptionResponseDto getSuscriptionById(Integer id) throws UserNotFoundException {
+        Optional<Suscription> suscription = this.suscriptionRepository.findById(id);
+
+        if (suscription.isEmpty()) {
+            throw new UserNotFoundException("No se encontro la suscripcion");
+        }
+
+        return new AllSuscriptionResponseDto(suscription.get());
     }
 }

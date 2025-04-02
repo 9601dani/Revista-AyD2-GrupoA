@@ -8,6 +8,8 @@ import { authGuard } from './guards/auth.guard';
 import {BuyAdComponent} from './components/ads/buy-ad/buy-ad.component';
 import {MyAdComponent} from './components/ads/my-ad/my-ad.component';
 import { EditMagazineComponent } from './components/magazines/edit-magazine/edit-magazine.component';
+import { MySubscriptionsComponent } from './components/user/my-subscriptions/my-subscriptions.component';
+import { SubscriptionComponent } from './components/user/subscription/subscription.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -28,7 +30,9 @@ export const routes: Routes = [
     children: [
       { path: 'profile', component: ProfileComponent },
       { path: 'buy-ad', component: BuyAdComponent },
-      { path: 'my-ads', component: MyAdComponent }
+      { path: 'my-ads', component: MyAdComponent },
+      { path: 'my-subscriptions', component: MySubscriptionsComponent },
+      { path: 'subscription/:id', component: SubscriptionComponent },
     ],
     canActivate: [authGuard]
   }

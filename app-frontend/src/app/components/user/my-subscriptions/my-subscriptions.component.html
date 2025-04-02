@@ -1,0 +1,36 @@
+<app-navbar></app-navbar>
+
+<section class="section">
+    <div class="container">
+      <h1 class="title has-text-centered is-size-3 mb-6">Mis Suscripciones</h1>
+  
+      <div class="columns is-multiline">
+        <div
+          class="column is-12-mobile is-6-tablet is-4-desktop"
+          *ngFor="let suscription of suscriptions"
+        >
+          <div class="card is-flex is-flex-direction-column" style="height: 100%;">
+            <header class="card-header">
+              <p class="card-header-title">
+                {{ suscription.magazine.name }}
+              </p>
+            </header>
+  
+            <div class="card-content is-flex-grow-1">
+              <div class="content">
+                <p>{{suscription.magazine.description }}</p>
+                <p class="mt-2"><strong>Autor:</strong> {{suscription.magazine.author.username }}</p>
+              </div>
+            </div>
+  
+            <footer class="card-footer">
+              <a class="card-footer-item button is-success is-small" (click)="viewSubscription(suscription.id)">
+                Ver Revista
+              </a>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

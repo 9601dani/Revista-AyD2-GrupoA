@@ -3,6 +3,7 @@ package com.codenbugs.ms_user.controllers.magazine;
 import com.codenbugs.ms_user.dtos.request.MagazineRequest;
 import com.codenbugs.ms_user.dtos.response.AllMagazineResponse;
 import com.codenbugs.ms_user.dtos.response.MagazineResponse;
+import com.codenbugs.ms_user.dtos.suscription.AllSuscriptionResponseDto;
 import com.codenbugs.ms_user.dtos.suscription.SuscriptionRequestDto;
 import com.codenbugs.ms_user.dtos.suscription.SuscriptionResponseDto;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
@@ -35,5 +36,15 @@ public class SuscriptionController {
     @GetMapping("/user/{fkUser}")
     public ResponseEntity<List<SuscriptionResponseDto>> getSuscriptionsByUserId(@PathVariable("fkUser") Integer fkUser) {
         return ResponseEntity.ok(this.suscriptionService.getSuscriptionsByUserId(fkUser));
+    }
+
+    @GetMapping("/all/{fkUser}")
+    public ResponseEntity<List<AllSuscriptionResponseDto>> getSuscriptionsWithMagazineByUserId(@PathVariable("fkUser") Integer fkUser) {
+        return ResponseEntity.ok(this.suscriptionService.getSuscriptionsWithMagazineByUserId(fkUser));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AllSuscriptionResponseDto> getSuscriptionById(@PathVariable("id") Integer id) throws UserNotFoundException {
+        return ResponseEntity.ok(this.suscriptionService.getSuscriptionById(id));
     }
 }
