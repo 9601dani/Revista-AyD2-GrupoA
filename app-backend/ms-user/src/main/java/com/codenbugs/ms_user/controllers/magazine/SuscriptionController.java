@@ -4,6 +4,7 @@ import com.codenbugs.ms_user.dtos.request.MagazineRequest;
 import com.codenbugs.ms_user.dtos.response.AllMagazineResponse;
 import com.codenbugs.ms_user.dtos.response.MagazineResponse;
 import com.codenbugs.ms_user.dtos.suscription.AllSuscriptionResponseDto;
+import com.codenbugs.ms_user.dtos.suscription.SuscriptionLikeRequest;
 import com.codenbugs.ms_user.dtos.suscription.SuscriptionRequestDto;
 import com.codenbugs.ms_user.dtos.suscription.SuscriptionResponseDto;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
@@ -46,5 +47,10 @@ public class SuscriptionController {
     @GetMapping("/{id}")
     public ResponseEntity<AllSuscriptionResponseDto> getSuscriptionById(@PathVariable("id") Integer id) throws UserNotFoundException {
         return ResponseEntity.ok(this.suscriptionService.getSuscriptionById(id));
+    }
+
+    @PutMapping("/update/like")
+    public ResponseEntity<SuscriptionResponseDto> updateIsLike(@RequestBody SuscriptionLikeRequest request) throws UserNotFoundException {
+        return ResponseEntity.ok(this.suscriptionService.updateIsLike(request));
     }
 }

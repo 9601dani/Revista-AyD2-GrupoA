@@ -1,6 +1,7 @@
 package com.codenbugs.ms_user.services.magazine;
 
 import com.codenbugs.ms_user.dtos.suscription.AllSuscriptionResponseDto;
+import com.codenbugs.ms_user.dtos.suscription.SuscriptionLikeRequest;
 import com.codenbugs.ms_user.dtos.suscription.SuscriptionRequestDto;
 import com.codenbugs.ms_user.dtos.suscription.SuscriptionResponseDto;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
@@ -84,5 +85,22 @@ public class SuscriptionServiceImpl implements SuscriptionService {
         }
 
         return new AllSuscriptionResponseDto(suscription.get());
+    }
+
+    @Override
+    public SuscriptionResponseDto updateIsLike(SuscriptionLikeRequest request) throws UserNotFoundException {
+
+        Optional<Suscription> optionalSus = this.suscriptionRepository.findById(request.id());
+
+        if (optionalSus.isEmpty()) {
+            throw new UserNotFoundException("La suscription no existe");
+        }
+
+        Suscription suscription = optionalSus.get();
+        suscription.setIsLike(request.isLike());
+
+        Suscription savedSuscription = suscriptionRepository.save(suscription);
+
+        return new SuscriptionResponseDto(savedSuscription);
     }
 }

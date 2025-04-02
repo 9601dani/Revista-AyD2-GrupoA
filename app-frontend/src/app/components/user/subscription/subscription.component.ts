@@ -6,6 +6,7 @@ import { LocalStorageService } from '../../../services/local-storage.service';
 import { UserService } from '../../../services/user.service';
 import { FormsModule } from '@angular/forms';
 import { DocumentPipe } from '../../../pipes/document.pipe';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-subscription',
@@ -44,8 +45,32 @@ export class SubscriptionComponent implements OnInit {
 
   toggleLike(sub: any) {
     sub.isLike = !sub.isLike;
+
+    const body = {
+      id: sub.id,
+      isLike: sub.isLike,
+    };
+
+    this._userSevice.updateIsLike(body).subscribe({
+      next: (value) => {
+        if (sub.isLike) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Te gusta esta revista',
+          });
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Ya no te gusta esta revista',
+          });
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
-  
+
   sendComment(sub: any) {
     console.log('Comentario enviado:', this.commentText);
     this.commentText = '';

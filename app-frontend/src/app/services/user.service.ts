@@ -104,6 +104,10 @@ export class UserService {
   getSuscriptionById(id: number):Observable<any>{
     return this.http.get<any>(`${this.apiSuscriptions}/${id}`)
   }
+  
+  updateIsLike(body:any):Observable<any>{
+    return this.http.put<any>(`${this.apiSuscriptions}/update/like`, body)
+  }
 
   updateMagazine(formData: FormData): Observable<any>{
     return this.http.put<any>(`${this.apiMagazine}/update`,formData)
