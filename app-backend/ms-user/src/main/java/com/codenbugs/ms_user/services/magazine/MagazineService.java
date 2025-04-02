@@ -14,4 +14,6 @@ public interface MagazineService {
     MagazineResponse saveMagazine(MagazineRequest magazine) throws UserNotFoundException;
     List<MagazineWithDocumentsResponse> getByUserId(Integer userId) throws UserNotFoundException;
     List<AllMagazineResponse> getAllMagazines();
+    AllMagazineResponse getMagazineById(Integer magazineId);
+    AllMagazineResponse updateMagazine(MagazineRequest magazine);
 }

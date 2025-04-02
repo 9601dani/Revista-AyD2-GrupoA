@@ -1,0 +1,248 @@
+<app-navbar></app-navbar>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title has-text-centered has-text-weight-bold is-size-3">
+      Creación de Revistas
+    </h1>
+
+    <form [formGroup]="magazineForm" (ngSubmit)="onSubmit()" class="section" enctype="multipart/form-data">
+      <div class="container">
+        <div class="columns is-multiline">
+    
+          <div class="column is-half">
+            <div class="field">
+              <label class="label">Nombre</label>
+              <div class="control">
+                <input class="input" type="text" formControlName="name" placeholder="Ingresa el nombre">
+              </div>
+              <p class="help is-danger" *ngIf="magazineForm.get('name')?.touched && magazineForm.get('name')?.invalid">
+                El nombre es obligatorio.
+              </p>
+            </div>
+    
+            <div class="field">
+              <label class="label">Descripción</label>
+              <div class="control">
+                <textarea class="textarea" formControlName="description" placeholder="Escribe una descripción"></textarea>
+              </div>
+              <p class="help is-danger" *ngIf="magazineForm.get('description')?.touched && magazineForm.get('description')?.invalid">
+                La descripción es obligatoria.
+              </p>
+            </div>
+    
+            <div class="field">
+              <label class="checkbox">
+                <input type="checkbox" formControlName="canComment"> Puede comentar
+              </label>
+            </div>
+    
+            <div class="field">
+                <label class="checkbox">
+                  <input type="checkbox" formControlName="canLike"> Puede dar like
+                </label>
+              </div>
+      
+              <div class="field">
+                <label class="checkbox">
+                  <input type="checkbox" formControlName="canSubscribe"> Puede suscribirse
+                </label>
+              </div>
+
+              <div class="field">
+                <div class="box">
+                  <h3 class="title is-5">Categorias de Interés</h3>
+                    <mat-form-field class="is-fullwidth" appearance="outline" style="width: 100%;">
+                      <mat-label>Categorias</mat-label>
+              
+                      <mat-chip-grid #categoryChipList aria-label="Lista de categorias">
+                        <mat-chip-row
+                          *ngFor="let category of categories()"
+                          (removed)="removeC(category)"
+                          class="has-background-light has-text-dark"
+                        >
+                          {{ category.name }}
+                          <button
+                            matChipRemove
+                            [attr.aria-label]="'Quitar ' + category.name"
+                            class="ml-2"
+                          >
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </mat-chip-row>
+                      </mat-chip-grid>
+              
+                      <input
+                      #categoryInput
+                      [(ngModel)]="currentCategorySignal"
+                      [ngModelOptions]="{ standalone: true }"
+                      [matChipInputFor]="categoryChipList"
+                      [matAutocomplete]="autoCategory"
+                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="addC($event, categoryInput)"
+                      style="width: 100%"
+                      class="input"
+                    />                    
+              
+                    <mat-autocomplete
+                    #autoCategory="matAutocomplete"
+                    (optionSelected)="selectedC($event); currentCategorySignal.set('')"
+                    >
+                  
+                        <mat-option
+                          *ngFor="let category of filteredCategories()"
+                          [value]="category.name"
+                        >
+                          {{ category.name }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+              </div>
+              
+              <div class="field" *ngIf="magazine && magazine.documents && magazine.documents.length > 0">
+                <label class="label">Documentos</label>
+                <div
+                  class="buttons"
+                  style="display: flex; gap: 10px; flex-wrap: wrap; overflow-x: auto; max-height: 150px;"
+                >
+                  <button
+                    type="button"
+                    *ngFor="let doc of magazine.documents; let i = index"
+                    class="button is-link is-light"
+                    style="min-width: 120px;"
+                    (click)="changePdfPreview(doc.path)"
+                  >
+                    Documento {{ i + 1 }}
+                  </button>
+                </div>
+              </div>
+
+              
+          </div>
+    
+          <div class="column is-half">
+            <div class="field">
+                <label class="label">Tipo</label>
+                <div class="control">
+                  <div class="select is-fullwidth">
+                    <select formControlName="type">
+                      <option value="" disabled selected>Selecciona el tipo</option>
+                      <option *ngFor="let t of types" [value]="t.value">{{ t.label }}</option>
+                    </select>
+                  </div>
+                </div>
+                <p class="help is-danger" *ngIf="magazineForm.get('type')?.touched && magazineForm.get('type')?.invalid">
+                  El tipo es obligatorio.
+                </p>
+              </div>          
+    
+              <div class="field">
+                <label class="label">Precio</label>
+                <div class="control is-flex">
+                  <span class="button is-static">Q</span>
+                  <input class="input" type="number" formControlName="price" min="0" step="0.01" placeholder="Ej. 10.00" style="margin-left: 5px;">
+                </div>
+                <p class="help is-danger" *ngIf="magazineForm.get('price')?.touched && magazineForm.get('price')?.invalid">
+                  El precio debe ser igual o mayor a 0.
+                </p>
+              </div>
+              <div class="field">
+                <div class="box">
+                  <h3 class="title is-5">Etiquetas de Interés</h3>
+                    <mat-form-field class="is-fullwidth" appearance="outline" style="width: 100%;">
+                      <mat-label>Etiquetas</mat-label>
+              
+                      <mat-chip-grid #chipGrid aria-label="Lista de etiquetas">
+                        <mat-chip-row
+                          *ngFor="let label of labels()"
+                          (removed)="remove(label)"
+                          class="has-background-light has-text-dark"
+                        >
+                          {{ label.name }}
+                          <button
+                            matChipRemove
+                            [attr.aria-label]="'Quitar ' + label.name"
+                            class="ml-2"
+                          >
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </mat-chip-row>
+                      </mat-chip-grid>
+              
+                      <input
+                      #labelInput
+                      [(ngModel)]="currentLabelSignal"
+                      [ngModelOptions]="{ standalone: true }"
+                      [matChipInputFor]="chipGrid"
+                      [matAutocomplete]="auto"
+                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="add($event, labelInput)"
+                      style="width: 100%"
+                      class="input"
+                    />                    
+              
+                    <mat-autocomplete
+                    #auto="matAutocomplete"
+                    (optionSelected)="selected($event); currentLabelSignal.set('')"
+                    >
+                  
+                        <mat-option
+                          *ngFor="let label of filteredLabels()"
+                          [value]="label.name"
+                        >
+                          {{ label.name }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+              </div>
+                            
+    
+            <div class="field">
+              <label class="label">Documento (PDF)</label>
+              <div class="file has-name is-boxed is-fullwidth">
+                <label class="file-label">
+                  <input class="file-input" type="file" accept="application/pdf" (change)="onFileSelected($event)">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label">Selecciona un archivo</span>
+                  </span>
+                  <span class="file-name" *ngIf="magazineForm.get('file')?.value">
+                    {{ magazineForm.get('file')?.value?.name }}
+                  </span>                  
+                </label>
+              </div>
+              <p class="help is-danger" *ngIf="magazineForm.get('archivo')?.touched && magazineForm.get('archivo')?.invalid">
+                Se requiere un archivo PDF válido.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="pdfPreviewUrl" style="margin-top: 1rem;">
+            <label class="label">Previsualización del PDF:</label>
+            <iframe 
+              [src]="pdfPreviewUrl" 
+              width="100%" 
+              height="500px"
+              frameborder="0">
+            </iframe>
+        </div>
+                     
+                  
+        <div class="field is-grouped is-justify-content-center mt-5">
+          <div class="control">
+            <button class="button is-primary" type="submit">Actualizar</button>
+          </div>
+          <div class="control">
+            <button class="button is-light" type="reset" (click)="clearData()">Limpiar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
