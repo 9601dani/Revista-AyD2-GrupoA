@@ -10,6 +10,7 @@ export interface Magazine{
     price: number;
     isEnabled: boolean;
     path:string;
+    
 }
 
 export enum MagazineType{

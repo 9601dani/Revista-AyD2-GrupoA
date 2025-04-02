@@ -7,14 +7,17 @@ import { FormsModule } from '@angular/forms';
 import { capitalizeCategories, capitalizeLabels } from '../../../helpers/helpers';
 import { Category } from '../../../models/Category.mode';
 import { Label } from '../../../models/Label.model';
+import { DocumentPipe } from '../../../pipes/document.pipe';
 
 @Component({
   selector: 'app-home',
-  imports: [NavbarComponent, CommonModule, FormsModule],
+  imports: [NavbarComponent, CommonModule, FormsModule, DocumentPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+
+
   magazines: any[] = [];
 
   filteredMagazines: any[] = [];
@@ -32,6 +35,7 @@ export class HomeComponent {
    this._userService.getAllMagazines().subscribe({
       next: (response) => {
         this.magazines = response;
+        console.log(response)
         this.filteredMagazines = response;
 
         this.categories = capitalizeCategories(
@@ -89,6 +93,11 @@ export class HomeComponent {
 
   onSubscribeMagazine(id:number){
     console.log("Voy a suscribrime a la revis Id: ", id )
+
+  }
+
+  viewPath(path:string){
+    console.log("Path: ", path)
 
   }
 }

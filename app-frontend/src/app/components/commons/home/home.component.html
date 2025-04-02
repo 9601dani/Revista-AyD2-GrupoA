@@ -76,8 +76,8 @@
                 <a
                   *ngIf="magazine.documents?.length"
                   class="button is-small is-info"
-                  [href]="'http://localhost:8010/' + magazine.documents[0].path"
-                  target="_blank"
+                  [href]="magazine.documents[0].path | document"
+                  (click)="viewPath(magazine.documents[0].path)"
                 >
                   Ver PDF
                 </a>
