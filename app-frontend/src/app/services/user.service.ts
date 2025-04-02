@@ -11,6 +11,7 @@ import { UserInformation } from '../models/UserInformation.Model';
 import { Magazine } from '../models/Magazine.model';
 import { Label } from '../models/Label.model';
 import { Category } from '../models/Category.mode';
+import { AllMagazineResponse } from '../models/AllMagazine.mode';
 
 @Injectable({
   providedIn: 'root',
@@ -78,10 +79,14 @@ export class UserService {
   }
 
   getMagazineById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiMagazine}/get/${id}`);
+    return this.http.get<AllMagazineResponse>(`${this.apiMagazine}/get/${id}`);
   }
 
   getAllMagazines():Observable<any>{
     return this.http.get<any>(`${this.apiMagazine}/getAll`)
+  }
+
+  updateMagazine(formData: FormData): Observable<any>{
+    return this.http.put<any>(`${this.apiMagazine}/update`,formData)
   }
 }
