@@ -20,7 +20,9 @@
               <p><strong>Tipo:</strong> {{ magazine.type === 'FREE' ? 'Gratis' : 'De Pago' }}</p>
               <p *ngIf="magazine.type === 'PAID'"><strong>Precio:</strong> Q{{ magazine.price }}</p>
 
-              <p class="mt-2"><strong>Acciones:</strong></p>
+              <p class="mt-2">
+                <strong>Autor:</strong> {{ magazine.author.username }}
+              </p>
               <div class="is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 0.5rem;">
                 <a
                   *ngIf="magazine.documents?.length"

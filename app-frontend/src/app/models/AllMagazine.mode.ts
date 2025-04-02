@@ -1,7 +1,7 @@
 export interface AllMagazineResponse {
     id: number;
     name: string;
-    FK_User: number;
+    author: AuthorResponse;
     description: string;
     canComment: boolean;
     canLike: boolean;
@@ -31,5 +31,11 @@ export interface AllMagazineResponse {
   export interface CategoryResponse {
     id: number;
     name: string;
+  }
+
+  export interface AuthorResponse{
+    id: number;
+    username: string;
+    email: string;
   }
   

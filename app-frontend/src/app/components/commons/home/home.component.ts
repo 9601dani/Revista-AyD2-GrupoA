@@ -15,10 +15,12 @@ import Swal from 'sweetalert2';
 import { MagazineType } from '../../../models/Magazine.model';
 import { SourceTextModule } from 'vm';
 import { DocumentPipe } from '../../../pipes/document.pipe';
+import { MatDialog } from '@angular/material/dialog';
+import { PreviewMagazineModalComponent } from '../preview-magazine-modal/preview-magazine-modal.component';
 
 @Component({
   selector: 'app-home',
-  imports: [NavbarComponent, CommonModule, FormsModule, DocumentPipe],
+  imports: [NavbarComponent, CommonModule, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -39,7 +41,8 @@ export class HomeComponent {
   constructor(
     private _localStorageService: LocalStorageService,
     private _userService: UserService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -58,7 +61,7 @@ export class HomeComponent {
       next: (response) => {
         this.magazines = response;
         this.filteredMagazines = response;
-        //console.log(this.magazines);
+        console.log(this.magazines);
 
         this.categories = capitalizeCategories(
           Array.from(
@@ -186,8 +189,11 @@ export class HomeComponent {
     });
   }
 
-  viewPath(path:string){
-    console.log("Path: ", path)
-
+  viewPath(magazinePath: string, magazine: any) {
+    this.dialog.open(PreviewMagazineModalComponent, {
+      data: magazine,
+      width: '80vw',
+      maxHeight: '90vh'
+    });
   }
 }

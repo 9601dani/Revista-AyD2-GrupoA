@@ -5,58 +5,66 @@
     <h1 class="title has-text-centered is-size-3 mb-6">Revistas</h1>
 
     <!-- Filtros responsivos con Bulma -->
-<section class="section pt-0 pb-4">
-    <div class="container">
-      <div class="columns is-multiline is-variable is-1-mobile is-2-tablet is-3-desktop">
-        
-        <!-- Filtro por categoría -->
-        <div class="column is-12-mobile is-6-tablet is-4-desktop">
-          <div class="field">
-            <label class="label is-small">Filtrar por categoría</label>
-            <div class="control is-fullwidth">
-              <div class="select is-fullwidth is-small">
-                <select [(ngModel)]="selectedCategory" (change)="applyFilters()">
-                  <option value="">Todas las categorías</option>
-                  <option *ngFor="let category of categories" [value]="category.name">
-                    {{ category.name }}
-                  </option>
-                </select>
+    <section class="section pt-0 pb-4">
+      <div class="container">
+        <div
+          class="columns is-multiline is-variable is-1-mobile is-2-tablet is-3-desktop"
+        >
+          <!-- Filtro por categoría -->
+          <div class="column is-12-mobile is-6-tablet is-4-desktop">
+            <div class="field">
+              <label class="label is-small">Filtrar por categoría</label>
+              <div class="control is-fullwidth">
+                <div class="select is-fullwidth is-small">
+                  <select
+                    [(ngModel)]="selectedCategory"
+                    (change)="applyFilters()"
+                  >
+                    <option value="">Todas las categorías</option>
+                    <option
+                      *ngFor="let category of categories"
+                      [value]="category.name"
+                    >
+                      {{ category.name }}
+                    </option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-  
-        <!-- Filtro por etiqueta escrita -->
-        <div class="column is-12-mobile is-6-tablet is-4-desktop">
-          <div class="field">
-            <label class="label is-small">Filtrar por etiqueta</label>
-            <div class="control">
-              <input
-                type="text"
-                class="input is-small"
-                placeholder="Ej: tecnología"
-                [(ngModel)]="selectedLabel"
-                (input)="applyFilters()"
-              />
+
+          <!-- Filtro por etiqueta escrita -->
+          <div class="column is-12-mobile is-6-tablet is-4-desktop">
+            <div class="field">
+              <label class="label is-small">Filtrar por etiqueta</label>
+              <div class="control">
+                <input
+                  type="text"
+                  class="input is-small"
+                  placeholder="Ej: tecnología"
+                  [(ngModel)]="selectedLabel"
+                  (input)="applyFilters()"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="column is-12">
+            <div class="buttons is-centered">
+              <button class="button is-small is-light" (click)="clearFilters()">
+                Limpiar filtros
+              </button>
             </div>
           </div>
         </div>
-
-        <div class="column is-12">
-            <div class="buttons is-centered">
-            <button class="button is-small is-light" (click)="clearFilters()">
-                Limpiar filtros
-            </button>
-            </div>
-        </div>
       </div>
-    </div>
-  </section>
-
-  
+    </section>
 
     <div class="columns is-multiline">
-      <div class="column is-12-mobile is-6-tablet is-4-desktop" *ngFor="let magazine of filteredMagazines">
+      <div
+        class="column is-12-mobile is-6-tablet is-4-desktop"
+        *ngFor="let magazine of filteredMagazines"
+      >
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
@@ -68,28 +76,37 @@
             <div class="content">
               <p>{{ magazine.description }}</p>
 
-              <p><strong>Tipo:</strong> {{ magazine.type === 'FREE' ? 'Gratis' : 'De Pago' }}</p>
-              <p *ngIf="magazine.type === 'PAID'"><strong>Precio:</strong> Q{{ magazine.price }}</p>
+              <p>
+                <strong>Tipo:</strong>
+                {{ magazine.type === "FREE" ? "Gratis" : "De Pago" }}
+              </p>
+              <p *ngIf="magazine.type === 'PAID'">
+                <strong>Precio:</strong> Q{{ magazine.price }}
+              </p>
 
-              <p class="mt-2"><strong>Acciones:</strong></p>
-              <div class="is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 0.5rem;">
+              <p class="mt-2">
+                <strong>Autor:</strong> {{ magazine.author.username }}
+              </p>
+              <div
+                class="is-flex is-align-items-center is-flex-wrap-wrap"
+                style="gap: 0.5rem"
+              >
                 <a
                   *ngIf="magazine.documents?.length"
                   class="button is-small is-info"
-                  [href]="magazine.documents[0].path | document"
-                  (click)="viewPath(magazine.documents[0].path)"
+                  (click)="viewPath(magazine.documents[0].path, magazine)"
                 >
-                  Ver PDF
+                  Previsualizar
                 </a>
-              
+
                 <button
                   class="button is-small is-success"
                   [disabled]="disableButton(magazine)"
                   (click)="onSubscribeMagazine(magazine)"
                 >
-                  {{changeButtonName(magazine)}}
+                  {{ changeButtonName(magazine) }}
                 </button>
-              </div> 
+              </div>
             </div>
           </div>
         </div>

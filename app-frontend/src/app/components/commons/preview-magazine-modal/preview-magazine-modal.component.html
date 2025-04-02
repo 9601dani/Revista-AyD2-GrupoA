@@ -1,0 +1,42 @@
+<div class="box" style="max-height: 90vh; overflow-y: auto;">
+    <h2 class="title is-4">{{ data.name }}</h2>
+  
+    <div class="content">
+      <p><strong>Descripción:</strong> {{ data.description }}</p>
+      <p><strong>Autor:</strong> {{ data.author?.username }}</p>
+  
+      <p>
+        <strong>Categorías:</strong>
+        <span *ngIf="data.categories?.length; else noCategories">
+          {{ getCategoryNames() }}
+        </span>
+        <ng-template #noCategories>No tiene categorías</ng-template>
+      </p>
+  
+      <p>
+        <strong>Etiquetas:</strong>
+        <span *ngIf="data.labels?.length; else noLabels">
+          {{ getLabelNames() }}
+        </span>
+        <ng-template #noLabels>No tiene etiquetas</ng-template>
+      </p>
+  
+      <hr />
+  
+      <p class="mb-2"><strong>Vista previa de la revista</strong></p>
+      <div class="has-text-centered">
+        <iframe
+          *ngIf="data.documents?.length"
+          [src]="data.documents[0].path | previewDocument"
+          width="100%"
+          height="500px"
+          style="border: 1px solid #ccc; border-radius: 8px;"
+        ></iframe>
+  
+        <p *ngIf="!data.documents?.length" class="has-text-danger mt-2">
+          No hay documento disponible.
+        </p>
+      </div>
+    </div>
+  </div>
+  
