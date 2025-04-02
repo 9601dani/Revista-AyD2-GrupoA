@@ -38,7 +38,7 @@ export class AddMagazineComponent {
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  
+
 
   magazineForm!: FormGroup
   magazineToSave!: Magazine
@@ -90,11 +90,11 @@ export class AddMagazineComponent {
     { label: 'Gratis', value: 'FREE' },
     { label: 'De Pago', value: 'PAID' }
   ];
-  
+
 
   constructor( private fb: FormBuilder, private _userService: UserService, private _localStorage:LocalStorageService, private sanitizer: DomSanitizer,
     private route: ActivatedRoute,
-  ){   
+  ){
   }
 
   ngOnInit(): void {
@@ -136,17 +136,16 @@ export class AddMagazineComponent {
       error: (err) => {
         console.log(err);
       },
-});
+    });
 
   }
- 
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file && file.type === 'application/pdf') {
       this.magazineForm.patchValue({ file: file });
       this.magazineForm.get('file')?.updateValueAndValidity();
-  
+
       const url = URL.createObjectURL(file);
       this.pdfPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     } else {
@@ -155,15 +154,15 @@ export class AddMagazineComponent {
       this.pdfPreviewUrl = null;
     }
   }
-  
-  
+
+
 
   onSubmit(): void {
     if (this.magazineForm.valid) {
 
       console.log(this.magazineForm.value)
       let path_saved:string=''
-      
+
       const file: File | null = this.magazineForm.get('file')?.value;
 
       if (file) {
@@ -180,21 +179,21 @@ export class AddMagazineComponent {
         formData.append('price', this.magazineForm.get('price')?.value);
         formData.append('isEnabled', 'true');
         formData.append('path', path_saved);
-        
+
         const file: File | null = this.magazineForm.get('file')?.value;
         if (file) {
           formData.append('file', file, file.name);
         }
-        
+
         this.labels().forEach((label, index) => {
           formData.append(`labels[${index}].name`, label.name);
         });
-        
+
         this.categories().forEach((category, index) => {
           formData.append(`categories[${index}].name`, category.name);
         });
-        
-        
+
+
         this._userService.saveMagazine(formData).subscribe({
           next: (response) => {
             Swal.fire({
@@ -202,7 +201,7 @@ export class AddMagazineComponent {
               title: '¡Revista guardada!',
               text: 'La revista se ha guardado correctamente.',
               confirmButtonText: 'Aceptar'
-              
+
             }).then(() =>{
               this.magazineForm.reset()
             });
@@ -244,23 +243,23 @@ export class AddMagazineComponent {
   add(event: MatChipInputEvent, inputElement: HTMLInputElement): void {
     const value = (event.value || '').trim();
     if (!value) return;
-  
+
     const alreadySelected = this.labels().some(
       (l) => l.name.toLowerCase() === value.toLowerCase()
     );
     if (alreadySelected) return;
-  
+
     const existing = this.allLabels.find(
       (l) => l.name.toLowerCase() === value.toLowerCase()
     );
-  
+
     const newLabel: Label = existing ?? { id: '', name: value };
     this.labels.update((labels) => [...labels, newLabel]);
-  
+
     inputElement.value = '';
     this.currentLabelSignal.set('');
   }
-  
+
 
   remove(label: Label): void {
     this.labels.update((labels) => {
@@ -284,23 +283,23 @@ export class AddMagazineComponent {
   addC(event: MatChipInputEvent, inputElement: HTMLInputElement): void {
     const value = (event.value || '').trim();
     if (!value) return;
-  
+
     const alreadySelected = this.categories().some(
       (c) => c.name.toLowerCase() === value.toLowerCase()
     );
     if (alreadySelected) return;
-  
+
     const existing = this.allCategories.find(
       (c) => c.name.toLowerCase() === value.toLowerCase()
     );
-  
+
     const newCategory: Category = existing ?? { id: '', name: value };
     this.categories.update((categories) => [...categories, newCategory]);
-  
+
     inputElement.value = '';
     this.currentCategorySignal.set('');
   }
-  
+
 
   removeC(category: Category): void {
     this.categories.update((categories) => {
@@ -319,6 +318,6 @@ export class AddMagazineComponent {
     this.currentCategorySignal.set('');
     event.option.deselect();
   }
-  
+
 
 }

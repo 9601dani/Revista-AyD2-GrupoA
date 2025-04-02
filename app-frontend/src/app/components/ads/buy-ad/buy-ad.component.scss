@@ -1,0 +1,9 @@
+.scrollable-content {
+  max-height: 200px;        // o cualquier alto que necesites
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 1rem;      // para evitar que el scroll tape el texto
+}
+
+/* Opcional: Estiliza el botón para que flote bien */
+

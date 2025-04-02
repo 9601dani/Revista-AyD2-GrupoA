@@ -1,0 +1,1 @@
+ALTER TABLE ads MODIFY content TEXT;
