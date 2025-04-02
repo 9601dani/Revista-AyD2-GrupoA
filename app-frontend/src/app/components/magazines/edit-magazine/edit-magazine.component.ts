@@ -1,8 +1,8 @@
-import { Component, computed, inject, model, signal } from '@angular/core';
+import { Component, computed, Inject, inject, model, PLATFORM_ID, signal } from '@angular/core';
 import { NavbarComponent } from '../../commons/navbar/navbar.component';
 import { UserService } from '../../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformServer } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
@@ -87,16 +87,22 @@ export class EditMagazineComponent {
   magazine!: AllMagazineResponse
   
 
+
   constructor(
     private _userService: UserService,
     private _localStorage: LocalStorageService,
     private _route: ActivatedRoute,
     private _fb: FormBuilder,
     private _sanitizer: DomSanitizer,
-    private _router:Router
+    private _router:Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
+    if (isPlatformServer(this.platformId)) {
+      return;
+    }
+
     this._route.params.subscribe(params => {
       if (params['id']) {
         this.magazineId = +params['id'];
