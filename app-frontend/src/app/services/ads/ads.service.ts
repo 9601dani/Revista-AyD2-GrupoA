@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {interval, Observable, shareReplay, startWith, switchMap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +30,9 @@ export class AdsService {
 
   saveAd(data: FormData): Observable<any> {
     return this.httpClient.post(`${this.apiAds}`, data);
+  }
+
+  getRandomAd(id: any): Observable<any> {
+    return this.httpClient.get(`${this.apiAds}/random/${id}`);
   }
 }
