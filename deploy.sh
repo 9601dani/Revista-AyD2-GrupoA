@@ -30,15 +30,26 @@ cd ..
 
 echo "BUILDING FRONTEND"
 cd app-frontend
+npm install
 npm run build --configuration=$ENV
 cd ..
 
 mkdir -p deploy/frontend
 cp -r app-frontend/dist/* deploy/frontend/
 
+echo "SENDING COMPILED FILES"
 cp serve.sh deploy
 
-echo "SENDING COMPILED FILES"
-echo "$USER"
-echo "$TARGET_VM"
+rm -rf app-frontend/node_modules
+rm -rf app-frontend/dist
+
+cd app-backend
+rm -f gateway/target/*.jar
+
+for MS in ms-*; do
+  rm -f "$MS/target/"*.jar
+done
+
+cd ..
+echo "DEPLOY DIRECTORY DELETED"
 

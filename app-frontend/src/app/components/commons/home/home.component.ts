@@ -14,14 +14,17 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { MagazineType } from '../../../models/Magazine.model';
 import { SourceTextModule } from 'vm';
+import { DocumentPipe } from '../../../pipes/document.pipe';
 
 @Component({
   selector: 'app-home',
-  imports: [NavbarComponent, CommonModule, FormsModule],
+  imports: [NavbarComponent, CommonModule, FormsModule, DocumentPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+
+
   magazines: any[] = [];
   suscriptions: any[] = [];
 
@@ -181,5 +184,10 @@ export class HomeComponent {
         });
       }
     });
+  }
+
+  viewPath(path:string){
+    console.log("Path: ", path)
+
   }
 }

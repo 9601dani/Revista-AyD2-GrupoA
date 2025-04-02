@@ -5,6 +5,8 @@ import { AddMagazineComponent } from './components/magazines/add-magazine/add-ma
 import { ViewComponent } from './components/magazines/view/view.component';
 import { ProfileComponent } from './components/user/profile/profile.component';
 import { authGuard } from './guards/auth.guard';
+import {BuyAdComponent} from './components/ads/buy-ad/buy-ad.component';
+import {MyAdComponent} from './components/ads/my-ad/my-ad.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -19,11 +21,12 @@ export const routes: Routes = [
     ],
     canActivate: [authGuard]
   },
-
   {
     path: 'user',
     children: [
-        {path: 'profile', component: ProfileComponent}
+      { path: 'profile', component: ProfileComponent },
+      { path: 'buy-ad', component: BuyAdComponent },
+      { path: 'my-ads', component: MyAdComponent }
     ],
     canActivate: [authGuard]
   }

@@ -1,0 +1,20 @@
+@if (data) {
+  <div class="box" style="position: relative;">
+    @if(showButton) {
+      <button
+        class="delete is-medium"
+        style="position: absolute; top: 1rem; right: 1rem;">
+      </button>
+    }
+
+    @if (type === "VIDEO") {
+      <div [innerHTML]="data"></div>
+    } @else if (type === "IMAGE") {
+      <figure class="image is-16by9">
+        <img [src]="data" />
+      </figure>
+    } @else {
+      <p>{{ data }}</p>
+    }
+  </div>
+}

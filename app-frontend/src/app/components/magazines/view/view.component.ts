@@ -3,11 +3,12 @@ import { NavbarComponent } from '../../commons/navbar/navbar.component';
 import { UserService } from '../../../services/user.service';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { CommonModule } from '@angular/common';
+import { DocumentPipe } from '../../../pipes/document.pipe';
 
 @Component({
   selector: 'app-view',
   standalone: true,
-  imports: [NavbarComponent, CommonModule],
+  imports: [NavbarComponent, CommonModule, DocumentPipe],
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss'
 })

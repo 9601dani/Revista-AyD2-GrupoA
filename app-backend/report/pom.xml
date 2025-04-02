@@ -43,11 +43,11 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>com.codenbugs</groupId>
-            <artifactId>ms-adds</artifactId>
+            <artifactId>ms-ads</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.codenbugs</groupId>

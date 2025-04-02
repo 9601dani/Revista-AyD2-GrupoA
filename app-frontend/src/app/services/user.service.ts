@@ -48,7 +48,7 @@ export class UserService {
     return this.http.put<UserInformation>(`${this.apiUser}/info/update/current_balance`, body);
   }
 
-  /* Labels */
+  /* Labels */ 
 
   getAllLabels(): Observable<any>{
     return this.http.get<Label[]>(`${this.apiUser}/labels/all`)
