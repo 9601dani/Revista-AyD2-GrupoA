@@ -3,18 +3,31 @@
     @if(showButton) {
       <button
         class="delete is-small"
+        (click)="close()"
         style="position: absolute; top: 0.5rem; right: 0.5rem;">
       </button>
     }
 
     @if (type === "VIDEO") {
-      <div [innerHTML]="data"></div>
+      <iframe
+        width="300"
+        height="200"
+        [src]="sanitizedUrl"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
     } @else if (type === "IMAGE") {
-      <figure class="image is-16by9">
-        <img [src]="data" />
+      <figure class="image">
+        @if(usePipe) {
+          <img [src]="data | image"
+               style="max-width: 300px; max-height: 200px; object-fit: contain;"/>
+        } @else {
+          <img [src]="data" alt="image" />
+        }
+
       </figure>
     } @else {
-      <div style="max-height: 200px; overflow-y: auto">
+      <div class="m-1" style="max-height: 200px; overflow-y: auto">
         <p>{{ data }}</p>
       </div>
     }

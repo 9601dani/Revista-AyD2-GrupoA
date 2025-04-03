@@ -1,1 +1,5 @@
-<p>ad-container works!</p>
+@if(latestData) {
+  <div class="ad-container">
+    <app-ad-template [data]="latestData.content" [showButton]="true" [type]="latestData.type" (closeAd)="handleAdClosed()" [usePipe]="true"></app-ad-template>
+  </div>
+}

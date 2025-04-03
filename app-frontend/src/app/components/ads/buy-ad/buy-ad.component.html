@@ -187,7 +187,7 @@
           <h4 class="subtitle is-4 has-text-centered">Previsualización</h4>
           @if(this.showTemplate) {
             <div class="m-5">
-              <app-ad-template [showButton]="true" [data]="this.adForm.get('content')?.value" [type]="this.currentType"></app-ad-template>
+              <app-ad-template [showButton]="false" [data]="this.adForm.get('content')?.value" [type]="this.currentType" [usePipe]="false"></app-ad-template>
             </div>
           } @else {
             <h3>Nada para mostrar aún</h3>

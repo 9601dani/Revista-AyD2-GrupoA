@@ -298,13 +298,6 @@ export class BuyAdComponent implements OnInit {
       return;
     }
 
-    if(this.currentType === "VIDEO") {
-      const sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(content)
-      this.adForm.patchValue({
-        content: sanitizedContent
-      })
-    }
-
     this.showTemplate = true;
   }
 
