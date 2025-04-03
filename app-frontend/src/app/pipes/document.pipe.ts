@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Pipe({
   name: 'document',
@@ -6,11 +7,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DocumentPipe implements PipeTransform {
 
-  bucket: string = 'https://storage.googleapis.com/bucket-magazines/';
+  private bucket = 'https://storage.googleapis.com/bucket-magazines/';
 
+  constructor(private sanitizer: DomSanitizer) {}
 
-  transform(value: string): string {
-    return this.bucket + value;
+  transform(value: string): SafeResourceUrl {
+    const fullUrl = this.bucket + value;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(fullUrl);
   }
 
 

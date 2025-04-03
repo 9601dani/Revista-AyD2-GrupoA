@@ -24,10 +24,13 @@ export class SubscriptionComponent implements OnInit {
   public capitalizeLabels = capitalizeLabels;
   public capitalizeCategories = capitalizeCategories;
   authorModalOpen = false;
-selectedAuthor: { username: string; email: string } | null = null;
-
+  selectedAuthor: { username: string; email: string } | null = null;
 
   commentText = '';
+
+  pdfModalOpen = false;
+selectedPdfPath: string | null = null;
+selectedPdfIndex: number | null = null;
 
   constructor(
     private _route: ActivatedRoute,
@@ -53,15 +56,18 @@ selectedAuthor: { username: string; email: string } | null = null;
   }
 
   getCategoryNames(): string {
-    const capitalized = capitalizeCategories(this.subscription.magazine.categories || []);
-    return capitalized.map(c => c.name).join(', ');
+    const capitalized = capitalizeCategories(
+      this.subscription.magazine.categories || []
+    );
+    return capitalized.map((c) => c.name).join(', ');
   }
-  
+
   getLabelNames(): string {
-    const capitalized = capitalizeLabels(this.subscription.magazine.labels || []);
-    return capitalized.map(l => l.name).join(', ');
+    const capitalized = capitalizeLabels(
+      this.subscription.magazine.labels || []
+    );
+    return capitalized.map((l) => l.name).join(', ');
   }
-  
 
   toggleLike(sub: any) {
     sub.isLike = !sub.isLike;
@@ -150,9 +156,21 @@ selectedAuthor: { username: string; email: string } | null = null;
     this.selectedAuthor = author;
     this.authorModalOpen = true;
   }
-  
+
   closeAuthorModal() {
     this.authorModalOpen = false;
     this.selectedAuthor = null;
+  }
+
+  openPdfModal(path: string, index: number) {
+    this.selectedPdfPath = path;
+    this.selectedPdfIndex = index;
+    this.pdfModalOpen = true;
+  }
+  
+  closePdfModal() {
+    this.selectedPdfPath = null;
+    this.selectedPdfIndex = null;
+    this.pdfModalOpen = false;
   }
 }

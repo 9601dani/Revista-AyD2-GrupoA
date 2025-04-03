@@ -51,14 +51,13 @@
         <div class="column is-12-tablet is-6-desktop">
           <strong>Documentos:</strong>
           <div class="buttons mt-2 is-flex-wrap-wrap">
-            <a
+            <button
               *ngFor="let doc of subscription.magazine.documents; let i = index"
-              class="button is-info is-small"
-              [href]="doc.path | document"
-              target="_blank"
+              class="button is-small is-info"
+              (click)="openPdfModal(doc.path, i + 1)"
             >
               Ver Documento {{ i + 1 }}
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -137,6 +136,34 @@
     </section>
     <footer class="modal-card-foot">
       <button class="button" (click)="closeAuthorModal()">Cerrar</button>
+    </footer>
+  </div>
+</div>
+
+<div class="modal" [ngClass]="{ 'is-active': pdfModalOpen }">
+  <div class="modal-background" (click)="closePdfModal()"></div>
+  <div class="modal-card" style="width: 90%; max-width: 1000px">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+         Documento {{ selectedPdfIndex }}
+      </p>
+      <button
+        class="delete"
+        aria-label="close"
+        (click)="closePdfModal()"
+      ></button>
+    </header>
+    <section class="modal-card-body" style="height: 80vh">
+      <iframe
+        *ngIf="selectedPdfPath"
+        [src]="selectedPdfPath | document"
+        width="100%"
+        height="100%"
+        style="border: none"
+      ></iframe>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button" (click)="closePdfModal()">Cerrar</button>
     </footer>
   </div>
 </div>

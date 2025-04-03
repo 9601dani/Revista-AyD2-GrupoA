@@ -5,7 +5,10 @@
     <h1 class="title has-text-centered is-size-3 mb-6">Mis Revistas</h1>
 
     <div class="columns is-multiline">
-      <div class="column is-12-mobile is-6-tablet is-4-desktop" *ngFor="let magazine of magazines">
+      <div
+        class="column is-12-mobile is-6-tablet is-4-desktop"
+        *ngFor="let magazine of magazines"
+      >
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
@@ -17,21 +20,25 @@
             <div class="content">
               <p>{{ magazine.description }}</p>
 
-              <p><strong>Tipo:</strong> {{ magazine.type === 'FREE' ? 'Gratis' : 'De Pago' }}</p>
-              <p *ngIf="magazine.type === 'PAID'"><strong>Precio:</strong> Q{{ magazine.price }}</p>
-
-              <p class="mt-2">
-                <strong>Autor:</strong> {{ magazine.author.username }}
+              <p>
+                <strong>Tipo:</strong>
+                {{ magazine.type === "FREE" ? "Gratis" : "De Pago" }}
               </p>
-              <div class="is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 0.5rem;">
+              <p *ngIf="magazine.type === 'PAID'">
+                <strong>Precio:</strong> Q{{ magazine.price }}
+              </p>
+              <div
+                class="is-flex is-align-items-center is-flex-wrap-wrap"
+                style="gap: 0.5rem"
+              >
                 <a
                   *ngIf="magazine.documents?.length"
                   class="button is-small is-info"
-                  [href]="magazine.documents[0].path | document"
-                  >
+                  (click)="openPdfModal(magazine)"
+                >
                   Ver PDF
                 </a>
-              
+
                 <button
                   class="button is-small is-warning"
                   (click)="onEditMagazine(magazine.id)"
@@ -39,8 +46,6 @@
                   Editar
                 </button>
               </div>
-              
-              
             </div>
           </div>
         </div>
@@ -48,3 +53,41 @@
     </div>
   </div>
 </section>
+
+<div class="modal" [ngClass]="{ 'is-active': pdfModalOpen }">
+  <div class="modal-background" (click)="closePdfModal()"></div>
+  <div class="modal-card" style="width: 90%; max-width: 1000px">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Documentos de {{ selectedMagazine?.name }}</p>
+      <button
+        class="delete"
+        aria-label="close"
+        (click)="closePdfModal()"
+      ></button>
+    </header>
+
+    <section class="modal-card-body" style="height: 80vh">
+      <div class="buttons mb-3 is-flex-wrap-wrap">
+        <button
+          class="button is-small"
+          *ngFor="let doc of selectedMagazine?.documents; let i = index"
+          (click)="selectPdf(doc.path, i + 1)"
+        >
+          Documento {{ i + 1 }}
+        </button>
+      </div>
+
+      <iframe
+        *ngIf="selectedPdfPath"
+        [src]="selectedPdfPath | document"
+        width="100%"
+        height="100%"
+        style="border: none"
+      ></iframe>
+    </section>
+
+    <footer class="modal-card-foot">
+      <button class="button" (click)="closePdfModal()">Cerrar</button>
+    </footer>
+  </div>
+</div>
