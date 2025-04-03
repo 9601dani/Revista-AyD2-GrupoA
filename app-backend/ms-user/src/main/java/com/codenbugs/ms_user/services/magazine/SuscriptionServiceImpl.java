@@ -1,13 +1,12 @@
 package com.codenbugs.ms_user.services.magazine;
 
-import com.codenbugs.ms_user.dtos.suscription.AllSuscriptionResponseDto;
-import com.codenbugs.ms_user.dtos.suscription.SuscriptionLikeRequest;
-import com.codenbugs.ms_user.dtos.suscription.SuscriptionRequestDto;
-import com.codenbugs.ms_user.dtos.suscription.SuscriptionResponseDto;
+import com.codenbugs.ms_user.dtos.suscription.*;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
+import com.codenbugs.ms_user.models.magazine.Comment;
 import com.codenbugs.ms_user.models.magazine.Magazine;
 import com.codenbugs.ms_user.models.magazine.Suscription;
 import com.codenbugs.ms_user.models.user.User;
+import com.codenbugs.ms_user.repositories.magazine.CommentRepository;
 import com.codenbugs.ms_user.repositories.magazine.MagazineRepository;
 import com.codenbugs.ms_user.repositories.magazine.SuscriptionRepository;
 import com.codenbugs.ms_user.repositories.user.UserRepository;
@@ -19,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,6 +33,7 @@ public class SuscriptionServiceImpl implements SuscriptionService {
     private final SuscriptionRepository suscriptionRepository;
     private final UserRepository userRepository;
     private final MagazineRepository magazineRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public SuscriptionResponseDto saveSuscription(SuscriptionRequestDto suscriptionRequestDto) throws UserNotFoundException {
@@ -102,5 +103,29 @@ public class SuscriptionServiceImpl implements SuscriptionService {
         Suscription savedSuscription = suscriptionRepository.save(suscription);
 
         return new SuscriptionResponseDto(savedSuscription);
+    }
+
+    @Override
+    public CommentMagazineResponse saveComment(CommentRequest request) throws UserNotFoundException {
+
+        Optional<Suscription> optionalSuscription = this.suscriptionRepository.findById(request.fkSuscription());
+        if (optionalSuscription.isEmpty()) {
+            throw new UserNotFoundException("No se encontro la suscripcion");
+        }
+
+        Optional<Magazine> optionalMagazine = this.magazineRepository.findById(Long.valueOf(request.fkMagazine()));
+        if (optionalMagazine.isEmpty()) {
+            throw new UserNotFoundException("La revista no existe");
+        }
+
+        Comment comment = new Comment();
+        comment.setContent(request.content());
+        comment.setSuscription(optionalSuscription.get());
+        comment.setMagazine(optionalMagazine.get());
+        comment.setDateCreated(LocalDateTime.now());
+
+        Comment savedComent = this.commentRepository.save(comment);
+
+        return new CommentMagazineResponse(savedComent);
     }
 }

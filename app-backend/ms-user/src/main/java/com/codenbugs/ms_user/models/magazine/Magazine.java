@@ -62,4 +62,8 @@ public class Magazine {
 
     @ManyToMany(mappedBy = "magazines", fetch = FetchType.LAZY)
     private List<Label> labels;
+
+    @OneToMany(mappedBy = "magazine", fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
 }

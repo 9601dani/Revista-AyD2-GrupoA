@@ -1,5 +1,6 @@
 package com.codenbugs.ms_user.dtos.response;
 
+import com.codenbugs.ms_user.dtos.suscription.CommentMagazineResponse;
 import com.codenbugs.ms_user.dtos.user.AuthorResponse;
 import com.codenbugs.ms_user.enums.MagazineType;
 import com.codenbugs.ms_user.models.magazine.Magazine;
@@ -22,9 +23,10 @@ public record AllMagazineResponse(
         LocalDateTime dateCreated,
         List<DocumentResponse> documents,
         List<LabelDTO> labels,
-        List<CategoryResponse> categories
+        List<CategoryResponse> categories,
+        List<CommentMagazineResponse> comments
 ) {
-    public AllMagazineResponse(Magazine magazine){
+    public AllMagazineResponse(Magazine magazine) {
         this(magazine.getId(), magazine.getName(), new AuthorResponse(magazine.getUser()),
                 magazine.getDescription(), magazine.getCanComment(),
                 magazine.isCanLike(), magazine.isCanSubscribe(),
@@ -38,6 +40,12 @@ public record AllMagazineResponse(
                         : List.of(),
                 magazine.getCategories() != null
                         ? magazine.getCategories().stream().map(CategoryResponse::new).toList()
-                        : List.of());
+                        : List.of(),
+                magazine.getComments() != null
+                        ? magazine.getComments().stream().map(CommentMagazineResponse::new).toList()
+                        : List.of()
+
+        );
+
     }
 }

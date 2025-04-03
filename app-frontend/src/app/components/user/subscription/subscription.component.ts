@@ -72,7 +72,59 @@ export class SubscriptionComponent implements OnInit {
   }
 
   sendComment(sub: any) {
-    console.log('Comentario enviado:', this.commentText);
-    this.commentText = '';
+  
+    const body = {
+      fkSuscription: sub.id,
+      fkMagazine: sub.magazine.id,
+      content: this.commentText,
+    };
+  
+    this._userSevice.saveComment(body).subscribe({
+      next: (value) => {
+        console.log(value);
+        this.commentText = '';
+  
+        const newComment = {
+          ...value,
+          dateCreated: new Date().toISOString(), 
+          subscription: {
+            user: sub.user
+          }
+        };
+  
+        
+        if (!sub.magazine.comments) {
+          sub.magazine.comments = [];
+        }
+  
+        sub.magazine.comments.unshift(newComment); 
+        sub.magazine.comments = sub.magazine.comments.slice(0, 10); 
+  
+        Swal.fire({
+          icon: 'success',
+          title: 'El comentario se ha enviado',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      },
+      error: (err) => {
+        console.log(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al guardar comentario',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      },
+    });
   }
+
+  sortedComments() {
+    return [...(this.subscription.magazine.comments || [])]
+      .sort(
+        (a, b) => new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime()
+      )
+      .slice(0, 10); 
+  }
+  
 }

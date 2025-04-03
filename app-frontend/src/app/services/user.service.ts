@@ -109,6 +109,10 @@ export class UserService {
     return this.http.put<any>(`${this.apiSuscriptions}/update/like`, body)
   }
 
+  saveComment(body: any): Observable<any>{
+    return this.http.post<any>(`${this.apiSuscriptions}/comment/save`, body)
+  }
+
   updateMagazine(formData: FormData): Observable<any>{
     return this.http.put<any>(`${this.apiMagazine}/update`,formData)
   }

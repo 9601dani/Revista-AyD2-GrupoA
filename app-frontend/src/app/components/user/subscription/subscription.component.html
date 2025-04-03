@@ -1,48 +1,76 @@
 <app-navbar></app-navbar>
 
 <section class="section">
-    <div class="container">
-      <div class="box">
-        <h1 class="title is-4">{{ subscription.magazine.name }}</h1>
-        <p class="subtitle is-6">Autor: {{ subscription.magazine.author.username }}</p>
-        <button
-            *ngIf="subscription.magazine.canLike"
-            class="button is-danger is-light mb-2"
-            (click)="toggleLike(subscription)"
-          >
-            {{ subscription.isLike ? 'Ya te gusta' : 'Me gusta' }}
-          </button>
-  
-        <div class="columns is-multiline">
-          <div class="column is-12-tablet is-6-desktop">
-            <p><strong>Descripción:</strong> {{ subscription.magazine.description }}</p>
-            <p><strong>Tipo:</strong> {{ subscription.magazine.type === 'PAID' ? 'De Pago' : 'Gratis' }}</p>
-            <p *ngIf="subscription.magazine.type === 'PAID'"><strong>Precio:</strong> Q{{ subscription.magazine.price }}</p>
-            <p><strong>Fecha de Suscripción:</strong> {{ subscription.dateCreated }}</p>
-            <p><strong>Válido hasta:</strong> {{ subscription.dateEnded }}</p>
-          </div>
+  <div class="container">
+    <div class="box" *ngIf="subscription">
+      <h1 class="title is-4">{{ subscription.magazine.name }}</h1>
+      <p class="subtitle is-6">
+        Autor: {{ subscription.magazine.author.username }}
+      </p>
+      <button
+        *ngIf="subscription.magazine.canLike"
+        class="button is-danger is-light mb-2"
+        (click)="toggleLike(subscription)"
+      >
+        {{ subscription.isLike ? "Ya te gusta" : "Me gusta" }}
+      </button>
 
-          <div class="column is-12-tablet is-6-desktop">
-            <strong>Documentos:</strong>
-            <div class="buttons mt-2 is-flex-wrap-wrap">
-              <a
-                *ngFor="let doc of subscription.magazine.documents, let i = index"
-                class="button is-info is-small"
-                [href]="doc.path | document"
-                target="_blank"
-              >
-                Ver Documento {{ i + 1}}
-              </a>
-            </div>
+      <div class="columns is-multiline">
+        <div class="column is-12-tablet is-6-desktop">
+          <p>
+            <strong>Descripción:</strong>
+            {{ subscription.magazine.description }}
+          </p>
+          <p>
+            <strong>Tipo:</strong>
+            {{ subscription.magazine.type === "PAID" ? "De Pago" : "Gratis" }}
+          </p>
+          <p *ngIf="subscription.magazine.type === 'PAID'">
+            <strong>Precio:</strong> Q{{ subscription.magazine.price }}
+          </p>
+          <p>
+            <strong>Fecha de Suscripción:</strong>
+            {{ subscription.dateCreated }}
+          </p>
+          <p><strong>Válido hasta:</strong> {{ subscription.dateEnded }}</p>
+        </div>
+
+        <div class="column is-12-tablet is-6-desktop">
+          <strong>Documentos:</strong>
+          <div class="buttons mt-2 is-flex-wrap-wrap">
+            <a
+              *ngFor="let doc of subscription.magazine.documents; let i = index"
+              class="button is-info is-small"
+              [href]="doc.path | document"
+              target="_blank"
+            >
+              Ver Documento {{ i + 1 }}
+            </a>
           </div>
         </div>
-  
-        <hr />
-  
-        <div class="is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 1rem;">
-          
-          <div *ngIf="subscription.magazine.canComment" class="field is-flex-grow-1">
-            <label class="label">Comentario</label>
+      </div>
+
+      <hr />
+
+      <div class="box">
+        <div *ngIf="subscription.magazine.canComment; else commentsDisabled">
+          <label class="label">Comentarios</label>
+      
+          <div *ngIf="subscription.magazine.comments?.length > 0; else noComments">
+            <div *ngFor="let comment of sortedComments()" class="box mb-3 p-3">
+              <div class="is-flex is-justify-content-space-between is-align-items-center mb-1">
+                <span class="has-text-weight-semibold">{{ comment.suscription.user.username }}</span>
+                <span class="has-text-grey is-size-7">{{ comment.dateCreated | date: 'short' }}</span>
+              </div>
+              <p>{{ comment.content }}</p>
+            </div>
+          </div>
+          <ng-template #noComments>
+            <p class="has-text-grey">Aún no hay comentarios.</p>
+          </ng-template>
+      
+          <div class="field mt-4">
+            <label class="label">Agregar un comentario</label>
             <div class="control">
               <textarea
                 class="textarea"
@@ -55,7 +83,17 @@
             </button>
           </div>
         </div>
+      
+        <ng-template #commentsDisabled>
+          <article class="message is-warning mt-4">
+            <div class="message-body">
+              Los comentarios están bloqueados para esta revista.
+            </div>
+          </article>
+        </ng-template>
       </div>
+      
+      
     </div>
-  </section>
-  
+  </div>
+</section>

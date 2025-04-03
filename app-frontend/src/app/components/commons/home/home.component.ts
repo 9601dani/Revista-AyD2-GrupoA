@@ -25,8 +25,6 @@ import { PreviewMagazineModalComponent } from '../preview-magazine-modal/preview
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-
-
   magazines: any[] = [];
   suscriptions: any[] = [];
 
@@ -113,18 +111,19 @@ export class HomeComponent {
   }
 
   disableButton(magazine: any): boolean {
-
-    const alreadySubscribed = this.suscriptions.some(s => s.fkMagazine == magazine.id);
+    const alreadySubscribed = this.suscriptions.some(
+      (s) => s.fkMagazine == magazine.id
+    );
     return !magazine.canSubscribe || alreadySubscribed;
   }
 
-  changeButtonName(magazine: any): string{
-    
-    const alreadySubscribed = this.suscriptions.some(s => s.fkMagazine == magazine.id);
+  changeButtonName(magazine: any): string {
+    const alreadySubscribed = this.suscriptions.some(
+      (s) => s.fkMagazine == magazine.id
+    );
 
-    return alreadySubscribed ? 'Subscrito' : 'Subscribirse'
+    return alreadySubscribed ? 'Subscrito' : 'Subscribirse';
   }
-  
 
   onSubscribeMagazine(magazine: any) {
     const userId = this._localStorageService.getItem(
@@ -180,6 +179,8 @@ export class HomeComponent {
                 icon: 'success',
               });
             }
+
+            setTimeout(() => {this.router.navigate(["/user/my-subscriptions"])}, 3000)
           },
           error: (err) => {
             console.log(err);
@@ -193,7 +194,7 @@ export class HomeComponent {
     this.dialog.open(PreviewMagazineModalComponent, {
       data: magazine,
       width: '80vw',
-      maxHeight: '90vh'
+      maxHeight: '90vh',
     });
   }
 }
