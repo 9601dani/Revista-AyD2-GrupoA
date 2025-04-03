@@ -35,4 +35,8 @@ export class AdsService {
   getRandomAd(id: any): Observable<any> {
     return this.httpClient.get(`${this.apiAds}/random/${id}`);
   }
+
+  incrementViews(id: any): Observable<any> {
+    return this.httpClient.put(`${this.apiAds}/views/${id}`, {});
+  }
 }

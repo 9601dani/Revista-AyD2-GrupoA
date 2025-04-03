@@ -3,6 +3,7 @@ package com.codenbugs.ms_ads.services.ads;
 import com.codenbugs.ms_ads.clients.UploadRestClient;
 import com.codenbugs.ms_ads.dto.request.AdRequestDTO;
 import com.codenbugs.ms_ads.dto.response.AdResponseDTO;
+import com.codenbugs.ms_ads.exceptions.NotFoundException;
 import com.codenbugs.ms_ads.exceptions.NotSavedException;
 import com.codenbugs.ms_ads.models.Label;
 import com.codenbugs.ms_ads.models.ads.Ad;
@@ -109,22 +110,43 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdResponseDTO findById(Integer id) {
-        return null;
+    public AdResponseDTO findById(Integer id) throws NotFoundException {
+        Ad ad = this.adRepository.findById(id).orElseThrow(() -> new NotFoundException(("Ad not found")));
+        return new AdResponseDTO(ad);
     }
 
     @Override
     public List<AdResponseDTO> findAll() {
-        return List.of();
+        return this.adRepository.findAll().stream()
+                .map(AdResponseDTO::new)
+                .toList();
     }
 
     @Override
     public List<AdResponseDTO> findByUserId(Integer userId) {
-        return List.of();
+        return this.adRepository.findByUserId(userId).stream()
+                .map(AdResponseDTO::new)
+                .toList();
     }
 
     @Override
-    public AdResponseDTO findRandomByUserId(Integer userId) {
-        return null;
+    public AdResponseDTO findRandomByUserId(Integer userId) throws NotFoundException {
+        Optional<Ad> adOptional = this.adRepository.findRandomByUserId(userId);
+
+        if(adOptional.isPresent()) {
+            return new AdResponseDTO(adOptional.get());
+        }
+
+        Ad ad = this.adRepository.findRandom().orElseThrow(() -> new NotFoundException("Ad not found."));
+        return new AdResponseDTO(ad);
+    }
+
+    @Override
+    public AdResponseDTO incrementViews(Integer id) throws NotFoundException {
+        Ad ad = this.adRepository.findById(id).orElseThrow(() -> new NotFoundException(("Ad not found")));
+
+        ad.setNumberViews(ad.getNumberViews() + 1);
+        this.adRepository.save(ad);
+        return new AdResponseDTO(ad);
     }
 }
