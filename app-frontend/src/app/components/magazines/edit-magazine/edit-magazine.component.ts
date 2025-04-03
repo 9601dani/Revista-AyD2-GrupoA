@@ -221,6 +221,7 @@ export class EditMagazineComponent {
           title: 'Actualizado',
           text: 'La revista ha sido editada exitosamente.'
         });
+        this._router.navigate(['/editor/my-magazines'])
       },
       error: () => {
         Swal.fire({

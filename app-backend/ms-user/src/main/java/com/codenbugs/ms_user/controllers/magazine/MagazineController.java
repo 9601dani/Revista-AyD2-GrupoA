@@ -52,7 +52,7 @@ public class MagazineController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<AllMagazineResponse> updateMagazine(@ModelAttribute MagazineRequest magazineRequest) {
+    public ResponseEntity<AllMagazineResponse> updateMagazine(@ModelAttribute MagazineRequest magazineRequest) throws UserNotFoundException {
         return ResponseEntity.ok(this.magazineService.updateMagazine(magazineRequest));
     }
 
