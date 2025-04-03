@@ -7,6 +7,10 @@ import { UserService } from '../../../services/user.service';
 import { FormsModule } from '@angular/forms';
 import { DocumentPipe } from '../../../pipes/document.pipe';
 import Swal from 'sweetalert2';
+import {
+  capitalizeCategories,
+  capitalizeLabels,
+} from '../../../helpers/helpers';
 
 @Component({
   selector: 'app-subscription',
@@ -17,6 +21,11 @@ import Swal from 'sweetalert2';
 export class SubscriptionComponent implements OnInit {
   subscriptionId: number | undefined;
   subscription: any;
+  public capitalizeLabels = capitalizeLabels;
+  public capitalizeCategories = capitalizeCategories;
+  authorModalOpen = false;
+selectedAuthor: { username: string; email: string } | null = null;
+
 
   commentText = '';
 
@@ -42,6 +51,17 @@ export class SubscriptionComponent implements OnInit {
       });
     }
   }
+
+  getCategoryNames(): string {
+    const capitalized = capitalizeCategories(this.subscription.magazine.categories || []);
+    return capitalized.map(c => c.name).join(', ');
+  }
+  
+  getLabelNames(): string {
+    const capitalized = capitalizeLabels(this.subscription.magazine.labels || []);
+    return capitalized.map(l => l.name).join(', ');
+  }
+  
 
   toggleLike(sub: any) {
     sub.isLike = !sub.isLike;
@@ -72,34 +92,32 @@ export class SubscriptionComponent implements OnInit {
   }
 
   sendComment(sub: any) {
-  
     const body = {
       fkSuscription: sub.id,
       fkMagazine: sub.magazine.id,
       content: this.commentText,
     };
-  
+
     this._userSevice.saveComment(body).subscribe({
       next: (value) => {
         console.log(value);
         this.commentText = '';
-  
+
         const newComment = {
           ...value,
-          dateCreated: new Date().toISOString(), 
+          dateCreated: new Date().toISOString(),
           subscription: {
-            user: sub.user
-          }
+            user: sub.user,
+          },
         };
-  
-        
+
         if (!sub.magazine.comments) {
           sub.magazine.comments = [];
         }
-  
-        sub.magazine.comments.unshift(newComment); 
-        sub.magazine.comments = sub.magazine.comments.slice(0, 10); 
-  
+
+        sub.magazine.comments.unshift(newComment);
+        sub.magazine.comments = sub.magazine.comments.slice(0, 10);
+
         Swal.fire({
           icon: 'success',
           title: 'El comentario se ha enviado',
@@ -122,9 +140,19 @@ export class SubscriptionComponent implements OnInit {
   sortedComments() {
     return [...(this.subscription.magazine.comments || [])]
       .sort(
-        (a, b) => new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime()
+        (a, b) =>
+          new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime()
       )
-      .slice(0, 10); 
+      .slice(0, 10);
+  }
+
+  openAuthorModal(author: any) {
+    this.selectedAuthor = author;
+    this.authorModalOpen = true;
   }
   
+  closeAuthorModal() {
+    this.authorModalOpen = false;
+    this.selectedAuthor = null;
+  }
 }
