@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { LocalStorageService } from './local-storage.service';
@@ -116,4 +116,15 @@ export class UserService {
   updateMagazine(formData: FormData): Observable<any>{
     return this.http.put<any>(`${this.apiMagazine}/update`,formData)
   }
+
+  // Reports
+
+  getCommentReport(body: any): Observable<any> {
+    return this.http.post<any>(`${this.apiSuscriptions}/comment/report1`, body);
+  }
+
+  getSuscriptionReport(body: any): Observable<any> {
+    return this.http.post(`${this.apiSuscriptions}/report/report2`, body);
+  }
+
 }

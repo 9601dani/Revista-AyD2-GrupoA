@@ -57,24 +57,23 @@ export class HomeComponent {
 
     this._userService.getAllMagazines().subscribe({
       next: (response) => {
-        this.magazines = response;
-        this.filteredMagazines = response;
-        console.log(this.magazines);
-
+        this.magazines = response.filter((magazine: any) => magazine.author?.id !== userId);
+        this.filteredMagazines = [...this.magazines]; 
+    
         this.categories = capitalizeCategories(
           Array.from(
             new Map<number, Category>(
-              response
+              this.magazines
                 .flatMap((magazine: any) => magazine.categories || [])
                 .map((category: any) => [category.id, category])
             ).values()
           )
         );
-
+    
         this.labels = capitalizeLabels(
           Array.from(
             new Map<number, Label>(
-              response
+              this.magazines
                 .flatMap((magazine: any) => magazine.labels || [])
                 .map((label: any) => [label.id, label])
             ).values()
@@ -83,6 +82,7 @@ export class HomeComponent {
       },
       error: (err) => console.log(err),
     });
+    
   }
 
   applyFilters() {
