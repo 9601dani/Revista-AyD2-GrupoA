@@ -50,7 +50,12 @@ npm run build --configuration=production
 cd ..
 
 mkdir -p deploy/frontend
-cp -r app-frontend/dist/* deploy/frontend/
+cp -r app-frontend/dist/** deploy/frontend/
+cd app-frontend
+cd dist
+ls -l
+cd ..
+cd ..
 
 echo "SENDING COMPILED FILES"
 cp serve.sh deploy
