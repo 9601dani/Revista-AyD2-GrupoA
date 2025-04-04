@@ -1,0 +1,93 @@
+<app-navbar></app-navbar>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title has-text-centered">Reporte de Revistas más comentadas</h1>
+
+    <div class="box">
+      <div class="field is-horizontal is-flex-wrap-wrap">
+        <div class="field mr-4">
+          <label class="label">Fecha Inicio</label>
+          <div class="control">
+            <input class="input" type="date" [(ngModel)]="startDate" />
+          </div>
+        </div>
+
+        <div class="field mr-4">
+          <label class="label">Fecha Fin</label>
+          <div class="control">
+            <input class="input" type="date" [(ngModel)]="endDate" />
+          </div>
+        </div>
+
+        <div class="field mr-4">
+          <label class="label">ID Revista (opcional)</label>
+          <div class="control">
+            <input class="input" type="number" [(ngModel)]="magazineId" placeholder="Ej. 2" />
+          </div>
+        </div>
+
+        <div class="field is-align-self-flex-end">
+          <div class="control mt-5">
+            <button class="button is-primary" (click)="getReport()">Buscar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="report.length">
+      <app-navbar></app-navbar>
+
+      <section class="section">
+        <div class="container">
+          <h1 class="title has-text-centered">Reporte de Revistas más comentadas</h1>
+
+          <div class="box">
+            <div class="field is-horizontal is-flex-wrap-wrap">
+              <div class="field mr-4">
+                <label class="label">Fecha Inicio</label>
+                <div class="control">
+                  <input class="input" type="date" [(ngModel)]="startDate" />
+                </div>
+              </div>
+
+              <div class="field mr-4">
+                <label class="label">Fecha Fin</label>
+                <div class="control">
+                  <input class="input" type="date" [(ngModel)]="endDate" />
+                </div>
+              </div>
+
+              <div class="field mr-4">
+                <label class="label">ID Revista (opcional)</label>
+                <div class="control">
+                  <input class="input" type="number" [(ngModel)]="magazineId" placeholder="Ej. 2" />
+                </div>
+              </div>
+
+              <div class="field is-align-self-flex-end">
+                <div class="control mt-5">
+                  <button class="button is-primary" (click)="getReport()">Buscar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="report.length">
+
+
+          </div>
+
+          <div *ngIf="report.length === 0" class="has-text-centered has-text-grey mt-4">
+            No hay resultados para mostrar.
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <div *ngIf="report.length === 0" class="has-text-centered has-text-grey mt-4">
+      No hay resultados para mostrar.
+    </div>
+  </div>
+</section>

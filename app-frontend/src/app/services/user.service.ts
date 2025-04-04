@@ -21,6 +21,7 @@ export class UserService {
   readonly apiSuscriptions = `${environment.API_URL}/v1/suscriptions`;
   readonly apiUser = `${environment.API_URL}/v1/users`;
   readonly apiCategories = `${environment.API_URL}/v1/categories`;
+  readonly apiAdmin = `${environment.API_URL}/v1/admin`;
 
   constructor(
     private http: HttpClient,
@@ -43,22 +44,22 @@ export class UserService {
 
     return this.http.put<any>(`${this.apiUser}/info/update/photo_path/${id}`, formData);
   }
-  
+
   updateCurrentBalance(body: any): Observable<any> {
-    
+
     return this.http.put<UserInformation>(`${this.apiUser}/info/update/current_balance`, body);
   }
 
-  /* Labels */ 
+  /* Labels */
 
   getAllLabels(): Observable<any>{
     return this.http.get<Label[]>(`${this.apiUser}/labels/all`)
   }
-  
+
   getlabelsForUser(fkUser: number): Observable<any>{
     return this.http.get<Label[]>(`${this.apiUser}/labels/${fkUser}`)
   }
-  
+
   saveLabeslToUser(body: any): Observable<any>{
     return this.http.post<any>(`${this.apiUser}/labels/save`, body)
   }
@@ -96,15 +97,15 @@ export class UserService {
   getSuscriptionsForUser(fkUser: number):Observable<any>{
     return this.http.get<any>(`${this.apiSuscriptions}/user/${fkUser}`)
   }
-  
+
   getSuscriptionsWithMagazineForUser(fkUser: number):Observable<any>{
     return this.http.get<any>(`${this.apiSuscriptions}/all/${fkUser}`)
   }
- 
+
   getSuscriptionById(id: number):Observable<any>{
     return this.http.get<any>(`${this.apiSuscriptions}/${id}`)
   }
-  
+
   updateIsLike(body:any):Observable<any>{
     return this.http.put<any>(`${this.apiSuscriptions}/update/like`, body)
   }
@@ -125,6 +126,54 @@ export class UserService {
 
   getSuscriptionReport(body: any): Observable<any> {
     return this.http.post(`${this.apiSuscriptions}/report/report2`, body);
+  }
+
+  // ADMIN REPORTS
+  getEarningsReport(from: any, to: any): Observable<any> {
+    let params = new HttpParams();
+    if (from) params = params.set('from', from);
+    if (to) params = params.set('to', to);
+    return this.http.get<any>(`${this.apiAdmin}/earnings`, {
+      params
+    });
+  }
+
+  getPurchasedAds(from: any, to: any): Observable<any> {
+    let params = new HttpParams();
+    if (from) params = params.set('from', from);
+    if (to) params = params.set('to', to);
+    return this.http.get(`${this.apiAdmin}/ads-purchased`, { params });
+  }
+
+  getAdvertiserEarnings(from: any, to: any, userId: any) {
+    let params = new HttpParams();
+    if (from) params = params.set('from', from);
+    if (to) params = params.set('to', to);
+    if (userId) params = params.set('userId', userId);
+    return this.http.get(`${this.apiAdmin}/advertiser-earnings`, { params });
+  }
+
+
+  getPopularMagazines(from: any, to: any) {
+    let params = new HttpParams();
+    if (from) params = params.set('from', from);
+    if (to) params = params.set('to', to);
+    return this.http.get(`${this.apiAdmin}/popular-magazines`, { params });
+  }
+
+
+  getMostCommentedMagazines(from: any, to: any) {
+    let params = new HttpParams();
+    if (from) params = params.set('from', from);
+    if (to) params = params.set('to', to);
+    return this.http.get(`${this.apiAdmin}/commented-magazines`, { params });
+  }
+
+  getEffectiveness(from: any, to: any) {
+    let params = new HttpParams();
+    if (from) params = params.set('from', from);
+    if (to) params = params.set('to', to);
+    return this.http.get(`${this.apiAdmin}/effectiveness`, { params });
   }
 
 }
