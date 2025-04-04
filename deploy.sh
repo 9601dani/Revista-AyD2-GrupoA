@@ -54,7 +54,9 @@ cp -r app-frontend/dist/** deploy/frontend/
 cd app-frontend
 cd dist
 cd app-frontend
+cd browser
 ls -l
+cd ..
 cd ..
 cd ..
 cd ..
