@@ -53,7 +53,9 @@ mkdir -p deploy/frontend
 cp -r app-frontend/dist/** deploy/frontend/
 cd app-frontend
 cd dist
+cd app-frontend
 ls -l
+cd ..
 cd ..
 cd ..
 
