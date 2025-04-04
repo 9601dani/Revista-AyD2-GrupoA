@@ -20,5 +20,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'user', renderMode: RenderMode.Prerender },
   { path: 'user/profile', renderMode: RenderMode.Prerender },
   { path: 'user/buy-ad', renderMode: RenderMode.Prerender },
-  { path: 'user/my-ads', renderMode: RenderMode.Prerender }
+  { path: 'user/my-ads', renderMode: RenderMode.Prerender },
+  { path: 'user/my-subscriptions', renderMode: RenderMode.Client }, 
+  { path: 'user/subscription/:id', renderMode: RenderMode.Client }
 ];
