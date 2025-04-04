@@ -19,14 +19,12 @@ export class TopLikedMagazinesComponent {
   constructor(private userService: UserService) {}
 
   getTopLiked(): void {
-    if (!this.startDate || !this.endDate) {
-      if (!this.startDate) this.startDate = '2000-01-01';
-      if (!this.endDate) this.endDate = '3000-12-31';
-    }
+    const start = this.startDate ? `${this.startDate}T00:00:00` : '2000-01-01T00:00:00';
+    const end = this.endDate ? `${this.endDate}T23:59:59` : '3000-12-31T23:59:59';
 
     const body = {
-      startDate: this.startDate,
-      endDate: this.endDate,
+      startDate: start,
+      endDate: end,
     };
 
     this.userService.getTopLikedMagazines(body).subscribe({
