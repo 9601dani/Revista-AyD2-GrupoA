@@ -10,6 +10,8 @@ import {MyAdComponent} from './components/ads/my-ad/my-ad.component';
 import { EditMagazineComponent } from './components/magazines/edit-magazine/edit-magazine.component';
 import { MySubscriptionsComponent } from './components/user/my-subscriptions/my-subscriptions.component';
 import { SubscriptionComponent } from './components/user/subscription/subscription.component';
+import { CommentReportComponent } from './components/report/comment-report/comment-report.component';
+import { SuscriptionReportComponent } from './components/report/suscription-report/suscription-report.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,7 +23,9 @@ export const routes: Routes = [
     children: [
       { path: 'new-magazine', component: AddMagazineComponent },
       { path: 'my-magazines', component: ViewComponent },
-      { path: 'edit-magazine/:id', component: EditMagazineComponent}
+      { path: 'edit-magazine/:id', component: EditMagazineComponent},
+      { path: 'report1', component: CommentReportComponent},
+      { path: 'report2', component: SuscriptionReportComponent}
     ],
     canActivate: [authGuard]
   },

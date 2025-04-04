@@ -1,5 +1,9 @@
 package com.codenbugs.ms_user.controllers.magazine;
 
+import com.codenbugs.ms_user.dtos.report.CommentReportDto;
+import com.codenbugs.ms_user.dtos.report.CommentReportRequestDto;
+import com.codenbugs.ms_user.dtos.report.SuscriptionReportDto;
+import com.codenbugs.ms_user.dtos.report.SuscriptionReportRequestDto;
 import com.codenbugs.ms_user.dtos.request.MagazineRequest;
 import com.codenbugs.ms_user.dtos.response.AllMagazineResponse;
 import com.codenbugs.ms_user.dtos.response.MagazineResponse;
@@ -10,10 +14,12 @@ import com.codenbugs.ms_user.services.magazine.SuscriptionService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -55,5 +61,15 @@ public class SuscriptionController {
     public ResponseEntity<CommentMagazineResponse> saveComment(@RequestBody CommentRequest request) throws UserNotFoundException {
         CommentMagazineResponse commentMagazineResponse = suscriptionService.saveComment(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(commentMagazineResponse);
+    }
+
+    @PostMapping("/comment/report1")
+    public List<CommentReportDto> getCommentsReport(@RequestBody CommentReportRequestDto request) {
+        return suscriptionService.getCommentReport(request);
+    }
+
+    @PostMapping("/report/report2")
+    public List<SuscriptionReportDto> getSuscriptionReport(@RequestBody SuscriptionReportRequestDto request) {
+        return suscriptionService.getReport(request);
     }
 }

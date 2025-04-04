@@ -1,0 +1,68 @@
+<app-navbar></app-navbar>
+
+<section class="section">
+    <div class="container">
+      <h1 class="title is-3 has-text-centered">Reporte de Comentarios</h1>
+  
+      <div class="box">
+        <div class="field is-horizontal">
+          <div class="field-body is-flex-wrap-wrap">
+            <div class="field">
+              <label class="label">Fecha inicio</label>
+              <div class="control">
+                <input type="date" class="input" [(ngModel)]="startDate" />
+              </div>
+            </div>
+  
+            <div class="field">
+              <label class="label">Fecha fin</label>
+              <div class="control">
+                <input type="date" class="input" [(ngModel)]="endDate" />
+              </div>
+            </div>
+  
+            <div class="field">
+              <label class="label">ID Revista (opcional)</label>
+              <div class="control">
+                <input type="number" class="input" [(ngModel)]="magazineId" placeholder="Ej. 2" />
+              </div>
+            </div>
+  
+            <div class="field is-align-self-flex-end">
+              <div class="control mt-5">
+                <button class="button is-primary" (click)="getReport()">Buscar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="comments.length">
+        <table class="table is-fullwidth is-hoverable is-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Contenido</th>
+              <th>Fecha</th>
+              <th>Revista</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let comment of comments">
+              <td>{{ comment.commentId }}</td>
+              <td>{{ comment.content }}</td>
+              <td>{{ comment.dateCreated | date: 'medium' }}</td>
+              <td>{{ comment.magazineName }}</td>
+              <td>{{ comment.magazineDescription }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div *ngIf="comments.length === 0" class="has-text-centered has-text-grey">
+        No hay resultados para mostrar.
+      </div>
+    </div>
+  </section>
+  
