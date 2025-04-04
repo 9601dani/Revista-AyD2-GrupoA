@@ -42,9 +42,9 @@ public class AdminController {
     public ResponseEntity<List<AdvertiserEarningsDTO>> getAdvertiserEarnings(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
-            @RequestParam(required = false) Integer userId
+            @RequestParam(required = false) String username
     ) {
-        var response = this.adminService.getAdvertiserEarningsReport(from, to, userId);
+        var response = this.adminService.getAdvertiserEarningsReport(from, to, username);
         return ResponseEntity.ok(response);
     }
 

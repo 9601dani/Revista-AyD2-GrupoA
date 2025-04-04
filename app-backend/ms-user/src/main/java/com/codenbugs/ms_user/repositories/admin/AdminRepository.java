@@ -69,10 +69,10 @@ public interface AdminRepository extends JpaRepository<User, Integer> {
             JOIN periods p ON a.FK_Period = p.id
             JOIN users u ON a.FK_User = u.id
         WHERE (:from IS NULL OR :to IS NULL OR a.date_created BETWEEN :from AND :to)
-          AND (:userId IS NULL OR u.id = :userId)
+          AND (:userName IS NULL OR u.username LIKE CONCAT('%', :userName, '%') OR u.email LIKE CONCAT('%', :userName, '%'))
         ORDER BY u.id, a.date_created DESC;
     """, nativeQuery = true)
-    List<AdvertiserEarningsDTO> getAdvertiserEarningsReport(@Param("from") LocalDate from, @Param("to") LocalDate to, @Param("userId") Integer userId);
+    List<AdvertiserEarningsDTO> getAdvertiserEarningsReport(@Param("from") LocalDate from, @Param("to") LocalDate to, @Param("userName") String userName);
 
     @Query(value = """
         SELECT

@@ -14,7 +14,8 @@ import {UserService} from '../../../services/user.service';
     FormsModule
   ],
   templateUrl: './report1.component.html',
-  styleUrl: './report1.component.scss'
+  styleUrl: './report1.component.scss',
+  standalone: true
 })
 export class Report1Component {
 

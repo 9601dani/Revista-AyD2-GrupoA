@@ -15,7 +15,9 @@ import {UserService} from '../../../services/user.service';
     DatePipe
   ],
   templateUrl: './report2.component.html',
-  styleUrl: './report2.component.scss'
+  styleUrl: './report2.component.scss',
+  standalone: true
+
 })
 export class Report2Component {
 

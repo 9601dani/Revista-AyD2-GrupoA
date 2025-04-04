@@ -21,14 +21,14 @@
         </div>
 
         <div class="field mr-4">
-          <label class="label">ID Revista (opcional)</label>
+          <label class="label">Nomber del usuario</label>
           <div class="control">
-            <input class="input" type="number" [(ngModel)]="magazineId" placeholder="Ej. 2" />
+            <input class="input" type="text" [(ngModel)]="magazineId"/>
           </div>
         </div>
 
         <div class="field is-align-self-flex-end">
-          <div class="control mt-5">
+          <div class="control my-3">
             <button class="button is-primary" (click)="getReport()">Buscar</button>
           </div>
         </div>
@@ -54,10 +54,10 @@
           <td>{{ r.userId }}</td>
           <td>{{ r.username }}</td>
           <td>{{ r.dateCreated | date: 'dd-MM-YYYY' }}</td>
-          <td>Q{{ r.adType }}</td>
-          <td>Q{{ r.period }}</td>
-          <td>Q{{ r.cost }}</td>
-          <td>Q{{ r.numberViews }}</td>
+          <td>{{ r.adType }}</td>
+          <td>{{ r.period }}</td>
+          <td>Q {{ r.cost }}</td>
+          <td>{{ r.numberViews }}</td>
           <td>{{ r.isEnabled ? 'Sí' : 'No' }}</td>
         </tr>
         </tbody>

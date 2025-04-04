@@ -27,8 +27,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<AdvertiserEarningsDTO> getAdvertiserEarningsReport(LocalDate from, LocalDate to, Integer userId) {
-        return this.adminRepository.getAdvertiserEarningsReport(from, to, userId);
+    public List<AdvertiserEarningsDTO> getAdvertiserEarningsReport(LocalDate from, LocalDate to, String username) {
+        String usernameFilter = username == null ? "" : username;
+        return this.adminRepository.getAdvertiserEarningsReport(from, to, usernameFilter);
     }
 
     @Override

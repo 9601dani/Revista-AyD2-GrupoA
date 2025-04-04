@@ -20,15 +20,8 @@
           </div>
         </div>
 
-        <div class="field mr-4">
-          <label class="label">ID Revista (opcional)</label>
-          <div class="control">
-            <input class="input" type="number" [(ngModel)]="magazineId" placeholder="Ej. 2" />
-          </div>
-        </div>
-
         <div class="field is-align-self-flex-end">
-          <div class="control mt-5">
+          <div class="control my-3">
             <button class="button is-primary" (click)="getReport()">Buscar</button>
           </div>
         </div>
@@ -40,23 +33,27 @@
         <thead>
         <tr>
           <th>ID</th>
-          <th>Fecha Suscripción</th>
-          <th>Válido Hasta</th>
-          <th>Pago</th>
-          <th>Like</th>
-          <th>Revista</th>
-          <th>Descripción</th>
+          <th>Nombre de usuario</th>
+          <th>código de anuncio</th>
+          <th>Fecha de creación</th>
+          <th>Fecha de finalización</th>
+          <th>Número de vistas</th>
+          <th>Tipo de anuncio</th>
+          <th>Periodo</th>
+          <th>Costo</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let r of report">
-          <td>{{ r.suscriptionId }}</td>
-          <td>{{ r.dateCreated }}</td>
-          <td>{{ r.dateEnded }}</td>
-          <td>Q{{ r.pay }}</td>
-          <td>{{ r.isLike ? 'Sí' : 'No' }}</td>
-          <td>{{ r.magazineName }}</td>
-          <td>{{ r.magazineDescription }}</td>
+          <td>{{ r.userId }}</td>
+          <td>{{ r.username }}</td>
+          <td>{{ r.adId }}</td>
+          <td>Q{{ r.dateCreated | date: 'dd-MM-YYYY' }}</td>
+          <td>Q{{ r.dateEnded | date: 'dd-MM-YYYY' }}</td>
+          <td>{{ r.numberViews }}</td>
+          <td>{{ r.adType }}</td>
+          <td>{{ r.periodName }}</td>
+          <td>Q {{ r.adCost }}</td>
         </tr>
         </tbody>
       </table>

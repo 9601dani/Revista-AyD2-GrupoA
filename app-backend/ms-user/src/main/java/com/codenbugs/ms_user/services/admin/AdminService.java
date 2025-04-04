@@ -9,7 +9,7 @@ public interface AdminService {
 
     List<EarningsReportDTO> getEarningsReport(LocalDate from, LocalDate to);
     List<PurchasedAdDTO> getPurchasedAdsReport(LocalDate from, LocalDate to);
-    List<AdvertiserEarningsDTO> getAdvertiserEarningsReport(LocalDate from, LocalDate to, Integer userId);
+    List<AdvertiserEarningsDTO> getAdvertiserEarningsReport(LocalDate from, LocalDate to, String username);
     List<MagazineWithSubscriptionsDTO> getFiveMostPopularMagazinesReport(LocalDate from, LocalDate to);
     List<MagazineWithCommentsDTO> getFiveMostCommentedMagazinesReport(LocalDate from, LocalDate to);
     List<EffectivenessReportDTO> getEffectivenessReport(LocalDate from, LocalDate to);

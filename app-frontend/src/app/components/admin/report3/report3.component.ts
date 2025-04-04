@@ -15,7 +15,9 @@ import {UserService} from '../../../services/user.service';
     DatePipe
   ],
   templateUrl: './report3.component.html',
-  styleUrl: './report3.component.scss'
+  styleUrl: './report3.component.scss',
+  standalone: true
+
 })
 export class Report3Component {
 
@@ -29,8 +31,9 @@ export class Report3Component {
 
   getReport() {
     this._userService.getAdvertiserEarnings(this.startDate, this.endDate, this.magazineId).subscribe({
-      next: res => {
+      next: (res: any) => {
         console.log(res);
+        this.report = res;
       },
       error: err => {
         console.error(err);

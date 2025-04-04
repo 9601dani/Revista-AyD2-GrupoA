@@ -145,16 +145,16 @@ export class UserService {
     return this.http.get(`${this.apiAdmin}/ads-purchased`, { params });
   }
 
-  getAdvertiserEarnings(from: any, to: any, userId: any) {
+  getAdvertiserEarnings(from: any, to: any, userId: any): Observable<any> {
     let params = new HttpParams();
     if (from) params = params.set('from', from);
     if (to) params = params.set('to', to);
-    if (userId) params = params.set('userId', userId);
+    if (userId) params = params.set('username', userId);
     return this.http.get(`${this.apiAdmin}/advertiser-earnings`, { params });
   }
 
 
-  getPopularMagazines(from: any, to: any) {
+  getPopularMagazines(from: any, to: any): Observable<any> {
     let params = new HttpParams();
     if (from) params = params.set('from', from);
     if (to) params = params.set('to', to);
@@ -162,14 +162,14 @@ export class UserService {
   }
 
 
-  getMostCommentedMagazines(from: any, to: any) {
+  getMostCommentedMagazines(from: any, to: any): Observable<any> {
     let params = new HttpParams();
     if (from) params = params.set('from', from);
     if (to) params = params.set('to', to);
     return this.http.get(`${this.apiAdmin}/commented-magazines`, { params });
   }
 
-  getEffectiveness(from: any, to: any) {
+  getEffectiveness(from: any, to: any): Observable<any> {
     let params = new HttpParams();
     if (from) params = params.set('from', from);
     if (to) params = params.set('to', to);
