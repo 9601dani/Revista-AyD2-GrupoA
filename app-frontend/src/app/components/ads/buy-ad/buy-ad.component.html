@@ -1,0 +1,200 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-6">
+  <div class="box">
+    <h2 class="title is-3 has-text-centered">Crear Anuncio</h2>
+    <div class="m-4">
+      <div class="columns">
+        <div class="column is-flex-direction-column is-justify-content-center">
+          <form [formGroup]="adForm">
+            <div class="field">
+              <label class="label">Tipo de Anuncio</label>
+              <div class="control">
+                <div class="select">
+                  <select formControlName="adType">
+                    @for (type of adTypesList ; track type.id) {
+                      <option [value]="type.id">{{type.name}}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+            @if(currentType === "TEXT" || currentType === "VIDEO") {
+              <div class="field">
+                <label class="label">Contenido</label>
+                <div class="control">
+                  <input formControlName="content" class="input" type="text" placeholder="contenido o url del video">
+                </div>
+              </div>
+            } @else {
+              <div class="my-5">
+                <label class="label">Archivo</label>
+                <div class="file">
+                  <label class="file-label">
+                    <input class="file-input" type="file"
+                           accept=".jpg, .jpeg, .png"
+                           (change)="onFileSelected($event)"
+                           name="resume" />
+                    <span class="file-cta">
+                      <span class="file-label">{{ this.filename || "Elige un archivo" }}</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            }
+            <div class="field">
+              <label class="label">Periodo</label>
+              <div class="control">
+                <div class="select">
+                  <select formControlName="period">
+                    @for (period of periodsList ; track period.id) {
+                      <option [value]="period.id">{{periodsMap[period.name]}}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Costo</label>
+              <div class="control">
+                <input formControlName="cost" class="input" type="number">
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Categoría</label>
+              <div class="control">
+                <mat-form-field class="is-fullwidth" appearance="outline" style="width: 100%;">
+                  <mat-chip-grid #categoryChipList aria-label="Lista de categorias">
+                    <mat-chip-row
+                      *ngFor="let category of categories()"
+                      (removed)="removeC(category)"
+                      class="has-background-light has-text-dark"
+                    >
+                      {{ category.name }}
+                      <button
+                        matChipRemove
+                        [attr.aria-label]="'Quitar ' + category.name"
+                        class="ml-2"
+                      >
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                    </mat-chip-row>
+                  </mat-chip-grid>
+
+                  <input
+                    #categoryInput
+                    [(ngModel)]="currentCategorySignal"
+                    [ngModelOptions]="{ standalone: true }"
+                    [matChipInputFor]="categoryChipList"
+                    [matAutocomplete]="autoCategory"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="addC($event, categoryInput)"
+                    style="width: 100%"
+                    class="input"
+                  />
+
+                  <mat-autocomplete
+                    #autoCategory="matAutocomplete"
+                    (optionSelected)="selectedC($event); currentCategorySignal.set('')"
+                  >
+
+                    <mat-option
+                      *ngFor="let category of filteredCategories()"
+                      [value]="category.name"
+                    >
+                      {{ category.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Etiquetas</label>
+              <mat-form-field class="is-fullwidth" appearance="outline" style="width: 100%;">
+                <mat-chip-grid #chipGrid aria-label="Lista de etiquetas">
+                  <mat-chip-row
+                    *ngFor="let label of labels()"
+                    (removed)="remove(label)"
+                    class="has-background-light has-text-dark"
+                  >
+                    {{ label.name }}
+                    <button
+                      matChipRemove
+                      [attr.aria-label]="'Quitar ' + label.name"
+                      class="ml-2"
+                    >
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                </mat-chip-grid>
+
+                <input
+                  #labelInput
+                  [(ngModel)]="currentLabelSignal"
+                  [ngModelOptions]="{ standalone: true }"
+                  [matChipInputFor]="chipGrid"
+                  [matAutocomplete]="auto"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="add($event, labelInput)"
+                  style="width: 100%"
+                  class="input"
+                />
+
+                <mat-autocomplete
+                  #auto="matAutocomplete"
+                  (optionSelected)="selected($event); currentLabelSignal.set('')"
+                >
+
+                  <mat-option
+                    *ngFor="let label of filteredLabels()"
+                    [value]="label.name"
+                  >
+                    {{ label.name }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="columns">
+              <div class="column is-half">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Inicio</mat-label>
+                  <input matInput [matDatepicker]="startPicker" formControlName="start">
+                  <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #startPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="column is-half">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Fin</mat-label>
+                  <input matInput [matDatepicker]="endPicker" formControlName="end">
+                  <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #endPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="grid">
+              <div class="cell">
+                <button class="button is-link" type="button" (click)="showPreview()">Previsualizar</button>
+              </div>
+              <div class="cell">
+                <button class="button is-primary" [disabled]="adForm.invalid" (click)="save()">Guardar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="column">
+          <h4 class="subtitle is-4 has-text-centered">Previsualización</h4>
+          @if(this.showTemplate) {
+            <div class="m-5">
+              <app-ad-template [showButton]="false" [data]="this.adForm.get('content')?.value" [type]="this.currentType" [usePipe]="false"></app-ad-template>
+            </div>
+          } @else {
+            <h3>Nada para mostrar aún</h3>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

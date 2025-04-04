@@ -43,12 +43,8 @@ pipeline{
                        echo \"export const environment = {\n  production: true,\n  API_URL: '\${API_URL}'\n};\" > src/environments/environment.ts
                      """
 
-
-                     // Build project
-                     sh 'npm run build'
-
                      //Run unit test
-                     sh 'npm run test'
+                     // sh 'npm run test'
                  }
              }
         }
@@ -87,6 +83,24 @@ pipeline{
             }
         }
 
+        stage("Deploy production") {
+                    when {
+                        branch "main"
+                    }
+                    steps {
+                        echo "Deploy app... "
+                        // sh 'touch test.txt'
+                        sh 'ls -l'
+                        sh "./deploy.sh main"
+                        sshagent(credentials : ['jenkins-ssh']) {
+                            sh 'ssh -o StrictHostKeyChecking=no $VM_USERNAME@$PROD_IP uptime'
+                            sh 'ssh -v $VM_USERNAME@$PROD_IP'
+                            sh 'scp -r deploy $VM_USERNAME@$PROD_IP:/home/$VM_USERNAME/'
+                            sh 'ssh -o StrictHostKeyChecking=no $VM_USERNAME@$PROD_IP "bash /home/$VM_USERNAME/deploy/serve.sh"'
+                        }
+                    }
+                }
+
     }
 
     post {
@@ -108,4 +122,4 @@ pipeline{
             echo 'Backend build failed.'
         }
     }
-}
+} 

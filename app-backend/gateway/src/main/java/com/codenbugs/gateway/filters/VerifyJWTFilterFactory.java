@@ -30,6 +30,7 @@ public class VerifyJWTFilterFactory extends AbstractGatewayFilterFactory<VerifyJ
         return (exchange, chain) -> {
             try {
                 ServerHttpRequest request = exchange.getRequest();
+
                 String authHeader = request.getHeaders().getFirst("Authorization");
 
                 if(authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -52,7 +53,8 @@ public class VerifyJWTFilterFactory extends AbstractGatewayFilterFactory<VerifyJ
 
                 return chain.filter(exchange);
             } catch(JWTVerificationException exception) {
-                throw new NotAllowedException("La sesión ha expirado.");
+                System.out.println(exception.getMessage());
+                throw new NotAllowedException("No se pudo obtener el token.");
             }
         };
     }

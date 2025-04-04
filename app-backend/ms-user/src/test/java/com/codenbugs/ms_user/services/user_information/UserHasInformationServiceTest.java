@@ -16,6 +16,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -53,7 +54,7 @@ class UserHasInformationServiceTest {
         uhi.setName("test");
         uhi.setAge(18);
         uhi.setCurrent_balance(BigDecimal.valueOf(100));
-        uhi.setUser(new User(1,"username", "password", "email", ""));
+        uhi.setUser(new User(1,"username", "password", "email", "", new ArrayList<>()));
 
 
     }

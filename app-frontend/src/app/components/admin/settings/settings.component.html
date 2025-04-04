@@ -1,0 +1,29 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-5">
+    <h1 class="title is-4">Lista de Períodos</h1>
+  
+    <div class="table-container">
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Costo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let period of periods">
+            <td>{{ period.name }}</td>
+            <td>
+              <input class="input is-small" type="number" [(ngModel)]="period.cost" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div class="has-text-right mt-3">
+      <button class="button is-primary" (click)="onSubmit()">Actualizar Costos</button>
+    </div>
+  </div>
+  

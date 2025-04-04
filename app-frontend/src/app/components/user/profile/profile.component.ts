@@ -78,12 +78,10 @@ export class ProfileComponent implements OnInit {
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   readonly currentLabel = model('');
-  labels = signal<Label[]>([]); // etiquetas seleccionadas
+  labels = signal<Label[]>([]); 
 
-  // Lista de todas las etiquetas existentes
   allLabels: Label[] = [];
 
-  // Filtrado dinámico para autocomplete
   readonly filteredLabels = computed(() => {
     const query = this.currentLabel().toLowerCase();
     const selectedNames = this.labels().map((l) => l.name.toLowerCase());

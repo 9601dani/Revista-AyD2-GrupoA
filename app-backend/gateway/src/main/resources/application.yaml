@@ -31,7 +31,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:4200"
+            allowedOrigins: ${VM_IP:http://localhost:4200}
             allowedMethods:
               - GET
               - POST
@@ -39,21 +39,24 @@ spring:
               - DELETE
             allowedHeaders:
               - "*"
+            maxAge: 3600
       routes:
         - id: user-public-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           predicates:
-              - Path=/v1/users/login,/v1/users/register
+            - Path=/v1/users/login,/v1/users/register,/v1/magazines/getAll
         - id: user-private-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
-          filters:
-            # - VerifyJWTFilterFactory
           predicates:
-            - Path=/v1/users/**,/v1/magazines/**,/v1/subscriptions/**
+            - Path=/v1/users/**,/v1/magazines/**,/v1/suscriptions/**,/v1/categories/**,/v1/admin/**
           # TODO: ADD PUBLIC ADD ROUTES TO SHOW ROUTES IN ANY COMPONENT IN THE FRONTEND
-        - id: adds-private-routes
-          uri: ${ADDS_ROUTE_URI:http://localhost:8002}
+        - id: ads-public-routes
+          uri: ${ADS_ROUTE_URI:http://localhost:8003}
+          predicates:
+            - Path=/v1/ads/random/**,/v1/ads/views/{id}
+        - id: ads-private-routes
+          uri: ${ADS_ROUTE_URI:http://localhost:8003}
+          predicates:
+            - Path=/v1/ads/**,/v1/temp-categories/**,/v1/periods/**
           filters:
             - VerifyJWTFilterFactory
-          predicates:
-              - Path=/v1/adds/**

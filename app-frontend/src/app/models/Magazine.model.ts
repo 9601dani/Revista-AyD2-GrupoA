@@ -10,9 +10,10 @@ export interface Magazine{
     price: number;
     isEnabled: boolean;
     path:string;
+    
 }
 
-enum MagazineType{
+export enum MagazineType{
     FREE = 'FREE',
     PAID = 'PAID'
 }

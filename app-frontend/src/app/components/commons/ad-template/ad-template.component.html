@@ -1,0 +1,35 @@
+@if (data) {
+  <div class="box" style="position: relative;">
+    @if(showButton) {
+      <button
+        class="delete is-small"
+        (click)="close()"
+        style="position: absolute; top: 0.5rem; right: 0.5rem;">
+      </button>
+    }
+
+    @if (type === "VIDEO") {
+      <iframe
+        width="300"
+        height="200"
+        [src]="sanitizedUrl"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+    } @else if (type === "IMAGE") {
+      <figure class="image">
+        @if(usePipe) {
+          <img [src]="data | image"
+               style="max-width: 300px; max-height: 200px; object-fit: contain;"/>
+        } @else {
+          <img [src]="data" alt="image" />
+        }
+
+      </figure>
+    } @else {
+      <div class="m-1" style="max-height: 200px; overflow-y: auto">
+        <p>{{ data }}</p>
+      </div>
+    }
+  </div>
+}

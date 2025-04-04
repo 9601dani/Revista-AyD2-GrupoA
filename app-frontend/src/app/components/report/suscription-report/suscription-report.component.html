@@ -1,0 +1,72 @@
+<app-navbar></app-navbar>
+
+<section class="section">
+    <div class="container">
+      <h1 class="title has-text-centered">Reporte de Suscripciones</h1>
+  
+      <div class="box">
+        <div class="field is-horizontal is-flex-wrap-wrap">
+          <div class="field mr-4">
+            <label class="label">Fecha Inicio</label>
+            <div class="control">
+              <input class="input" type="date" [(ngModel)]="startDate" />
+            </div>
+          </div>
+  
+          <div class="field mr-4">
+            <label class="label">Fecha Fin</label>
+            <div class="control">
+              <input class="input" type="date" [(ngModel)]="endDate" />
+            </div>
+          </div>
+  
+          <div class="field mr-4">
+            <label class="label">ID Revista (opcional)</label>
+            <div class="control">
+              <input class="input" type="number" [(ngModel)]="magazineId" placeholder="Ej. 2" />
+            </div>
+          </div>
+  
+          <div class="field is-align-self-flex-end">
+            <div class="control mt-5">
+              <button class="button is-primary" (click)="getSuscriptionReport()">Buscar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="report.length">
+        <table class="table is-fullwidth is-hoverable is-striped">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Fecha Suscripción</th>
+              <th>Válido Hasta</th>
+              <th>Pago</th>
+              <th>Like</th>
+              <th>Id revista</th>
+              <th>Revista</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of report">
+              <td>{{ r.suscriptionId }}</td>
+              <td>{{ r.dateCreated }}</td>
+              <td>{{ r.dateEnded }}</td>
+              <td>Q{{ r.pay }}</td>
+              <td>{{ r.isLike ? 'Sí' : 'No' }}</td>
+              <td>{{ r.magazineId }}</td>
+              <td>{{ r.magazineName }}</td>
+              <td>{{ r.magazineDescription }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div *ngIf="report.length === 0" class="has-text-centered has-text-grey mt-4">
+        No hay resultados para mostrar.
+      </div>
+    </div>
+  </section>
+  

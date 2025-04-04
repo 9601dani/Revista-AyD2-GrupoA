@@ -18,6 +18,10 @@ else
   exit 0
 fi
 
+API_URL="http://${TARGET_VM}:8000"
+
+echo "USING API_URL=$API_URL"
+
 echo "BUILDING BACKEND"
 cd app-backend
 mkdir -p ../deploy/backend
@@ -30,15 +34,37 @@ cd ..
 
 echo "BUILDING FRONTEND"
 cd app-frontend
-npm run build --configuration=$ENV
+npm install
+
+mkdir -p src/environments
+cat > src/environments/environment.ts <<EOL
+export const environment = {
+  production: true,
+  API_URL: '$API_URL'
+};
+EOL
+
+cat src/environments/environment.ts
+
+npm run build --configuration=production
 cd ..
 
 mkdir -p deploy/frontend
-cp -r app-frontend/dist/* deploy/frontend/
-
-cp serve.sh deploy
+cp -r app-frontend/dist/** deploy/frontend/
 
 echo "SENDING COMPILED FILES"
-echo "$USER"
-echo "$TARGET_VM"
+cp serve.sh deploy
+
+rm -rf app-frontend/node_modules
+rm -rf app-frontend/dist
+
+cd app-backend
+rm -f gateway/target/*.jar
+
+for MS in ms-*; do
+  rm -f "$MS/target/"*.jar
+done
+
+cd ..
+echo "DEPLOY DIRECTORY DELETED"
 

@@ -1,6 +1,7 @@
 package com.codenbugs.ms_user.models.magazine;
 
 import com.codenbugs.ms_user.enums.MagazineType;
+import com.codenbugs.ms_user.models.labels.Label;
 import com.codenbugs.ms_user.models.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "magazines")
@@ -51,4 +53,17 @@ public class Magazine {
 
     @Column(columnDefinition = "TINYINT")
     private boolean isEnabled;
+
+    @OneToMany(mappedBy = "magazine", fetch = FetchType.LAZY)
+    private List<Document> documents;
+
+    @ManyToMany(mappedBy = "magazines", fetch = FetchType.LAZY)
+    private List<Category> categories;
+
+    @ManyToMany(mappedBy = "magazines", fetch = FetchType.LAZY)
+    private List<Label> labels;
+
+    @OneToMany(mappedBy = "magazine", fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
 }

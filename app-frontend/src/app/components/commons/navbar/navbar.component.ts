@@ -64,31 +64,31 @@ export class NavbarComponent implements OnInit {
   }
 
   setUserPhoto() {
-    const id = this._localStorageService.getItem(
-      this._localStorageService.USER_ID
-    );
-    this.userPhoto = this._localStorageService.getItem(
-      this._localStorageService.USER_PHOTO
-    );
+    // const id = this._localStorageService.getItem(
+    //   this._localStorageService.USER_ID
+    // );
+    // this.userPhoto = this._localStorageService.getItem(
+    //   this._localStorageService.USER_PHOTO
+    // );
 
-    if (!this.userPhoto) {
-      this._userService.getUserInfo(id).subscribe({
-        next: (response: UserInformation) => {
-          this.userPhoto = response.photo_path;
-          this._localStorageService.setItem(
-            this._localStorageService.USER_PHOTO,
-            response.photo_path
-          );
-        },
-        error: (error) => {
-          Swal.fire({
-            title: 'Error!',
-            text: error.error.message,
-            icon: 'error',
-          });
-        },
-      });
-    }
+    // if (!this.userPhoto) {
+    //   this._userService.getUserInfo(id).subscribe({
+    //     next: (response: UserInformation) => {
+    //       this.userPhoto = response.photo_path;
+    //       this._localStorageService.setItem(
+    //         this._localStorageService.USER_PHOTO,
+    //         response.photo_path
+    //       );
+    //     },
+    //     error: (error) => {
+    //       Swal.fire({
+    //         title: 'Error!',
+    //         text: error.error.message,
+    //         icon: 'error',
+    //       });
+    //     },
+    //   });
+    // }
   }
 
   showOptions() {
