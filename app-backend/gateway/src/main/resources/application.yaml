@@ -31,7 +31,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:4200"
+            allowedOrigins: ${VM_IP:http://localhost:4200}
             allowedMethods:
               - GET
               - POST
@@ -50,20 +50,13 @@ spring:
           predicates:
             - Path=/v1/users/**,/v1/magazines/**,/v1/suscriptions/**,/v1/categories/**
           # TODO: ADD PUBLIC ADD ROUTES TO SHOW ROUTES IN ANY COMPONENT IN THE FRONTEND
-        - id: adds-private-routes
-          uri: ${ADDS_ROUTE_URI:http://localhost:8002}
-          predicates:
-            - Path=/v1/ads/**
-          filters:
-           # - VerifyJWTFilterFactory
-          # TODO: ADD PUBLIC ADD ROUTES TO SHOW ROUTES IN ANY COMPONENT IN THE FRONTEND
         - id: ads-public-routes
-          uri: ${ADDS_ROUTE_URI:http://localhost:8003}
+          uri: ${ADS_ROUTE_URI:http://localhost:8003}
           predicates:
-            - Path=/v1/ads/random/**
+            - Path=/v1/ads/random/**,/v1/ads/views/{id}
         - id: ads-private-routes
-          uri: ${ADDS_ROUTE_URI:http://localhost:8003}
+          uri: ${ADS_ROUTE_URI:http://localhost:8003}
           predicates:
             - Path=/v1/ads/**,/v1/temp-categories/**,/v1/periods/**
           filters:
-            #- VerifyJWTFilterFactory
+            - VerifyJWTFilterFactory

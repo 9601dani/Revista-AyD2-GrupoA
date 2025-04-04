@@ -133,11 +133,14 @@ public class AdServiceImpl implements AdService {
     public AdResponseDTO findRandomByUserId(Integer userId) throws NotFoundException {
         Optional<Ad> adOptional = this.adRepository.findRandomByUserId(userId);
 
+
         if(adOptional.isPresent()) {
+            System.out.println(adOptional.get());
             return new AdResponseDTO(adOptional.get());
         }
 
         Ad ad = this.adRepository.findRandom().orElseThrow(() -> new NotFoundException("Ad not found."));
+        System.out.println("Random ad: " + ad);
         return new AdResponseDTO(ad);
     }
 

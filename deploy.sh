@@ -18,6 +18,8 @@ else
   exit 0
 fi
 
+API_URL="http://${TARGET_VM}:8000"
+
 echo "BUILDING BACKEND"
 cd app-backend
 mkdir -p ../deploy/backend
@@ -31,6 +33,15 @@ cd ..
 echo "BUILDING FRONTEND"
 cd app-frontend
 npm install
+
+mkdir -p src/environments
+cat > src/environments/environment.ts <<EOL
+export const environment = {
+  production: $([ "$ENV" == "production" ] && echo "true" || echo "false"),
+  API_URL: '$API_URL'
+};
+EOL
+
 npm run build --configuration=$ENV
 cd ..
 
