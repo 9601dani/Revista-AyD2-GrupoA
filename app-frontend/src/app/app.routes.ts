@@ -12,6 +12,12 @@ import { MySubscriptionsComponent } from './components/user/my-subscriptions/my-
 import { SubscriptionComponent } from './components/user/subscription/subscription.component';
 import { CommentReportComponent } from './components/report/comment-report/comment-report.component';
 import { SuscriptionReportComponent } from './components/report/suscription-report/suscription-report.component';
+import {Report1Component} from './components/admin/report1/report1.component';
+import {Report2Component} from './components/admin/report2/report2.component';
+import {Report3Component} from './components/admin/report3/report3.component';
+import {Report4Component} from './components/admin/report4/report4.component';
+import {Report5Component} from './components/admin/report5/report5.component';
+import {Report6Component} from './components/admin/report6/report6.component';
 import { TopLikedMagazinesComponent } from './components/report/top-liked-magazines/top-liked-magazines.component';
 import { PaymentReportComponent } from './components/report/payment-report/payment-report.component';
 import { SettingsComponent } from './components/admin/settings/settings.component';
@@ -23,7 +29,7 @@ export const routes: Routes = [
   { path: 'magazines', children: [
     {path: 'search', component:HomeComponent}
     ],
-    canActivate : [authGuard] 
+    canActivate : [authGuard]
   },
   {
     path: 'editor',
@@ -54,6 +60,17 @@ export const routes: Routes = [
       { path: 'subscription/:id', component: SubscriptionComponent },
     ],
     canActivate: [authGuard]
+  },
+  {
+    path: 'reports',
+    children: [
+      { path: 'report1', component: Report1Component },
+      { path: 'report2', component: Report2Component },
+      { path: 'report3', component: Report3Component },
+      { path: 'report4', component: Report4Component },
+      { path: 'report5', component: Report5Component },
+      { path: 'report6', component: Report6Component },
+    ]
   },
   {
     path: 'admin',

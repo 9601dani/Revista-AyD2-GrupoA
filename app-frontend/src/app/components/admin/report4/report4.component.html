@@ -1,0 +1,89 @@
+<app-navbar></app-navbar>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title has-text-centered">Reporte de Revistas más populares</h1>
+
+    <div class="box">
+      <div class="field is-horizontal is-flex-wrap-wrap">
+        <div class="field mr-4">
+          <label class="label">Fecha Inicio</label>
+          <div class="control">
+            <input class="input" type="date" [(ngModel)]="startDate" />
+          </div>
+        </div>
+
+        <div class="field mr-4">
+          <label class="label">Fecha Fin</label>
+          <div class="control">
+            <input class="input" type="date" [(ngModel)]="endDate" />
+          </div>
+        </div>
+
+        <div class="field is-align-self-flex-end">
+          <div class="control my-3">
+            <button class="button is-primary" (click)="getReport()">Buscar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="report.length">
+      <div *ngIf="report.length">
+        <table class="table is-fullwidth">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let r of report">
+            <td>{{ r.magazineId }}</td>
+            <td>{{ r.magazineName }}</td>
+            <td>
+              <button mat-icon-button (click)="openModal(r.id)">
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="report.length === 0" class="has-text-centered has-text-grey mt-4">
+      No hay resultados para mostrar.
+    </div>
+  </div>
+  </div>
+</section>
+
+<ng-template #myDialog>
+  <h2 mat-dialog-title>Suscripciones</h2>
+  <mat-dialog-content>
+    <div *ngIf="comments.length">
+      <table class="table is-fullwidth">
+        <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Fecha de suscripción</th>
+          <th>Pago</th>
+          <th>Like</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let r of comments">
+          <td>{{ r.subscriber }}</td>
+          <td>{{ r.dateCreated | date: 'dd-MM-YYYY' }}</td>
+          <td>Q {{ r.pay }}</td>
+          <td>{{ r.isLike ? 'Si' : 'No' }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+  </mat-dialog-actions>
+</ng-template>

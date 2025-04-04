@@ -428,6 +428,7 @@ export class BuyAdComponent implements OnInit {
           text: "Anuncio registrado con éxito.",
           icon: "success"
         })
+        this.ngOnInit();
       },
       error: err => {
         console.error(err);

@@ -1,0 +1,71 @@
+<app-navbar></app-navbar>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title has-text-centered">Reporte de Ganancias por anunciante</h1>
+
+    <div class="box">
+      <div class="field is-horizontal is-flex-wrap-wrap">
+        <div class="field mr-4">
+          <label class="label">Fecha Inicio</label>
+          <div class="control">
+            <input class="input" type="date" [(ngModel)]="startDate" />
+          </div>
+        </div>
+
+        <div class="field mr-4">
+          <label class="label">Fecha Fin</label>
+          <div class="control">
+            <input class="input" type="date" [(ngModel)]="endDate" />
+          </div>
+        </div>
+
+        <div class="field mr-4">
+          <label class="label">Nomber del usuario</label>
+          <div class="control">
+            <input class="input" type="text" [(ngModel)]="magazineId"/>
+          </div>
+        </div>
+
+        <div class="field is-align-self-flex-end">
+          <div class="control my-3">
+            <button class="button is-primary" (click)="getReport()">Buscar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="report.length">
+      <table class="table is-fullwidth is-hoverable is-striped">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre de usuario</th>
+          <th>Fecha de creación</th>
+          <th>Tipo de anuncio</th>
+          <th>Periodo</th>
+          <th>Costo</th>
+          <th>Número de vistas</th>
+          <th>Habilitado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let r of report">
+          <td>{{ r.userId }}</td>
+          <td>{{ r.username }}</td>
+          <td>{{ r.dateCreated | date: 'dd-MM-YYYY' }}</td>
+          <td>{{ r.adType }}</td>
+          <td>{{ r.period }}</td>
+          <td>Q {{ r.cost }}</td>
+          <td>{{ r.numberViews }}</td>
+          <td>{{ r.isEnabled ? 'Sí' : 'No' }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="report.length === 0" class="has-text-centered has-text-grey mt-4">
+      No hay resultados para mostrar.
+    </div>
+  </div>
+</section>
