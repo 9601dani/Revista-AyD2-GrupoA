@@ -84,24 +84,31 @@ public class MagazineServiceImpl implements MagazineService {
         Magazine savedMagazine = this.magazineRepository.save(magazineToSave);
 
 
-        magazine.categories().forEach( category -> {
-            MagazineHasCategory magazineHasCategory = new MagazineHasCategory();
-            category.setId(this.categoryService.findByName(category.getName().toLowerCase()).getId());
-            magazineHasCategory.setCategory(category);
-            magazineHasCategory.setMagazine(magazineToSave);
+        if(magazine.categories() != null){
+            magazine.categories().forEach( category -> {
+                MagazineHasCategory magazineHasCategory = new MagazineHasCategory();
+                category.setId(this.categoryService.findByName(category.getName().toLowerCase()).getId());
+                magazineHasCategory.setCategory(category);
+                magazineHasCategory.setMagazine(magazineToSave);
 
-            this.magazineHasCategory.save(magazineHasCategory);
-        });
+                this.magazineHasCategory.save(magazineHasCategory);
+            });
+
+        }
+
+        if(magazine.labels() != null){
+            magazine.labels().forEach(label -> {
+                MagazineHasLabel magazineHasLabel = new MagazineHasLabel();
+                label.setId(this.userHasLabelService.findByName(label.getName()).getId());
+                magazineHasLabel.setLabel(label);
+                magazineHasLabel.setMagazine(magazineToSave);
+
+                this.magazineHasLabel.save(magazineHasLabel);
+            });
+        }
 
 
-        magazine.labels().forEach(label -> {
-            MagazineHasLabel magazineHasLabel = new MagazineHasLabel();
-            label.setId(this.userHasLabelService.findByName(label.getName()).getId());
-            magazineHasLabel.setLabel(label);
-            magazineHasLabel.setMagazine(magazineToSave);
 
-            this.magazineHasLabel.save(magazineHasLabel);
-        });
 
         docToSave.setPath(path_saved.getOrDefault(path_saved.keySet().iterator().next(), null));
         docToSave.setMagazine(savedMagazine);
@@ -139,8 +146,61 @@ public class MagazineServiceImpl implements MagazineService {
     }
 
     @Override
-    public AllMagazineResponse updateMagazine(MagazineRequest magazine) {
-        return null;
+    @Transactional
+    public AllMagazineResponse updateMagazine(MagazineRequest magazine) throws UserNotFoundException {
+        Magazine magazineToUpdate = this.magazineRepository.findById(magazine.id());
+
+        Optional<User> userOptional = this.userRepository.findById(magazine.FK_User());
+        if (userOptional.isEmpty()) {
+            throw new UserNotFoundException("El usuario no existe");
+        }
+
+        magazineToUpdate.setName(magazine.name());
+        magazineToUpdate.setDescription(magazine.description());
+        magazineToUpdate.setCanComment(magazine.canComment());
+        magazineToUpdate.setCanLike(magazine.canLike());
+        magazineToUpdate.setCanSubscribe(magazine.canSubscribe());
+        magazineToUpdate.setType(magazine.type());
+        magazineToUpdate.setPrice(magazine.price());
+        magazineToUpdate.setEnabled(magazine.isEnabled());
+
+        this.magazineHasCategory.deleteByMagazineId(magazine.id());
+        this.magazineHasLabel.deleteByMagazineId(magazine.id());
+
+        if(magazine.categories() != null){
+            magazine.categories().forEach(category -> {
+                MagazineHasCategory mhc = new MagazineHasCategory();
+                category.setId(this.categoryService.findByName(category.getName().toLowerCase()).getId());
+                mhc.setCategory(category);
+                mhc.setMagazine(magazineToUpdate);
+                this.magazineHasCategory.save(mhc);
+            });
+        }
+
+       if(magazine.labels() != null){
+           magazine.labels().forEach(label -> {
+               MagazineHasLabel mhl = new MagazineHasLabel();
+               label.setId(this.userHasLabelService.findByName(label.getName()).getId());
+               mhl.setLabel(label);
+               mhl.setMagazine(magazineToUpdate);
+               this.magazineHasLabel.save(mhl);
+           });
+       }
+
+        MultipartFile file = magazine.file();
+        if (file != null && !file.isEmpty()) {
+            HashMap<String, String> pathSaved = this.uploadRestClient.uploadFile(file);
+
+            Document document = new Document();
+            document.setPath(pathSaved.getOrDefault(pathSaved.keySet().iterator().next(), null));
+            document.setMagazine(magazineToUpdate);
+
+            this.documentServiceImpl.saveDocument(document);
+        }
+
+        this.magazineRepository.save(magazineToUpdate);
+
+        return new AllMagazineResponse(magazineToUpdate);
     }
 
 
