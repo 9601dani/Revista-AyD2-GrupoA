@@ -213,4 +213,60 @@ class AdServiceTest {
 
         assertEquals(6, result.numberViews());
     }
+    @Test
+    void saveShouldStoreAdWithoutImageUpload() throws Exception {
+        // Arrange
+        AdType adType = new AdType();
+        adType.setId(2);
+        adType.setName("TEXT");
+
+        Period period = new Period();
+        period.setId(1);
+        period.setName("Semestral");
+        period.setCost(BigDecimal.TEN);
+
+        User user = new User();
+        user.setId(1);
+
+        MultipartFile file = null;
+
+        Ad savedAd = new Ad();
+        savedAd.setId(1);
+        savedAd.setAdType(adType);
+        savedAd.setContent("Texto personalizado");
+
+        AdRequestDTO request = new AdRequestDTO(
+                "Texto personalizado",
+                1,
+                2,
+                List.of("Category"),
+                List.of("Label"),
+                1,
+                LocalDate.now(),
+                LocalDate.now().plusDays(30)
+        );
+
+        Category category = new Category();
+        category.setId(1);
+        category.setName("Category");
+
+        Label label = new Label();
+        label.setId(1);
+        label.setName("Label");
+
+        when(adTypeRepository.findById(2)).thenReturn(Optional.of(adType));
+        when(categoryRepository.findByName("Category")).thenReturn(Optional.of(category));
+        when(labelRepository.findByName("Label")).thenReturn(Optional.of(label));
+        when(periodRepository.findById(1)).thenReturn(Optional.of(period));
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(adRepository.save(any())).thenReturn(savedAd);
+
+        // Act
+        AdResponseDTO result = adService.save(request, file);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.id());
+    }
+
 }

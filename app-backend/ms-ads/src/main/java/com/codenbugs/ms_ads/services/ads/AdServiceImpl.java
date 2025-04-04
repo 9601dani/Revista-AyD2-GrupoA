@@ -105,11 +105,6 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public void delete(Integer id) {
-
-    }
-
-    @Override
     public AdResponseDTO findById(Integer id) throws NotFoundException {
         Ad ad = this.adRepository.findById(id).orElseThrow(() -> new NotFoundException(("Ad not found")));
         return new AdResponseDTO(ad);

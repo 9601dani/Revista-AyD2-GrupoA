@@ -29,8 +29,14 @@ export const routes: Routes = [
       { path: 'new-magazine', component: AddMagazineComponent },
       { path: 'my-magazines', component: ViewComponent },
       { path: 'edit-magazine/:id', component: EditMagazineComponent},
-      { path: 'report1', component: CommentReportComponent},
-      { path: 'report2', component: SuscriptionReportComponent}
+    ],
+    canActivate: [authGuard]
+  },
+  {
+    path: 'reports',
+    children: [
+      { path: 'report7', component: CommentReportComponent},
+      { path: 'report8', component: SuscriptionReportComponent}
     ],
     canActivate: [authGuard]
   },

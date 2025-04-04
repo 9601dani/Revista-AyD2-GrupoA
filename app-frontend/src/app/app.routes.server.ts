@@ -12,8 +12,9 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'editor', renderMode: RenderMode.Prerender },
   { path: 'editor/new-magazine', renderMode: RenderMode.Prerender },
   { path: 'editor/my-magazines', renderMode: RenderMode.Prerender },
-  { path: 'editor/report1', renderMode: RenderMode.Prerender },
-  { path: 'editor/report2', renderMode: RenderMode.Prerender },
+  { path: 'reports', renderMode: RenderMode.Prerender },
+  { path: 'reports/report7', renderMode: RenderMode.Prerender },
+  { path: 'reports/report8', renderMode: RenderMode.Prerender },
   {
     path: 'editor/edit-magazine/:id', renderMode: RenderMode.Client
   },  
