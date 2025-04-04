@@ -39,11 +39,12 @@
         <table class="table is-fullwidth is-hoverable is-striped">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Id</th>
               <th>Fecha Suscripción</th>
               <th>Válido Hasta</th>
               <th>Pago</th>
               <th>Like</th>
+              <th>Id revista</th>
               <th>Revista</th>
               <th>Descripción</th>
             </tr>
@@ -55,6 +56,7 @@
               <td>{{ r.dateEnded }}</td>
               <td>Q{{ r.pay }}</td>
               <td>{{ r.isLike ? 'Sí' : 'No' }}</td>
+              <td>{{ r.magazineId }}</td>
               <td>{{ r.magazineName }}</td>
               <td>{{ r.magazineDescription }}</td>
             </tr>

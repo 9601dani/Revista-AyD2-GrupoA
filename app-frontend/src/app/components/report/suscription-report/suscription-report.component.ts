@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LocalStorageService } from '../../../services/local-storage.service';
 import { NavbarComponent } from '../../commons/navbar/navbar.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-suscription-report',
   imports: [FormsModule, CommonModule, NavbarComponent],
   templateUrl: './suscription-report.component.html',
-  styleUrl: './suscription-report.component.scss'
+  styleUrl: './suscription-report.component.scss',
 })
 export class SuscriptionReportComponent {
   startDate: string = '';
@@ -18,10 +19,12 @@ export class SuscriptionReportComponent {
   authorId: number = 1;
   report: any[] = [];
 
-  constructor(private userService: UserService, private _localStorageService: LocalStorageService) {}
+  constructor(
+    private userService: UserService,
+    private _localStorageService: LocalStorageService
+  ) {}
 
   getSuscriptionReport(): void {
-
     const userId = this._localStorageService.getItem(
       this._localStorageService.USER_ID
     );
@@ -45,7 +48,10 @@ export class SuscriptionReportComponent {
       },
       error: (err: any) => {
         console.error(err);
-        alert('Error al cargar el reporte.');
+        Swal.fire({
+          title: 'Error en el reporte',
+          icon: 'error',
+        });
       },
     });
   }

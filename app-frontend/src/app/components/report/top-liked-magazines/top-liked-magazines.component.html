@@ -1,0 +1,57 @@
+<app-navbar></app-navbar>
+
+<section class="section">
+    <div class="container">
+      <h1 class="title has-text-centered">Top 5 Revistas Más Gustadas</h1>
+  
+      <div class="box">
+        <div class="field is-horizontal is-flex-wrap-wrap">
+          <div class="field mr-4">
+            <label class="label">Fecha Inicio</label>
+            <div class="control">
+              <input class="input" type="date" [(ngModel)]="startDate" />
+            </div>
+          </div>
+  
+          <div class="field mr-4">
+            <label class="label">Fecha Fin</label>
+            <div class="control">
+              <input class="input" type="date" [(ngModel)]="endDate" />
+            </div>
+          </div>
+  
+          <div class="field is-align-self-flex-end">
+            <div class="control mt-5">
+              <button class="button is-primary" (click)="getTopLiked()">Buscar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="topLiked.length > 0">
+        <table class="table is-fullwidth is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Total Likes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mag of topLiked">
+              <td>{{ mag.magazineName }}</td>
+              <td>{{ mag.magazineDescription }}</td>
+              <td>Q{{ mag.price }}</td>
+              <td>{{ mag.totalLikes }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div *ngIf="topLiked.length === 0" class="has-text-centered has-text-grey mt-4">
+        No hay resultados para mostrar.
+      </div>
+    </div>
+  </section>
+  

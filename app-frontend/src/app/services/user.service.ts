@@ -127,4 +127,13 @@ export class UserService {
     return this.http.post(`${this.apiSuscriptions}/report/report2`, body);
   }
 
+  getTopLikedMagazines(body: any): Observable<any> {
+    return this.http.post(`${this.apiSuscriptions}/report/top-liked`, body);
+  }
+
+  getPaymentReport(body: any): Observable<any> {
+    return this.http.post(`${this.apiSuscriptions}/report/payments`, body);
+  }
+  
+
 }

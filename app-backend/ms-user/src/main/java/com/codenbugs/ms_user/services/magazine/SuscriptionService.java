@@ -1,9 +1,6 @@
 package com.codenbugs.ms_user.services.magazine;
 
-import com.codenbugs.ms_user.dtos.report.CommentReportDto;
-import com.codenbugs.ms_user.dtos.report.CommentReportRequestDto;
-import com.codenbugs.ms_user.dtos.report.SuscriptionReportDto;
-import com.codenbugs.ms_user.dtos.report.SuscriptionReportRequestDto;
+import com.codenbugs.ms_user.dtos.report.*;
 import com.codenbugs.ms_user.dtos.suscription.*;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
 import com.codenbugs.ms_user.models.magazine.Suscription;
@@ -28,4 +25,8 @@ public interface SuscriptionService {
     List<CommentReportDto> getCommentReport(CommentReportRequestDto request);
 
     List<SuscriptionReportDto> getReport(SuscriptionReportRequestDto request);
+
+    List<TopLikedMagazineDto> getTopLikedMagazines(TopLikedRequestDto request);
+
+    List<PaymentReportDto> getPaymentReport(PaymentReportRequestDto request);
 }
