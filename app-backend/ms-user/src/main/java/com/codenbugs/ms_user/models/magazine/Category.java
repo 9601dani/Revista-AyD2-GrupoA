@@ -30,4 +30,5 @@ public class Category {
             inverseJoinColumns = @JoinColumn(name = "FK_Magazine")
     )
     private List<Magazine> magazines = new ArrayList<>();
+
 }

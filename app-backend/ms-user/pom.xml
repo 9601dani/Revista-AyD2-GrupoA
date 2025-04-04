@@ -88,8 +88,14 @@
 			<artifactId>java-jwt</artifactId>
 			<version>4.2.0</version>
 		</dependency>
+        <dependency>
+            <groupId>com.codenbugs</groupId>
+            <artifactId>ms-ads</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
