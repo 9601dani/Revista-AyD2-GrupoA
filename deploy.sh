@@ -51,15 +51,6 @@ cd ..
 
 mkdir -p deploy/frontend
 cp -r app-frontend/dist/** deploy/frontend/
-cd app-frontend
-cd dist
-cd app-frontend
-cd browser
-ls -l
-cd ..
-cd ..
-cd ..
-cd ..
 
 echo "SENDING COMPILED FILES"
 cp serve.sh deploy
