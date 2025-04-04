@@ -12,12 +12,17 @@ import { MySubscriptionsComponent } from './components/user/my-subscriptions/my-
 import { SubscriptionComponent } from './components/user/subscription/subscription.component';
 import { CommentReportComponent } from './components/report/comment-report/comment-report.component';
 import { SuscriptionReportComponent } from './components/report/suscription-report/suscription-report.component';
+import { SettingsComponent } from './components/admin/settings/settings.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'magazines', children: [] },
+  { path: 'magazines', children: [
+    {path: 'search', component:HomeComponent}
+    ],
+    canActivate : [authGuard] 
+  },
   {
     path: 'editor',
     children: [
@@ -37,6 +42,13 @@ export const routes: Routes = [
       { path: 'my-ads', component: MyAdComponent },
       { path: 'my-subscriptions', component: MySubscriptionsComponent },
       { path: 'subscription/:id', component: SubscriptionComponent },
+    ],
+    canActivate: [authGuard]
+  },
+  {
+    path: 'admin',
+    children: [
+      { path: 'settings', component: SettingsComponent },
     ],
     canActivate: [authGuard]
   }
