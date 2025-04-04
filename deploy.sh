@@ -39,12 +39,14 @@ npm install
 mkdir -p src/environments
 cat > src/environments/environment.ts <<EOL
 export const environment = {
-  production: $([ "$ENV" == "production" ] && echo "true" || echo "false"),
+  production: true,
   API_URL: '$API_URL'
 };
 EOL
 
-npm run build --configuration=$ENV
+cat src/environments/environment.ts
+
+npm run build --configuration=production
 cd ..
 
 mkdir -p deploy/frontend

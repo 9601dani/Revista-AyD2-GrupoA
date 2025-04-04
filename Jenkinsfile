@@ -78,7 +78,7 @@ pipeline{
                     sh 'ssh -o StrictHostKeyChecking=no $VM_USERNAME@$DEV_IP uptime'
                     sh 'ssh -v $VM_USERNAME@$DEV_IP'
                     sh 'scp -r deploy $VM_USERNAME@$DEV_IP:/home/$VM_USERNAME/'
-                    sh 'ssh -o StrictHostKeyChecking=no $VM_USERNAME@$DEV_IP "sudo bash /home/$VM_USERNAME/deploy/serve.sh"'
+                    sh 'ssh -o StrictHostKeyChecking=no $VM_USERNAME@$DEV_IP "bash /home/$VM_USERNAME/deploy/serve.sh"'
                 }
             }
         }

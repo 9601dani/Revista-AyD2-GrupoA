@@ -11,7 +11,7 @@ sudo systemctl restart nginx
 echo "Frontend deployed"
 
 echo "Killing Backend processes"
-pkill -f 'java -jar' || true
+sudo pkill -f 'java -jar' || true
 
 echo "Init Gateway"
 nohup java -jar /home/jenkins/deploy/backend/gateway.jar > /home/jenkins/logs/gateway.log 2>&1 &
