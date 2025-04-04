@@ -9,6 +9,7 @@ public record SuscriptionReportDto(
         LocalDate dateEnded,
         boolean isLike,
         BigDecimal pay,
+        Integer magazineId,
         String magazineName,
         String magazineDescription,
         BigDecimal magazinePrice

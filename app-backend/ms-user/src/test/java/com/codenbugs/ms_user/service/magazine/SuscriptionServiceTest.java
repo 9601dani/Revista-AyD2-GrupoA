@@ -1,5 +1,9 @@
 package com.codenbugs.ms_user.service.magazine;
 
+import com.codenbugs.ms_user.dtos.report.CommentReportDto;
+import com.codenbugs.ms_user.dtos.report.CommentReportRequestDto;
+import com.codenbugs.ms_user.dtos.report.SuscriptionReportDto;
+import com.codenbugs.ms_user.dtos.report.SuscriptionReportRequestDto;
 import com.codenbugs.ms_user.dtos.suscription.*;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
@@ -19,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +77,7 @@ public class SuscriptionServiceTest {
         suscription.setIsLike(false);
         suscription.setPay(BigDecimal.valueOf(100));
 
-        suscriptionRequestDto = new SuscriptionRequestDto(1,1,BigDecimal.valueOf(100));
+        suscriptionRequestDto = new SuscriptionRequestDto(1, 1, BigDecimal.valueOf(100));
     }
 
     @Test
@@ -112,7 +117,7 @@ public class SuscriptionServiceTest {
     }
 
     @Test
-    void getSuscriptionsByUserId(){
+    void getSuscriptionsByUserId() {
 
         List<Suscription> suscriptions = List.of(suscription);
 
@@ -127,7 +132,7 @@ public class SuscriptionServiceTest {
     }
 
     @Test
-    void getSuscriptionsWithMagazineByUserId(){
+    void getSuscriptionsWithMagazineByUserId() {
 
         List<Suscription> suscriptions = List.of(suscription);
 
@@ -193,7 +198,7 @@ public class SuscriptionServiceTest {
     @Test
     void saveCommentSuccess() throws UserNotFoundException {
 
-        CommentRequest request = new CommentRequest(1,1,"content");
+        CommentRequest request = new CommentRequest(1, 1, "content");
 
         when(this.suscriptionRepository.findById(request.fkSuscription())).thenReturn(Optional.of(suscription));
 
@@ -217,7 +222,7 @@ public class SuscriptionServiceTest {
     @Test
     void saveCommentFailureSuscriptionNofFound() throws UserNotFoundException {
 
-        CommentRequest request = new CommentRequest(1,1,"content");
+        CommentRequest request = new CommentRequest(1, 1, "content");
 
         when(this.suscriptionRepository.findById(request.fkSuscription())).thenReturn(Optional.empty());
 
@@ -227,12 +232,71 @@ public class SuscriptionServiceTest {
     @Test
     void saveCommentFailureMagazinenNofFound() throws UserNotFoundException {
 
-        CommentRequest request = new CommentRequest(1,1,"content");
+        CommentRequest request = new CommentRequest(1, 1, "content");
 
         when(this.suscriptionRepository.findById(request.fkSuscription())).thenReturn(Optional.of(suscription));
 
         when(this.magazineRepository.findById(Long.valueOf(magazine.getId()))).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> suscriptionService.saveComment(request));
+    }
+
+    @Test
+    void getCommentsReportWithMagazineId() {
+        LocalDateTime start = LocalDate.now().minusDays(10).atStartOfDay();
+        LocalDateTime end = LocalDate.now().atTime(23, 59);
+        CommentReportRequestDto dto = new CommentReportRequestDto(start, end, 1);
+
+        CommentReportDto report = new CommentReportDto(
+                1, "content", start, 1, "test", "description"
+        );
+
+        List<CommentReportDto> reports = List.of(report);
+
+        when(commentRepository.findCommentsInDateRangeByMagazine(start, end, 1)).thenReturn(reports);
+
+        List<CommentReportDto> result = suscriptionService.getCommentReport(dto);
+
+        assertEquals(reports.size(), result.size());
+
+    }
+
+    @Test
+    void getCommentsReportWithoutMagazineId() {
+        LocalDateTime start = LocalDate.now().minusDays(10).atStartOfDay();
+        LocalDateTime end = LocalDate.now().atTime(23, 59);
+        CommentReportRequestDto dto = new CommentReportRequestDto(start, end, null);
+
+        CommentReportDto report = new CommentReportDto(
+                1, "content", start, 1, "test", "description"
+        );
+
+        List<CommentReportDto> reports = List.of(report);
+
+        when(commentRepository.findCommentsInDateRange(start, end)).thenReturn(reports);
+
+        List<CommentReportDto> result = suscriptionService.getCommentReport(dto);
+
+        assertEquals(reports.size(), result.size());
+
+    }
+
+    @Test
+    void getSuscriptionsReport() {
+        LocalDate start = LocalDate.of(2025, 3, 1);
+        LocalDate end = LocalDate.of(2025, 5, 1);
+        SuscriptionReportRequestDto dto = new SuscriptionReportRequestDto(start, end, 5, null);
+
+        SuscriptionReportDto report = new SuscriptionReportDto(
+                1, start, end, true, BigDecimal.valueOf(10), 1, "test", "test description", BigDecimal.valueOf(10)
+        );
+
+        List<SuscriptionReportDto> reports = List.of(report);
+        when(suscriptionRepository.findSuscriptionsByFilters(start, end, 5, null)).thenReturn(reports);
+
+        List<SuscriptionReportDto> result = suscriptionService.getReport(dto);
+
+        assertEquals(reports.size(), result.size());
+
     }
 }

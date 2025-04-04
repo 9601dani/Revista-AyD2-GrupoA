@@ -176,4 +176,12 @@ export class UserService {
     return this.http.get(`${this.apiAdmin}/effectiveness`, { params });
   }
 
+  getTopLikedMagazines(body: any): Observable<any> {
+    return this.http.post(`${this.apiSuscriptions}/report/top-liked`, body);
+  }
+
+  getPaymentReport(body: any): Observable<any> {
+    return this.http.post(`${this.apiSuscriptions}/report/payments`, body);
+  }
+
 }

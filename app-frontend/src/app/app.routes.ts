@@ -18,20 +18,35 @@ import {Report3Component} from './components/admin/report3/report3.component';
 import {Report4Component} from './components/admin/report4/report4.component';
 import {Report5Component} from './components/admin/report5/report5.component';
 import {Report6Component} from './components/admin/report6/report6.component';
+import { TopLikedMagazinesComponent } from './components/report/top-liked-magazines/top-liked-magazines.component';
+import { PaymentReportComponent } from './components/report/payment-report/payment-report.component';
+import { SettingsComponent } from './components/admin/settings/settings.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'magazines', children: [] },
+  { path: 'magazines', children: [
+    {path: 'search', component:HomeComponent}
+    ],
+    canActivate : [authGuard]
+  },
   {
     path: 'editor',
     children: [
       { path: 'new-magazine', component: AddMagazineComponent },
       { path: 'my-magazines', component: ViewComponent },
       { path: 'edit-magazine/:id', component: EditMagazineComponent},
-      { path: 'report1', component: CommentReportComponent},
-      { path: 'report2', component: SuscriptionReportComponent}
+    ],
+    canActivate: [authGuard]
+  },
+  {
+    path: 'reports',
+    children: [
+      { path: 'report7', component: CommentReportComponent},
+      { path: 'report8', component: SuscriptionReportComponent},
+      { path: 'report9', component: TopLikedMagazinesComponent},
+      { path: 'report10', component: PaymentReportComponent}
     ],
     canActivate: [authGuard]
   },
@@ -55,6 +70,12 @@ export const routes: Routes = [
       { path: 'report4', component: Report4Component },
       { path: 'report5', component: Report5Component },
       { path: 'report6', component: Report6Component },
+    ]
+  },
+  {
+    path: 'admin',
+    children: [
+      { path: 'settings', component: SettingsComponent },
     ],
     canActivate: [authGuard]
   }

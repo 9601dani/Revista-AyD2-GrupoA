@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { NavbarComponent } from "../../commons/navbar/navbar.component";
+import Swal from 'sweetalert2';
 
 interface CommentReport {
   commentId: number;
@@ -30,9 +31,10 @@ export class CommentReportComponent {
 
   getReport(): void {
     if (!this.startDate || !this.endDate) {
-      alert('Debes ingresar las fechas de inicio y fin.');
-      return;
+      if (!this.startDate) this.startDate = '2000-01-01';
+      if (!this.endDate) this.endDate = '3000-12-31';
     }
+    
   
     const body = {
       start: `${this.startDate}T00:00:00`,
@@ -43,10 +45,14 @@ export class CommentReportComponent {
     this.userService.getCommentReport(body).subscribe({
       next: (value: CommentReport[]) => {
         this.comments = value;
+        
       },
       error: (err) => {
         console.log(err);
-        alert('Error al obtener los datos');
+        Swal.fire({
+          title: "Error al obtener los datos",
+          icon: "error",
+        });
       }
     });
   }
