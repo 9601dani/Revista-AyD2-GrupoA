@@ -25,10 +25,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -205,7 +202,7 @@ class MagazineServiceImplTest {
 
 
     @Test
-    void getByUserId_shouldThrowWhenUserNotFound() {
+    void getByUserIdShouldThrowWhenUserNotFound() {
         // Arrange
         int userId = 999;
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
@@ -271,8 +268,131 @@ class MagazineServiceImplTest {
         verify(magazineRepository).findById(magazineId);
     }
 
+    @Test
+    void updateMagazineShouldThrowWhenUserNotFound() {
+        MagazineRequest request = new MagazineRequest(
+                1, "Revista", 999, "No existe", false, false, false,
+                MagazineType.FREE, BigDecimal.ZERO, true,
+                "any", null, Collections.emptyList(), Collections.emptyList()
+        );
 
+        when(userRepository.findById(999)).thenReturn(Optional.empty());
+        when(magazineRepository.findById(1)).thenReturn(new Magazine());
 
+        assertThrows(UserNotFoundException.class, () -> magazineService.updateMagazine(request));
+        verify(magazineRepository, never()).save(any());
+    }
+
+    @Test
+    void updateMagazineShouldUpdateSuccessfullyWithFile() throws Exception {
+        // Arrange
+        MockMultipartFile file = new MockMultipartFile("file", "doc.pdf", "application/pdf", "PDF".getBytes());
+
+        Label label = new Label();
+        label.setId(1);
+        label.setName("Etiqueta");
+
+        Category category = new Category();
+        category.setId(1);
+        category.setName("Categoría");
+
+        MagazineRequest request = new MagazineRequest(
+                1, "Revista Actualizada", 1, "Nueva descripción",
+                true, true, true, MagazineType.FREE, BigDecimal.TEN, true,
+                "new/path", file, List.of(label), List.of(category)
+        );
+
+        User user = new User();
+        user.setId(1);
+
+        Magazine magazine = new Magazine();
+        magazine.setId(1);
+        magazine.setUser(user);
+
+        when(magazineRepository.findById(1)).thenReturn(magazine);
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(categoryService.findByName("categoría")).thenReturn(category);
+        when(userHasLabelService.findByName("Etiqueta")).thenReturn(label);
+
+        Map<String, String> pathMap = new HashMap<>();
+        pathMap.put("doc.pdf", "magazines/new/path/doc.pdf");
+        when(uploadRestClient.uploadFile(file)).thenReturn((HashMap<String, String>) pathMap);
+
+        // Act
+        AllMagazineResponse response = magazineService.updateMagazine(request);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals("Revista Actualizada", response.name());
+        verify(magazineHasCategory).deleteByMagazineId(1);
+        verify(magazineHasLabel).deleteByMagazineId(1);
+        verify(magazineHasCategory).save(any(MagazineHasCategory.class));
+        verify(magazineHasLabel).save(any(MagazineHasLabel.class));
+        verify(documentServiceImpl).saveDocument(any(Document.class));
+        verify(magazineRepository).save(magazine);
+    }
+
+    @Test
+    void updateMagazineShouldUpdateWithoutFile() throws Exception {
+        // Arrange
+        MagazineRequest request = new MagazineRequest(
+                1, "Sin Archivo", 1, "Sin archivo desc",
+                false, false, false, MagazineType.FREE, BigDecimal.ZERO, true,
+                null, null, Collections.emptyList(), Collections.emptyList()
+        );
+
+        User user = new User();
+        user.setId(1);
+
+        Magazine magazine = new Magazine();
+        magazine.setId(1);
+        magazine.setUser(user);
+
+        when(magazineRepository.findById(1)).thenReturn(magazine);
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
+        // Act
+        AllMagazineResponse response = magazineService.updateMagazine(request);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals("Sin Archivo", response.name());
+        verify(documentServiceImpl, never()).saveDocument(any());
+        verify(uploadRestClient, never()).uploadFile(any());
+        verify(magazineRepository).save(magazine);
+    }
+
+    @Test
+    void updateMagazineShouldUpdateWithoutCategoriesAndLabels() throws Exception {
+        // Arrange
+        MagazineRequest request = new MagazineRequest(
+                1, "Sin Cat y Label", 1, "Solo update básico",
+                true, true, true, MagazineType.FREE, BigDecimal.valueOf(5), true,
+                null, null, null, null
+        );
+
+        User user = new User();
+        user.setId(1);
+
+        Magazine magazine = new Magazine();
+        magazine.setId(1);
+        magazine.setUser(user);
+
+        when(magazineRepository.findById(1)).thenReturn(magazine);
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
+        // Act
+        AllMagazineResponse response = magazineService.updateMagazine(request);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals("Sin Cat y Label", response.name());
+        verify(magazineHasCategory).deleteByMagazineId(1);
+        verify(magazineHasLabel).deleteByMagazineId(1);
+        verify(magazineHasCategory, never()).save(any());
+        verify(magazineHasLabel, never()).save(any());
+        verify(magazineRepository).save(magazine);
+    }
 
 
 
