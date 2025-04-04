@@ -13,7 +13,6 @@ import { Label } from '../../../models/Label.model';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { MagazineType } from '../../../models/Magazine.model';
-import { SourceTextModule } from 'vm';
 import { DocumentPipe } from '../../../pipes/document.pipe';
 import { MatDialog } from '@angular/material/dialog';
 import { PreviewMagazineModalComponent } from '../preview-magazine-modal/preview-magazine-modal.component';

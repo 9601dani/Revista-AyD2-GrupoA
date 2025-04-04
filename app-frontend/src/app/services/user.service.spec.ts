@@ -2,7 +2,6 @@
 import { TestBed } from '@angular/core/testing';
 import { UserService } from './user.service';
 import {
-  HttpClientTestingModule,
   HttpTestingController,
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
@@ -229,40 +228,49 @@ describe('UserService', () => {
   
   // Magazines
   
-  it('savelLabelsToUser debe devolver un observable de tipo any ', (done: DoneFn) => {
-    const content = 'Contenido';
-    const blob = new Blob([content], { type: 'pdf' });
-    const file = new File([blob], 'archivo.pdf', { type: 'pdf' });
-
-    const magazine: Magazine = {
+  it('saveMagazine debe devolver un observable de tipo any', (done: DoneFn) => {
+    const formData = new FormData();
+    formData.append('name', 'Revista de prueba');
+    formData.append('description', 'Descripción');
+    formData.append('canComment', 'true');
+    formData.append('canLike', 'true');
+    formData.append('canSubscribe', 'true');
+    formData.append('FK_User', '1');
+    formData.append('isEnabled', 'true');
+    formData.append('price', '50');
+    formData.append('type', 'FREE');
+  
+    const file = new File(['contenido'], 'revista.pdf', { type: 'application/pdf' });
+    formData.append('file', file);
+  
+    const response = {
       id: 1,
+      name: 'Revista de prueba',
+      description: 'Descripción',
       canComment: true,
       canLike: true,
       canSubscribe: true,
-      description: "description",
       FK_User: 1,
       isEnabled: true,
-      name: "magazine",
-      path: "path",
       price: 50,
-      type: MagazineType.FREE
-    }
-
-
-    service.saveMagazine(magazine, file).subscribe((value) => {
-      expect(value).toEqual(magazine);
+      path: 'path',
+      type: 'FREE',
+    };
+  
+    service.saveMagazine(formData).subscribe((res) => {
+      expect(res).toEqual(response);
       done();
     });
-
+  
     const req = httpMock.expectOne(`${apiUrl}/v1/magazines/save`);
     expect(req.request.method).toBe('POST');
-    req.flush(magazine);
+    expect(req.request.body instanceof FormData).toBeTrue();
+    req.flush(response);
   });
   
   it('getMagazineByIdUser debe devolver un observable de tipo any ', (done: DoneFn) => {
-    
     const id = 1;
-
+  
     const magazine: Magazine = {
       id: 1,
       canComment: true,
@@ -276,21 +284,19 @@ describe('UserService', () => {
       price: 50,
       type: MagazineType.FREE
     }
-
-    const magazines: Magazine[]= [
-      magazine
-    ]
-
-
+  
+    const magazines: Magazine[] = [magazine];
+  
     service.getMagazineByIdUser(id).subscribe((value) => {
       expect(value).toEqual(magazines);
       done();
     });
-
-    const req = httpMock.expectOne(`${apiUrl}/v1/magazines/getByIdUser/${id}`);
+  
+    const req = httpMock.expectOne(`${apiUrl}/v1/magazines/getByUserId/${id}`);
     expect(req.request.method).toBe('GET');
     req.flush(magazines);
   });
+  
   
   it('getMagazineById debe devolver un observable de tipo any ', (done: DoneFn) => {
     
