@@ -20,6 +20,8 @@ fi
 
 API_URL="http://${TARGET_VM}:8000"
 
+echo "USING API_URL=$API_URL"
+
 echo "BUILDING BACKEND"
 cd app-backend
 mkdir -p ../deploy/backend
