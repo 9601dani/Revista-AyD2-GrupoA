@@ -27,9 +27,10 @@ export class SuscriptionReportComponent {
     );
 
     if (!this.startDate || !this.endDate) {
-      alert('Por favor ingresa el rango de fechas.');
-      return;
+      if (!this.startDate) this.startDate = '2000-01-01';
+      if (!this.endDate) this.endDate = '3000-12-31';
     }
+    
 
     const body = {
       startDate: this.startDate,

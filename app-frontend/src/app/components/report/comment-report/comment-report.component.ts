@@ -30,9 +30,11 @@ export class CommentReportComponent {
 
   getReport(): void {
     if (!this.startDate || !this.endDate) {
-      alert('Debes ingresar las fechas de inicio y fin.');
-      return;
+      // Formato correcto: YYYY-MM-DD
+      if (!this.startDate) this.startDate = '2000-01-01';
+      if (!this.endDate) this.endDate = '3000-12-31';
     }
+    
   
     const body = {
       start: `${this.startDate}T00:00:00`,

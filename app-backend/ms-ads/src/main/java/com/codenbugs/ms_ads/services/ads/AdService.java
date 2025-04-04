@@ -12,7 +12,6 @@ public interface AdService {
 
     AdResponseDTO save(AdRequestDTO adRequestDTO, MultipartFile file) throws NotSavedException;
     AdResponseDTO update(AdRequestDTO adRequestDTO, MultipartFile file);
-    void delete(Integer id);
     AdResponseDTO findById(Integer id) throws NotFoundException;
     List<AdResponseDTO> findAll();
     List<AdResponseDTO> findByUserId(Integer userId);
