@@ -12,6 +12,8 @@ import { MySubscriptionsComponent } from './components/user/my-subscriptions/my-
 import { SubscriptionComponent } from './components/user/subscription/subscription.component';
 import { CommentReportComponent } from './components/report/comment-report/comment-report.component';
 import { SuscriptionReportComponent } from './components/report/suscription-report/suscription-report.component';
+import { TopLikedMagazinesComponent } from './components/report/top-liked-magazines/top-liked-magazines.component';
+import { PaymentReportComponent } from './components/report/payment-report/payment-report.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -25,7 +27,9 @@ export const routes: Routes = [
       { path: 'my-magazines', component: ViewComponent },
       { path: 'edit-magazine/:id', component: EditMagazineComponent},
       { path: 'report1', component: CommentReportComponent},
-      { path: 'report2', component: SuscriptionReportComponent}
+      { path: 'report2', component: SuscriptionReportComponent},
+      { path: 'report3', component: TopLikedMagazinesComponent},
+      { path: 'report4', component: PaymentReportComponent}
     ],
     canActivate: [authGuard]
   },

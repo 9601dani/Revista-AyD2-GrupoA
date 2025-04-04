@@ -1,9 +1,6 @@
 package com.codenbugs.ms_user.services.magazine;
 
-import com.codenbugs.ms_user.dtos.report.CommentReportDto;
-import com.codenbugs.ms_user.dtos.report.CommentReportRequestDto;
-import com.codenbugs.ms_user.dtos.report.SuscriptionReportDto;
-import com.codenbugs.ms_user.dtos.report.SuscriptionReportRequestDto;
+import com.codenbugs.ms_user.dtos.report.*;
 import com.codenbugs.ms_user.dtos.suscription.*;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
 import com.codenbugs.ms_user.models.magazine.Comment;
@@ -152,6 +149,23 @@ public class SuscriptionServiceImpl implements SuscriptionService {
                 request.startDate(),
                 request.endDate(),
                 request.authorId(),
+                request.magazineId()
+        );
+    }
+
+    @Override
+    public List<TopLikedMagazineDto> getTopLikedMagazines(TopLikedRequestDto request) {
+        return suscriptionRepository.findTopLikedMagazinesInRange(
+                request.startDate(),
+                request.endDate()
+        ).stream().limit(5).toList();
+    }
+
+    @Override
+    public List<PaymentReportDto> getPaymentReport(PaymentReportRequestDto request) {
+        return suscriptionRepository.findPaymentReport(
+                request.startDate(),
+                request.endDate(),
                 request.magazineId()
         );
     }

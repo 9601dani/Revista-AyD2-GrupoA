@@ -41,9 +41,10 @@
         <table class="table is-fullwidth is-hoverable is-striped">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Id</th>
               <th>Contenido</th>
               <th>Fecha</th>
+              <th>Id Revista</th>
               <th>Revista</th>
               <th>Descripción</th>
             </tr>
@@ -53,6 +54,7 @@
               <td>{{ comment.commentId }}</td>
               <td>{{ comment.content }}</td>
               <td>{{ comment.dateCreated | date: 'medium' }}</td>
+              <td>{{ comment.magazineId }}</td>
               <td>{{ comment.magazineName }}</td>
               <td>{{ comment.magazineDescription }}</td>
             </tr>

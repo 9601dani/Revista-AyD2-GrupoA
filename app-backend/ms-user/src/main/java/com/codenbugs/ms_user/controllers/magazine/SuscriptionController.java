@@ -1,9 +1,6 @@
 package com.codenbugs.ms_user.controllers.magazine;
 
-import com.codenbugs.ms_user.dtos.report.CommentReportDto;
-import com.codenbugs.ms_user.dtos.report.CommentReportRequestDto;
-import com.codenbugs.ms_user.dtos.report.SuscriptionReportDto;
-import com.codenbugs.ms_user.dtos.report.SuscriptionReportRequestDto;
+import com.codenbugs.ms_user.dtos.report.*;
 import com.codenbugs.ms_user.dtos.request.MagazineRequest;
 import com.codenbugs.ms_user.dtos.response.AllMagazineResponse;
 import com.codenbugs.ms_user.dtos.response.MagazineResponse;
@@ -71,5 +68,15 @@ public class SuscriptionController {
     @PostMapping("/report/report2")
     public List<SuscriptionReportDto> getSuscriptionReport(@RequestBody SuscriptionReportRequestDto request) {
         return suscriptionService.getReport(request);
+    }
+
+    @PostMapping("/report/top-liked")
+    public List<TopLikedMagazineDto> getTopLiked(@RequestBody TopLikedRequestDto request) {
+        return suscriptionService.getTopLikedMagazines(request);
+    }
+
+    @PostMapping("/report/payments")
+    public List<PaymentReportDto> getPaymentReport(@RequestBody PaymentReportRequestDto request) {
+        return suscriptionService.getPaymentReport(request);
     }
 }
