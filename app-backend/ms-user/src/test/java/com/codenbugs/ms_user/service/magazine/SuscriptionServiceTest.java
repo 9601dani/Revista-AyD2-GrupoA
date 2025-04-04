@@ -1,10 +1,9 @@
 package com.codenbugs.ms_user.service.magazine;
 
-import com.codenbugs.ms_user.dtos.suscription.AllSuscriptionResponseDto;
-import com.codenbugs.ms_user.dtos.suscription.SuscriptionRequestDto;
-import com.codenbugs.ms_user.dtos.suscription.SuscriptionResponseDto;
+import com.codenbugs.ms_user.dtos.suscription.*;
 import com.codenbugs.ms_user.exceptions.UserNotCreatedException;
 import com.codenbugs.ms_user.exceptions.UserNotFoundException;
+import com.codenbugs.ms_user.models.magazine.Comment;
 import com.codenbugs.ms_user.models.magazine.Magazine;
 import com.codenbugs.ms_user.models.magazine.Suscription;
 import com.codenbugs.ms_user.models.user.User;
@@ -20,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,6 +49,7 @@ public class SuscriptionServiceTest {
     Magazine magazine;
     Suscription suscription;
     SuscriptionRequestDto suscriptionRequestDto;
+    private final Integer ID_SUSCRIPTION = 1;
 
     @BeforeEach
     void setUp() {
@@ -138,5 +139,100 @@ public class SuscriptionServiceTest {
 
         assertEquals(expect, actual);
 
+    }
+
+    @Test
+    void getSuscriptionByIdSuccess() throws UserNotFoundException {
+
+        when(this.suscriptionRepository.findById(ID_SUSCRIPTION)).thenReturn(Optional.of(suscription));
+
+        AllSuscriptionResponseDto expect = new AllSuscriptionResponseDto(suscription);
+
+        AllSuscriptionResponseDto actual = this.suscriptionService.getSuscriptionById(ID_SUSCRIPTION);
+
+    }
+
+    @Test
+    void getSuscriptionByIdFailure() throws UserNotFoundException {
+
+        when(this.suscriptionRepository.findById(ID_SUSCRIPTION)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> suscriptionService.getSuscriptionById(ID_SUSCRIPTION));
+
+    }
+
+    @Test
+    void updateIsLikeSuccess() throws UserNotFoundException {
+
+        SuscriptionLikeRequest request = new SuscriptionLikeRequest(1, true);
+
+        when(this.suscriptionRepository.findById(request.id())).thenReturn(Optional.of(suscription));
+
+        suscription.setIsLike(request.isLike());
+
+        when(this.suscriptionRepository.save(any(Suscription.class))).thenReturn(suscription);
+
+        SuscriptionResponseDto expect = new SuscriptionResponseDto(suscription);
+
+        SuscriptionResponseDto actual = this.suscriptionService.updateIsLike(request);
+
+        assertEquals(expect.isLike(), actual.isLike());
+    }
+
+    @Test
+    void updateIsLikeFailure() throws UserNotFoundException {
+
+        SuscriptionLikeRequest request = new SuscriptionLikeRequest(1, true);
+
+        when(this.suscriptionRepository.findById(request.id())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> suscriptionService.updateIsLike(request));
+
+    }
+
+    @Test
+    void saveCommentSuccess() throws UserNotFoundException {
+
+        CommentRequest request = new CommentRequest(1,1,"content");
+
+        when(this.suscriptionRepository.findById(request.fkSuscription())).thenReturn(Optional.of(suscription));
+
+        when(this.magazineRepository.findById(Long.valueOf(magazine.getId()))).thenReturn(Optional.of(magazine));
+
+        Comment comment = new Comment();
+        comment.setContent("content");
+        comment.setSuscription(suscription);
+        comment.setMagazine(magazine);
+        comment.setDateCreated(LocalDateTime.now());
+
+        when(this.commentRepository.save(any(Comment.class))).thenReturn(comment);
+
+        CommentMagazineResponse expect = new CommentMagazineResponse(comment);
+
+        CommentMagazineResponse actual = this.suscriptionService.saveComment(request);
+
+        assertEquals(expect, actual);
+    }
+
+    @Test
+    void saveCommentFailureSuscriptionNofFound() throws UserNotFoundException {
+
+        CommentRequest request = new CommentRequest(1,1,"content");
+
+        when(this.suscriptionRepository.findById(request.fkSuscription())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> suscriptionService.saveComment(request));
+    }
+
+    @Test
+    void saveCommentFailureMagazinenNofFound() throws UserNotFoundException {
+
+        CommentRequest request = new CommentRequest(1,1,"content");
+
+        when(this.suscriptionRepository.findById(request.fkSuscription())).thenReturn(Optional.of(suscription));
+
+        when(this.magazineRepository.findById(Long.valueOf(magazine.getId()))).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> suscriptionService.saveComment(request));
     }
 }
