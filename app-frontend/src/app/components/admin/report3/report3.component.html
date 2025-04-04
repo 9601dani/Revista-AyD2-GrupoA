@@ -40,24 +40,16 @@
         <thead>
         <tr>
           <th>ID</th>
-          <th>Fecha Suscripción</th>
-          <th>Válido Hasta</th>
-          <th>Pago</th>
-          <th>Like</th>
-          <th>Revista</th>
-          <th>Descripción</th>
+          <th>Nombre de usuario</th>
+          <th>Fecha de creación</th>
+          <th>Tipo de anuncio</th>
+          <th>Periodo</th>
+          <th>Costo</th>
+          <th>Número de vistas</th>
+          <th>Habilitado</th>
         </tr>
         </thead>
         <tbody>
-        Integer ,
-        String ,
-        Integer ,
-        Date ,
-        String ,
-        String ,
-        BigDecimal ,
-        Integer ,
-        Boolean
         <tr *ngFor="let r of report">
           <td>{{ r.userId }}</td>
           <td>{{ r.username }}</td>
