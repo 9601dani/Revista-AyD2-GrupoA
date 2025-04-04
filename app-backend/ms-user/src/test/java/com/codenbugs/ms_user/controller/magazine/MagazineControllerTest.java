@@ -4,6 +4,7 @@ import com.codenbugs.ms_user.controllers.magazine.MagazineController;
 import com.codenbugs.ms_user.dtos.response.AllMagazineResponse;
 import com.codenbugs.ms_user.dtos.response.MagazineResponse;
 import com.codenbugs.ms_user.dtos.response.MagazineWithDocumentsResponse;
+import com.codenbugs.ms_user.dtos.user.AuthorResponse;
 import com.codenbugs.ms_user.enums.MagazineType;
 import com.codenbugs.ms_user.services.magazine.MagazineService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,10 +48,12 @@ class MagazineControllerTest {
 
     @Test
     void getAllMagazinesShouldReturnList() throws Exception {
+        AuthorResponse author = new AuthorResponse(1, "Autor de Prueba","prueba@gmail.com");
+
         AllMagazineResponse response = new AllMagazineResponse(
-                1, "Revista de Prueba", 1, "Descripción", true, true, true,
+                1, "Revista de Prueba", author, "Descripción", true, true, true,
                 MagazineType.FREE, BigDecimal.ZERO, true, LocalDateTime.now(),
-                Collections.emptyList(), Collections.emptyList(), Collections.emptyList()
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),Collections.emptyList()
         );
         when(magazineService.getAllMagazines()).thenReturn(Collections.singletonList(response));
 
@@ -62,10 +65,12 @@ class MagazineControllerTest {
     @Test
     void getMagazineByIdShouldReturnMagazine() throws Exception {
         int id = 1;
+        AuthorResponse author = new AuthorResponse(1, "Autor de Prueba","prueba@gmail.com");
+
         AllMagazineResponse response = new AllMagazineResponse(
-                1, "Revista de Prueba", 1, "Descripción", true, true, true,
+                1, "Revista de Prueba", author, "Descripción", true, true, true,
                 MagazineType.FREE, BigDecimal.ZERO, true, LocalDateTime.now(),
-                Collections.emptyList(), Collections.emptyList(), Collections.emptyList()
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),Collections.emptyList()
         );
         when(magazineService.getMagazineById(id)).thenReturn(response);
 
@@ -113,10 +118,12 @@ class MagazineControllerTest {
 
     @Test
     void updateMagazineShouldReturnOk() throws Exception {
+        AuthorResponse author = new AuthorResponse(1, "Autor de Prueba","prueba@gmail.com");
+
         AllMagazineResponse response = new AllMagazineResponse(
-                1, "Revista de Prueba", 1, "Descripción", true, true, true,
+                1, "Revista de Prueba", author, "Descripción", true, true, true,
                 MagazineType.FREE, BigDecimal.ZERO, true, LocalDateTime.now(),
-                Collections.emptyList(), Collections.emptyList(), Collections.emptyList()
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),Collections.emptyList()
         );
         when(magazineService.updateMagazine(org.mockito.ArgumentMatchers.any())).thenReturn(response);
 
