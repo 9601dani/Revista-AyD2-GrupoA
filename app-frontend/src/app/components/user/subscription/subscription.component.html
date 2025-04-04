@@ -1,0 +1,169 @@
+<app-navbar></app-navbar>
+
+<section class="section">
+  <div class="container">
+    <div class="box" *ngIf="subscription">
+      <h1 class="title is-4">{{ subscription.magazine.name }}</h1>
+      <p class="subtitle is-6 mt-1">
+        Autor:
+        <a (click)="openAuthorModal(subscription.magazine.author)">
+          {{ subscription.magazine.author.username }}
+        </a>
+      </p>
+      <button
+        *ngIf="subscription.magazine.canLike"
+        class="button is-danger is-light mb-2"
+        (click)="toggleLike(subscription)"
+      >
+        {{ subscription.isLike ? "Ya te gusta" : "Me gusta" }}
+      </button>
+
+      <div class="columns is-multiline">
+        <div class="column is-12-tablet is-6-desktop">
+          <p>
+            <strong>Descripción:</strong>
+            {{ subscription.magazine.description }}
+          </p>
+          <p>
+            <strong>Tipo:</strong>
+            {{ subscription.magazine.type === "PAID" ? "De Pago" : "Gratis" }}
+          </p>
+          <p *ngIf="subscription.magazine.type === 'PAID'">
+            <strong>Precio:</strong> Q{{ subscription.magazine.price }}
+          </p>
+          <p>
+            <strong>Fecha de Suscripción:</strong>
+            {{ subscription.dateCreated }}
+          </p>
+          <p><strong>Válido hasta:</strong> {{ subscription.dateEnded }}</p>
+
+          <p *ngIf="subscription.magazine.categories?.length">
+            <strong>Categorías:</strong>
+            {{ getCategoryNames() }}
+          </p>
+
+          <p *ngIf="subscription.magazine.labels?.length">
+            <strong>Etiquetas:</strong>
+            {{ getLabelNames() }}
+          </p>
+        </div>
+
+        <div class="column is-12-tablet is-6-desktop">
+          <strong>Documentos:</strong>
+          <div class="buttons mt-2 is-flex-wrap-wrap">
+            <button
+              *ngFor="let doc of subscription.magazine.documents; let i = index"
+              class="button is-small is-info"
+              (click)="openPdfModal(doc.path, i + 1)"
+            >
+              Ver Documento {{ i + 1 }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="box">
+        <div *ngIf="subscription.magazine.canComment; else commentsDisabled">
+          <label class="label">Comentarios</label>
+
+          <div
+            *ngIf="subscription.magazine.comments?.length > 0; else noComments"
+          >
+            <div *ngFor="let comment of sortedComments()" class="box mb-3 p-3">
+              <div
+                class="is-flex is-justify-content-space-between is-align-items-center mb-1"
+              >
+                <span class="has-text-weight-semibold">{{
+                  comment.suscription.user.username
+                }}</span>
+                <span class="has-text-grey is-size-7">{{
+                  comment.dateCreated | date : "short"
+                }}</span>
+              </div>
+              <p>{{ comment.content }}</p>
+            </div>
+          </div>
+          <ng-template #noComments>
+            <p class="has-text-grey">Aún no hay comentarios.</p>
+          </ng-template>
+
+          <div class="field mt-4">
+            <label class="label">Agregar un comentario</label>
+            <div class="control">
+              <textarea
+                class="textarea"
+                placeholder="Escribe tu comentario..."
+                [(ngModel)]="commentText"
+              ></textarea>
+            </div>
+            <button
+              class="button is-primary mt-2"
+              (click)="sendComment(subscription)"
+            >
+              Enviar Comentario
+            </button>
+          </div>
+        </div>
+
+        <ng-template #commentsDisabled>
+          <article class="message is-warning mt-4">
+            <div class="message-body">
+              Los comentarios están bloqueados para esta revista.
+            </div>
+          </article>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal" [ngClass]="{ 'is-active': authorModalOpen }">
+  <div class="modal-background" (click)="closeAuthorModal()"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Información del Autor</p>
+      <button
+        class="delete"
+        aria-label="close"
+        (click)="closeAuthorModal()"
+      ></button>
+    </header>
+    <section class="modal-card-body">
+      <p><strong>Username:</strong> {{ selectedAuthor?.username }}</p>
+      <p><strong>Email:</strong> {{ selectedAuthor?.email }}</p>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button" (click)="closeAuthorModal()">Cerrar</button>
+    </footer>
+  </div>
+</div>
+
+<div class="modal" [ngClass]="{ 'is-active': pdfModalOpen }">
+  <div class="modal-background" (click)="closePdfModal()"></div>
+  <div class="modal-card" style="width: 90%; max-width: 1000px">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+         Documento {{ selectedPdfIndex }}
+      </p>
+      <button
+        class="delete"
+        aria-label="close"
+        (click)="closePdfModal()"
+      ></button>
+    </header>
+    <section class="modal-card-body" style="height: 80vh">
+      <iframe
+        *ngIf="selectedPdfPath"
+        [src]="selectedPdfPath | document"
+        width="100%"
+        height="100%"
+        style="border: none"
+      ></iframe>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button" (click)="closePdfModal()">Cerrar</button>
+    </footer>
+  </div>
+</div>

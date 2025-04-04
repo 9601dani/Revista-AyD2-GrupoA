@@ -18,6 +18,7 @@ import { AllMagazineResponse } from '../models/AllMagazine.mode';
 })
 export class UserService {
   readonly apiMagazine = `${environment.API_URL}/v1/magazines`;
+  readonly apiSuscriptions = `${environment.API_URL}/v1/suscriptions`;
   readonly apiUser = `${environment.API_URL}/v1/users`;
   readonly apiCategories = `${environment.API_URL}/v1/categories`;
 
@@ -84,6 +85,32 @@ export class UserService {
 
   getAllMagazines():Observable<any>{
     return this.http.get<any>(`${this.apiMagazine}/getAll`)
+  }
+
+  /** Suscriptions */
+
+  saveSuscription(body: any): Observable<any>{
+    return this.http.post<any>(`${this.apiSuscriptions}/save`, body)
+  }
+
+  getSuscriptionsForUser(fkUser: number):Observable<any>{
+    return this.http.get<any>(`${this.apiSuscriptions}/user/${fkUser}`)
+  }
+  
+  getSuscriptionsWithMagazineForUser(fkUser: number):Observable<any>{
+    return this.http.get<any>(`${this.apiSuscriptions}/all/${fkUser}`)
+  }
+ 
+  getSuscriptionById(id: number):Observable<any>{
+    return this.http.get<any>(`${this.apiSuscriptions}/${id}`)
+  }
+  
+  updateIsLike(body:any):Observable<any>{
+    return this.http.put<any>(`${this.apiSuscriptions}/update/like`, body)
+  }
+
+  saveComment(body: any): Observable<any>{
+    return this.http.post<any>(`${this.apiSuscriptions}/comment/save`, body)
   }
 
   updateMagazine(formData: FormData): Observable<any>{

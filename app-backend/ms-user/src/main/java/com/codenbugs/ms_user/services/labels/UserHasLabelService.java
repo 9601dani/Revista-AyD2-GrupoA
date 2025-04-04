@@ -18,4 +18,6 @@ public interface UserHasLabelService {
 
     List<LabelResponseDto> getAllLabels();
 
+    Label findByName(String labelName);
+
 }

@@ -178,7 +178,11 @@ export class LoginComponent {
         //   this._router.navigate(['/verify-2fa']);
         //   return;
         // }
+        this.isLoading = false;
         this._router.navigate(['/home']);
+      }, error: (error: any) => {
+        console.log(error);
+        this.isLoading = false;
       },
       // error: (error: any) => {
       //   if (error.error.status === 401) {
@@ -229,9 +233,6 @@ export class LoginComponent {
 
       //   this.loginForm.markAllAsTouched();
       // },
-      complete: () => {
-        this.isLoading = false;
-      },
     });
   }
 

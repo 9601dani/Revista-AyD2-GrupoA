@@ -11,28 +11,52 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [NavbarComponent, CommonModule, DocumentPipe],
   templateUrl: './view.component.html',
-  styleUrl: './view.component.scss'
+  styleUrl: './view.component.scss',
 })
-export class ViewComponent{
-
+export class ViewComponent {
   magazines: any[] = [];
-  constructor( private _userService: UserService, private _localStorage: LocalStorageService, private _router: Router
-  ){}
 
-  ngOnInit(){
-    this._userService.getMagazineByIdUser(this._localStorage.getItem("user_id")).subscribe({
-          next: (response) => {
-            console.log(response)
-            this.magazines = response;
-          }, error: (err) => {
-            console.log(err)
-          }
-    
-        }) 
+  pdfModalOpen = false;
+selectedMagazine: any = null;
+selectedPdfPath: string | null = null;
+
+  constructor(
+    private _userService: UserService,
+    private _localStorage: LocalStorageService,
+    private _router: Router
+  ) {}
+
+  ngOnInit() {
+    this._userService
+      .getMagazineByIdUser(this._localStorage.getItem('user_id'))
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.magazines = response;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
-  onEditMagazine(id: number){
-    this._router.navigate(['editor/edit-magazine', id])
+  onEditMagazine(id: number) {
+    this._router.navigate(['editor/edit-magazine', id]);
   }
 
+  openPdfModal(magazine: any) {
+    this.selectedMagazine = magazine;
+    this.selectedPdfPath = magazine.documents[0]?.path ?? null;
+    this.pdfModalOpen = true;
+  }
+  
+  selectPdf(path: string, index: number) {
+    this.selectedPdfPath = path;
+  }
+  
+  closePdfModal() {
+    this.pdfModalOpen = false;
+    this.selectedMagazine = null;
+    this.selectedPdfPath = null;
+  }
 }

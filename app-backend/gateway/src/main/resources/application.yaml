@@ -48,7 +48,12 @@ spring:
         - id: user-private-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           predicates:
-            - Path=/v1/users/**,/v1/magazines/**,/v1/subscriptions/**,/v1/categories/**
+            - Path=/v1/users/**,/v1/magazines/**,/v1/suscriptions/**,/v1/categories/**
+          # TODO: ADD PUBLIC ADD ROUTES TO SHOW ROUTES IN ANY COMPONENT IN THE FRONTEND
+        - id: adds-private-routes
+          uri: ${ADDS_ROUTE_URI:http://localhost:8002}
+          predicates:
+            - Path=/v1/ads/**
           filters:
             - VerifyJWTFilterFactory
           # TODO: ADD PUBLIC ADD ROUTES TO SHOW ROUTES IN ANY COMPONENT IN THE FRONTEND

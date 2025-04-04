@@ -136,4 +136,17 @@ public class UserHasLabelTest {
 
         assertEquals(list.size(), actual.size());
     }
+
+    @Test
+    void findByNameSuccesfully() throws UserNotFoundException {
+        Label l = new Label();
+        l.setId(1);
+        l.setName("label_test");
+
+        when(this.labelRepository.findByName(label.getName())).thenReturn(l);
+
+        Label actual = this.userHasLabelService.findByName(l.getName());
+
+        assertEquals(l, actual);
+    }
 }
